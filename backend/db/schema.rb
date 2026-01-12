@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_27_142929) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_06_123441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -38,6 +38,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_27_142929) do
     t.float "average_rating", default: 0.0, null: false
     t.integer "reviews_count", default: 0, null: false
     t.string "telegram_post_id"
+    t.string "source"
+    t.string "source_url"
+    t.string "title_en"
+    t.string "title_romanized"
+    t.string "author_romanized"
+    t.integer "page_count"
   end
 
   create_table "ratings", force: :cascade do |t|
