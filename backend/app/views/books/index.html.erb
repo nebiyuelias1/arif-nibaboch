@@ -34,9 +34,9 @@
   </div>
 
   <div id="pagination_placeholder">
-    <% if @page.next_number %>
-      <%= turbo_frame_tag "books_page_#{@page.next_number}", src: books_path(page: @page.next_number, format: :turbo_stream), loading: :lazy do %>
-        <span>Loading...</span> 
+    <% if @page.next_param %>
+      <%= turbo_frame_tag "books_page_#{@page.next_param}", src: books_path(page: @page.next_param, format: :turbo_stream), loading: :lazy do %>
+        <%= render partial: "books/pagination_placeholder" %>
       <% end %>
     <% end %>
   </div>
