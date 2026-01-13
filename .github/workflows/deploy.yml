@@ -10,12 +10,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.4.6'
-          bundler-cache: true
-
       - name: Install Kamal
         run: gem install kamal
 
