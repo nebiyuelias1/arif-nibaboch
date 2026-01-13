@@ -7,7 +7,7 @@ image: ghcr.io/nebiyuelias1/arif-nibaboch
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 127.0.0.1
   # job:
   #   hosts:
   #     - 192.168.0.1
