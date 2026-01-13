@@ -28,10 +28,19 @@
   </div>
 </div>
 
-<% if @books.any? %>
-  <div class="grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-    <%= render @books %>
+<% if @page.records.any? %>
+  <div id="books_list" class="grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    <%= render @page.records %>
   </div>
+
+  <div id="pagination_placeholder">
+    <% if @page.next_number %>
+      <%= turbo_frame_tag "books_page_#{@page.next_number}", src: books_path(page: @page.next_number, format: :turbo_stream), loading: :lazy do %>
+        <span>Loading...</span> 
+      <% end %>
+    <% end %>
+  </div>
+
 <% else %>
   <div class="text-center py-24 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
     <div class="mx-auto h-24 w-24 text-gray-300">
@@ -40,9 +49,5 @@
       </svg>
     </div>
     <h3 class="mt-4 text-lg font-semibold text-gray-900">No books found</h3>
-    <p class="mt-1 text-gray-500 max-w-sm mx-auto">Get started by adding some books to your collection. They will appear here.</p>
-    <div class="mt-6">
-      <%= link_to 'Create your first book', new_book_path, class: 'inline-flex items-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600' %>
-    </div>
   </div>
 <% end %>

@@ -3,7 +3,12 @@ class BooksController < ApplicationController
   before_action :create_telegram_discussion, only: :show
 
   def index
-    @books = Book.order(created_at: :desc)
+    set_page_and_extract_portion_from Book.order(created_at: :desc)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show; end

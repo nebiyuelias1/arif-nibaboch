@@ -1,0 +1,11 @@
+<%= turbo_stream.append "books_list" do %>
+  <%= render @page.records %>
+<% end %>
+
+<%= turbo_stream.replace "pagination_placeholder" do %>
+  <div id="pagination_placeholder">
+      <%= turbo_frame_tag "books_page_#{@page.next_number}", src: books_path(page: @page.next_number, format: :turbo_stream), loading: :lazy do %>
+        <span>Loading...</span> 
+      <% end %>
+  </div>
+<% end %>
