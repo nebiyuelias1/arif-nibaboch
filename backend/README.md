@@ -6,7 +6,7 @@ This is the backend Rails application for the Turbo Rails + React Native starter
 
 - **Ruby**: 3.4.6
 - **Rails**: 8.0.3
-- **Database**: PostgreSQL
+- **Database**: SQLite
 - **Frontend**: Turbo Rails, Stimulus, Tailwind CSS
 - **Authentication**: Devise
 - **Background Jobs**: Solid Queue
@@ -18,7 +18,7 @@ This is the backend Rails application for the Turbo Rails + React Native starter
 ## Prerequisites
 
 - Ruby 3.4.6 (see `.ruby-version`)
-- PostgreSQL (version 12 or higher recommended)
+- SQLite
 - Node.js and Yarn (for asset compilation)
 - Docker and Docker Compose (optional, for containerized development)
 
@@ -27,16 +27,19 @@ This is the backend Rails application for the Turbo Rails + React Native starter
 ### Option 1: Local Development (Without Docker)
 
 1. **Install Ruby dependencies**
+
    ```bash
    bundle install
    ```
 
 2. **Install JavaScript dependencies**
+
    ```bash
    yarn install
    ```
 
 3. **Set up the database**
+
    ```bash
    # Create database
    rails db:create
@@ -49,13 +52,14 @@ This is the backend Rails application for the Turbo Rails + React Native starter
    ```
 
 4. **Start the development server**
+
    ```bash
    # Start Rails server with Tailwind CSS watcher
    bin/dev
    ```
 
 5. **Access the application**
-   
+
    Open your browser and navigate to: `http://localhost:3000`
 
 ### Option 2: Development with Docker (Devcontainer)
@@ -63,21 +67,25 @@ This is the backend Rails application for the Turbo Rails + React Native starter
 This project includes a devcontainer configuration for containerized development.
 
 1. **Install devcontainer CLI**
+
    ```bash
    npm install -g @devcontainers/cli
    ```
 
 2. **Build the devcontainer**
+
    ```bash
    devcontainer up --workspace-folder .
    ```
 
 3. **Enter the container**
+
    ```bash
    devcontainer exec --workspace-folder . bash
    ```
 
 4. **Set up database and start server**
+
    ```bash
    # Inside the container
    rails db:create db:migrate
@@ -85,7 +93,7 @@ This project includes a devcontainer configuration for containerized development
    ```
 
 5. **Access the application**
-   
+
    The app will be running at: `http://localhost:3000`
 
 ## Configuration
@@ -101,7 +109,8 @@ RAILS_ENV=development
 
 ### Database Configuration
 
-Database settings are configured in `config/database.yml`. By default, it uses PostgreSQL with the following connection:
+Database settings are configured in `config/database.yml`. By default, it uses SQLite with the following connection:
+
 - Development: `turbo_rails_development`
 - Test: `turbo_rails_test`
 - Production: Uses DATABASE_URL environment variable
@@ -124,16 +133,19 @@ rails test test/models/
 ## Key Features
 
 ### Turbo Rails Integration
+
 - Turbo Frames for partial page updates
 - Turbo Streams for real-time updates
 - Turbo Native compatible endpoints for mobile app
 
 ### Authentication
+
 - User authentication via Devise
 - API endpoints secured with authentication
 - Session management for web and mobile
 
 ### Modern Rails 8 Infrastructure
+
 - **Solid Queue**: Background job processing
 - **Solid Cache**: Fast caching layer
 - **Solid Cable**: WebSocket support for real-time features
@@ -189,17 +201,8 @@ kamal app status
 
 ## Troubleshooting
 
-### Database Connection Issues
-If you encounter database connection errors:
-```bash
-# Check PostgreSQL is running
-pg_isready
-
-# Restart PostgreSQL (macOS with Homebrew)
-brew services restart postgresql
-```
-
 ### Asset Compilation Issues
+
 ```bash
 # Clear assets cache
 rails assets:clobber
@@ -211,4 +214,3 @@ rails assets:precompile
 ## Need Help?
 
 Refer to the main project [README](../README.md) for general information and links to mobile app documentation.
-
