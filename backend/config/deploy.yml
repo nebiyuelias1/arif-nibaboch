@@ -2,7 +2,7 @@
 service: arif-nibaboch
 
 # Name of the container image.
-image: ghcr.io/nebiyuelias1/arif-nibaboch
+image: nebiyuelias1/arif-nibaboch
 
 # Deploy to these servers.
 servers:
