@@ -11,12 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2026_01_06_123441) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
-
   create_table "book_tags", force: :cascade do |t|
-    t.bigint "book_id", null: false
-    t.bigint "tag_id", null: false
+    t.integer "book_id", null: false
+    t.integer "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_id", "tag_id"], name: "index_book_tags_on_book_id_and_tag_id", unique: true
@@ -47,8 +44,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_06_123441) do
   end
 
   create_table "ratings", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "book_id", null: false
+    t.integer "user_id", null: false
+    t.integer "book_id", null: false
     t.float "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
