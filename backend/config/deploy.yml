@@ -20,7 +20,7 @@ servers:
 proxy:
   ssl: true
   host: arif-nibaboch.netale.et
-  http_port: 8080
+  app_port: 8080
 
 # Credentials for your image host.
 registry:
