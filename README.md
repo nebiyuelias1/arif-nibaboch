@@ -1,4 +1,5 @@
-# Turbo Rails + React Native Starter
+# Arif Nibaboch
+
 <img width="1024" height="1024" alt="turbo_react_native" src="https://github.com/user-attachments/assets/09a80b5e-6fe3-4f92-b594-5b5ded3bb4f6" />
 
 A comprehensive starter template for building hybrid mobile applications using Turbo Rails backend and React Native frontend.
@@ -44,18 +45,18 @@ turbo-rails-react-native-starter/
 └── README.md                   # This file - project overview
 ```
 
-
 ## Development Guides
+
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/nebiyuelias1/turbo-rails-react-native-starter.git
    cd turbo-rails-react-native-starter
    ```
+
 2. For detailed setup and development instructions, please refer to:
-* **Backend (Rails)**: [backend/README.md](./backend/README.md)
-* **Mobile App (React Native)**: [mobileApp/README.md](./mobileApp/README.md)
-
-
+- **Backend (Rails)**: [backend/README.md](./backend/README.md)
+- **Mobile App (React Native)**: [mobileApp/README.md](./mobileApp/README.md)
 
 ## Contributing
 
@@ -64,4 +65,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is open source and available under the [MIT License](./LICENSE).
-
