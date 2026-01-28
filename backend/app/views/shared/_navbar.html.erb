@@ -26,7 +26,7 @@
           </div>
         <% else %>
           <div class="hidden sm:flex items-center gap-3">
-            <%= link_to "Sign in", new_user_session_path, data: { turbo_prefetch: false } class: "text-sm font-medium text-gray-500 hover:text-gray-900" %>
+            <%= link_to "Sign in", new_user_session_path, data: { turbo_prefetch: false }, class: "text-sm font-medium text-gray-500 hover:text-gray-900" %>
             <%= link_to "Sign up", new_user_registration_path, class: "inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700" %>
           </div>
         <% end %>
