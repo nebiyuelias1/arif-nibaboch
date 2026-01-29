@@ -6,6 +6,7 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+    environment: staging
     defaults:
       run:
         working-directory: ./backend
