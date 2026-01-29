@@ -27,4 +27,4 @@ jobs:
         run: kamal deploy
 
       - name: Kamal Clean
-        run: kamal clean
+        run: kamal prune all
