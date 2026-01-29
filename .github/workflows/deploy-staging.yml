@@ -25,3 +25,6 @@ jobs:
           TELEGRAM_CHANNEL_USERNAME: ${{ secrets.TELEGRAM_CHANNEL_USERNAME }}
           TELEGRAM_BOT_NAME: ${{ secrets.TELEGRAM_BOT_NAME }}
         run: kamal deploy
+
+      - name: Kamal Clean
+        run: kamal clean
