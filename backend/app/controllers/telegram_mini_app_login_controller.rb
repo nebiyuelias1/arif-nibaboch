@@ -25,25 +25,25 @@ class TelegramMiniAppLoginController < ApplicationController
     return false unless received_hash
 
     # These are the expected fields in Telegram Mini App's initData (excluding 'hash' itself)
-    valid_init_data_keys = %w[query_id user receiver chat chat_instance start_param can_send_after auth_date]
-    
+    valid_init_data_keys = %w[query_id user auth_date signature]
+
     # Extract only the fields that are part of the original initData for validation
     # This correctly handles cases where other parameters (like 'signature', 'controller', 'action')
     # are present in the URL but should not be part of the hash calculation.
     data_to_check = params.slice(*valid_init_data_keys).to_unsafe_h
-    
+
     # Build data_check_string from these fields, sorted alphabetically, as per Telegram's spec.
     data_check_string = data_to_check.map { |k, v| "#{k}=#{v}" }.sort.join("\n")
 
     # The secret key is derived from the bot's token for Mini App WebData validation.
     secret_key = OpenSSL::HMAC.digest("sha256", "WebAppData", ENV["TELEGRAM_BOT_TOKEN"])
-    
+
     # Calculate the HMAC-SHA256 hash of the data-check-string with the derived secret_key.
     hash = OpenSSL::HMAC.hexdigest("sha256", secret_key, data_check_string)
-    
+
     Rails.logger.info "Calculated hash: #{hash}"
     Rails.logger.info "Received hash: #{received_hash}"
-    
+
     hash == received_hash
   end
 end
