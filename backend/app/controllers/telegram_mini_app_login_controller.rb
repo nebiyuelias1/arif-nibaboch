@@ -25,7 +25,7 @@ class TelegramMiniAppLoginController < ApplicationController
     return false unless received_hash
 
     # These are the expected fields in Telegram Mini App's initData (excluding 'hash' itself)
-    valid_init_data_keys = %w[query_id user auth_date signature]
+    valid_init_data_keys = %w[query_id user auth_date signature chat_instance chat_type]
 
     # Extract only the fields that are part of the original initData for validation
     # This correctly handles cases where other parameters (like 'signature', 'controller', 'action')
