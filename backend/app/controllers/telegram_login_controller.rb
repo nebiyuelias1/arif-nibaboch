@@ -3,7 +3,7 @@ class TelegramLoginController < ApplicationController
 
   def callback
     if telegram_data_is_valid?
-      user = User.from_telegram(telegram_params)
+      user = User.from_telegram_auth(telegram_params)
       sign_in(user)
       redirect_to root_path, notice: "Successfully logged in with Telegram."
     else

@@ -53,6 +53,18 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+          if (!sessionStorage.getItem('telegram_login_attempted')) {
+            sessionStorage.setItem('telegram_login_attempted', 'true');
+            
+            const initData = window.Telegram.WebApp.initData;
+            window.location.href = '/telegram_mini_app/login?' + initData;
+          }
+        }
+      });
+    </script>
     <%= javascript_importmap_tags %>
   </head>
 
