@@ -24,20 +24,26 @@ class TelegramMiniAppLoginController < ApplicationController
     received_hash = params[:hash]
     return false unless received_hash
 
-    # The data-check-string is a concatenation of all received fields,
-    # sorted alphabetically, in the format key=<value> with a line
-    # feed character ('\n', 0x0A) used as separator.
-    # We received them as params from the redirect.
-    data_check_string = params.to_unsafe_h.except("hash").map { |k, v| "#{k}=#{v}" }.sort.join("\n")
+    # These are the expected fields in Telegram Mini App's initData (excluding 'hash' itself)
+    valid_init_data_keys = %w[query_id user receiver chat chat_instance start_param can_send_after auth_date]
+    
+    # Extract only the fields that are part of the original initData for validation
+    # This correctly handles cases where other parameters (like 'signature', 'controller', 'action')
+    # are present in the URL but should not be part of the hash calculation.
+    data_to_check = params.slice(*valid_init_data_keys).to_unsafe_h
+    
+    # Build data_check_string from these fields, sorted alphabetically, as per Telegram's spec.
+    data_check_string = data_to_check.map { |k, v| "#{k}=#{v}" }.sort.join("\n")
 
-    # The secret key is the HMAC-SHA-256 signature of the bot's token
-    # with the constant string "WebAppData" as data.
+    # The secret key is derived from the bot's token for Mini App WebData validation.
     secret_key = OpenSSL::HMAC.digest("sha256", "WebAppData", ENV["TELEGRAM_BOT_TOKEN"])
-    # The hash is the hexadecimal representation of the HMAC-SHA-256 signature
-    # of the data-check-string with the secret_key.
+    
+    # Calculate the HMAC-SHA256 hash of the data-check-string with the derived secret_key.
     hash = OpenSSL::HMAC.hexdigest("sha256", secret_key, data_check_string)
+    
     Rails.logger.info "Calculated hash: #{hash}"
     Rails.logger.info "Received hash: #{received_hash}"
+    
     hash == received_hash
   end
 end
