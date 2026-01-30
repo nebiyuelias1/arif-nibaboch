@@ -7,8 +7,7 @@ class User < ApplicationRecord
   has_many :ratings, dependent: :destroy
 
   def self.from_telegram_auth(auth_hash)
-    # Ensure we can handle both symbol and string keys
-    auth = auth_hash.with_indifferent_access
+    auth = auth_hash
 
     user = where(telegram_id: auth[:id]).first_or_initialize do |u|
       # TODO: Find ways of getting email address
