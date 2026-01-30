@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   has_many :ratings, dependent: :destroy
 
-  def self.frok_telegram_auth(auth_hash)
+  def self.from_telegram_auth(auth_hash)
     # Ensure we can handle both symbol and string keys
     auth = auth_hash.with_indifferent_access
 
