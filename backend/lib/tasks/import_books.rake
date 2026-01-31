@@ -10,7 +10,7 @@ namespace :import_books do
       csv = CSV.parse(csv_text, headers: true, encoding: "UTF-8")
 
       total_books_imported = 0
-      csv.first(5).each do |row|
+      csv.each do |row|
         next if row["author"].blank?
         puts "#{row["title"]}"
 
