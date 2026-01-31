@@ -6,8 +6,7 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  get "/telegram_mini_app/login", to: "telegram_mini_app_login#create"
-
+  get "/telegram_mini_app/login", to: "telegram_mini_app_login#create", as: :telegram_mini_app_login
 
   get "/telegram_login/callback", to: "telegram_login#callback", as: :telegram_login_callback
 

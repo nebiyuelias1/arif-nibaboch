@@ -10,11 +10,13 @@ class User < ApplicationRecord
     auth = auth_hash
 
     user = where(telegram_id: auth[:id]).first_or_initialize do |u|
-      # TODO: Find ways of getting email address
-      u.email = auth[:email].presence || "#{auth[:id]}@telegram.com"
       u.password = Devise.friendly_token[0, 20]
     end
     user.name = [ auth[:first_name], auth[:last_name] ].join(" ").strip
+    # TODO: Find ways of getting email address
+    if user.email.blank?
+      user.email = auth[:email].presence || "#{auth[:id]}@telegram.com"
+    end
     user.username = auth[:username]
     user.telegram_id = auth[:id]
     user.save!
