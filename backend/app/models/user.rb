@@ -6,9 +6,7 @@ class User < ApplicationRecord
 
   has_many :ratings, dependent: :destroy
 
-  def self.from_telegram_auth(auth_hash)
-    auth = auth_hash
-
+  def self.from_telegram_auth(auth)
     user = where(telegram_id: auth["id"]).first_or_initialize do |u|
       u.password = Devise.friendly_token[0, 20]
       # TODO: Find ways of getting email address
