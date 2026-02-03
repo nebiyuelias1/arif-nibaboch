@@ -41,6 +41,11 @@ class BooksController < ApplicationController
     redirect_to books_url, notice: "Book was successfully destroyed."
   end
 
+  def search
+    query = params[:query]
+    @books = Book.where("LOWER(title) LIKE :query OR LOWER(title_en) LIKE :query", query: "%#{query.downcase}%").limit(10)
+  end
+
   private
 
   def set_book

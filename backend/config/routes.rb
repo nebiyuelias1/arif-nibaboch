@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "books#index"
 
+  get "/books/search", to: "books#search", as: :books_search
+
   # Book resources (public)
   resources :books do
     resources :ratings, only: [ :create ]

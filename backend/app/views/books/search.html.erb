@@ -1,0 +1,28 @@
+<turbo-frame id="search_results">
+  <div class="bg-white border border-gray-200 rounded-2xl shadow-lg overflow-hidden">
+    <% if @books.any? %>
+      <% @books.each do |book| %>
+        <%= link_to book_path(book), class: "block no-underline", data: { turbo_frame: '_top' } do %>
+          <div class="flex items-center p-3 hover:bg-gray-100 transition-colors border-b border-gray-100 last:border-b-0">
+            <% if book.cover_image.present? %>
+              <%= image_tag book.cover_image, class: "w-12 h-16 object-cover rounded-md mr-4" %>
+            <% else %>
+              <div class="w-12 h-16 bg-gray-200 rounded-md mr-4 flex items-center justify-center text-gray-500 text-xs text-center p-1">No Image</div>
+            <% end %>
+            <div class="flex-1">
+              <p class="font-semibold text-lg text-gray-800"><%= book.title %></p>
+              <p class="text-sm text-gray-600">by <%= book.author %></p>
+            </div>
+            <% if book.average_rating.present? && book.average_rating > 0 %>
+              <div class="flex items-center text-sm text-gray-700 ml-4">
+                <span class="mr-1">⭐</span> <%= number_to_human(book.average_rating, precision: 1) %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="p-4 text-center text-gray-500">No books found matching your search.</div>
+    <% end %>
+  </div>
+</turbo-frame> 

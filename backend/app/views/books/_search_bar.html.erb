@@ -1,0 +1,21 @@
+<div data-controller="search" class="relative group mb-6">
+  <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+    <svg class="h-6 w-6 text-gray-400 group-focus-within:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+  </div>
+  <input type="text"
+         placeholder="Search by title, author, or keywords..."
+         class="block w-full pl-14 pr-4 py-5 bg-white border border-gray-200 rounded-3xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 shadow-sm transition-all sm:text-lg"
+         data-search-target="input"
+         data-action="input->search#perform">
+
+  <turbo-frame id="search_results"
+               data-search-target="results"
+               class="absolute z-10 w-full mt-2">
+  </turbo-frame>
+
+  <div data-search-target="loader" class="hidden absolute z-20 w-full mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg p-4 text-center text-gray-500">
+    Loading...
+  </div>
+</div>
