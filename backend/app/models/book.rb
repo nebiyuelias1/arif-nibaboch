@@ -10,8 +10,9 @@ class Book < ApplicationRecord
   scope :search, ->(query) {
     return none if query.blank?
 
-    # Sanitize the query for FTS5 - keep alphanumeric, spaces, and common Unicode ranges
-    # Including: Latin, Cyrillic, Arabic, Ethiopic, CJK, and other common scripts
+    # Sanitize the query for FTS5 - keep alphanumeric and spaces only
+    # FTS5 tokenizes on punctuation, so we remove it to avoid syntax errors
+    # Including support for: Latin, Cyrillic, Arabic, Ethiopic, CJK, and other scripts
     sanitized_query = query.gsub(/[^\p{L}\p{N}\s]/, " ").strip
     return none if sanitized_query.blank?
 
