@@ -8,16 +8,14 @@ class AddFullTextSearchToBooks < ActiveRecord::Migration[8.0]
         title_en,
         author,
         description,
-        book_id UNINDEXED,
-        content='books',
-        content_rowid='id'
+        book_id UNINDEXED
       );
     SQL
 
     # Populate the FTS table with existing books
     execute <<-SQL
-      INSERT INTO books_fts(book_id, title, title_romanized, title_en, author, description, rowid)
-      SELECT id, title, title_romanized, title_en, author, description, id
+      INSERT INTO books_fts(book_id, title, title_romanized, title_en, author, description)
+      SELECT id, title, title_romanized, title_en, author, description
       FROM books;
     SQL
 
@@ -26,8 +24,8 @@ class AddFullTextSearchToBooks < ActiveRecord::Migration[8.0]
     # Trigger for INSERT
     execute <<-SQL
       CREATE TRIGGER books_fts_insert AFTER INSERT ON books BEGIN
-        INSERT INTO books_fts(book_id, title, title_romanized, title_en, author, description, rowid)
-        VALUES (new.id, new.title, new.title_romanized, new.title_en, new.author, new.description, new.id);
+        INSERT INTO books_fts(book_id, title, title_romanized, title_en, author, description)
+        VALUES (new.id, new.title, new.title_romanized, new.title_en, new.author, new.description);
       END;
     SQL
 
@@ -40,14 +38,14 @@ class AddFullTextSearchToBooks < ActiveRecord::Migration[8.0]
             title_en = new.title_en,
             author = new.author,
             description = new.description
-        WHERE rowid = new.id;
+        WHERE book_id = new.id;
       END;
     SQL
 
     # Trigger for DELETE
     execute <<-SQL
       CREATE TRIGGER books_fts_delete AFTER DELETE ON books BEGIN
-        DELETE FROM books_fts WHERE rowid = old.id;
+        DELETE FROM books_fts WHERE book_id = old.id;
       END;
     SQL
   end

@@ -1,0 +1,28 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: "The Great Gatsby"
+  title_en: "The Great Gatsby"
+  title_romanized: "The Great Gatsby"
+  author: "F. Scott Fitzgerald"
+  description: "A classic American novel about the American Dream"
+  language: "en"
+  published_at: 1925-04-10
+
+two:
+  title: "የአበባው ልጅ"
+  title_en: "Abebaw's Child"
+  title_romanized: "Ye Abebaw Lij"
+  author: "Haddis Alemayehu"
+  description: "A classic Ethiopian novel about love and tradition"
+  language: "am"
+  published_at: 1965-01-01
+
+three:
+  title: "1984"
+  title_en: "Nineteen Eighty-Four"
+  title_romanized: "Nineteen Eighty-Four"
+  author: "George Orwell"
+  description: "A dystopian social science fiction novel and cautionary tale"
+  language: "en"
+  published_at: 1949-06-08
