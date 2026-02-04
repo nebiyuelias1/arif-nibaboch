@@ -10,8 +10,9 @@ class Book < ApplicationRecord
   scope :search, ->(query) {
     return none if query.blank?
 
-    # Sanitize the query for FTS5
-    sanitized_query = query.gsub(/[^a-zA-Z0-9\u0600-\u06FF\s]/, " ").strip
+    # Sanitize the query for FTS5 - keep alphanumeric, spaces, and common Unicode ranges
+    # Including: Latin, Cyrillic, Arabic, Ethiopic, CJK, and other common scripts
+    sanitized_query = query.gsub(/[^\p{L}\p{N}\s]/, " ").strip
     return none if sanitized_query.blank?
 
     # Use FTS5 MATCH for full-text search across all indexed fields
