@@ -3,7 +3,15 @@ class BooksController < ApplicationController
   before_action :create_telegram_discussion, only: :show
 
   def index
-    set_page_and_extract_portion_from Book.order(created_at: :desc)
+    @tags = Tag.all.limit(10).order(:name)
+    @active_tag = params[:tag]
+
+    books = Book.order(created_at: :desc)
+    if @active_tag.present?
+      books = books.joins(:tags).where(tags: { name: @active_tag })
+    end
+
+    set_page_and_extract_portion_from books
 
     respond_to do |format|
       format.html
@@ -43,7 +51,14 @@ class BooksController < ApplicationController
 
   def search
     query = params[:query]
-    @books = Book.where("LOWER(title) LIKE :query OR LOWER(title_en) LIKE :query", query: "%#{query.downcase}%").limit(10)
+    @books = if query.present?
+               Book.where("title LIKE :query OR author LIKE :query",
+                          query: "%#{query}%").limit(10)
+    else
+               []
+    end
+
+    render layout: false
   end
 
   private
