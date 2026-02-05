@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: "Sample Book One"
+  author: "Author One"
+  description: "Description for book one"
+
+two:
+  title: "Sample Book Two"
+  author: "Author Two"
+  description: "Description for book two"
