@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     defaults:
@@ -18,9 +18,8 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: .ruby-version
           bundler-cache: true
-          working-directory: ./backend
 
       - name: Setup database
         run: bin/rails db:test:prepare
