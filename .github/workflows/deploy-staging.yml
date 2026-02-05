@@ -6,6 +6,8 @@ on:
 jobs:
   test:
     runs-on: self-hosted
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: ./backend
@@ -30,6 +32,8 @@ jobs:
     needs: test
     runs-on: self-hosted
     environment: staging
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: ./backend
