@@ -4,7 +4,33 @@ on:
     branches: [ main ]
 
 jobs:
+  test:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          working-directory: ./backend
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Setup database
+        run: bin/rails db:setup
+
+      - name: Run tests
+        run: bin/rails test
+
   deploy:
+    needs: test
     runs-on: self-hosted
     environment: staging
     defaults:
