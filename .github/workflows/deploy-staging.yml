@@ -20,6 +20,7 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+          working-directory: ./backend
 
       - name: Setup database
         run: bin/rails db:test:prepare
