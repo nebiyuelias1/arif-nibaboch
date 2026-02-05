@@ -6,6 +6,8 @@ on:
 jobs:
   test:
     runs-on: self-hosted
+    env:
+      RAILS_ENV: test
     permissions:
       contents: read
     defaults:
