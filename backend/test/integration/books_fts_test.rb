@@ -66,7 +66,7 @@ class BooksFtsTest < ActiveSupport::TestCase
 
     # Verify it's in FTS
     result = ActiveRecord::Base.connection.execute(
-      "SELECT rowid FROM books_fts WHERE rowid = #{book_id}"
+      ActiveRecord::Base.sanitize_sql_array(["SELECT rowid FROM books_fts WHERE rowid = ?", book_id])
     )
     assert result.any?, "Book should be in books_fts before deletion"
 
@@ -75,7 +75,7 @@ class BooksFtsTest < ActiveSupport::TestCase
 
     # Verify it's removed from FTS
     result = ActiveRecord::Base.connection.execute(
-      "SELECT rowid FROM books_fts WHERE rowid = #{book_id}"
+      ActiveRecord::Base.sanitize_sql_array(["SELECT rowid FROM books_fts WHERE rowid = ?", book_id])
     )
     assert_empty result, "Deleted book should be removed from books_fts"
   end
