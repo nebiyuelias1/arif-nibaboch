@@ -119,7 +119,7 @@ class BookTest < ActiveSupport::TestCase
   test "creates telegram discussion after book creation" do
     # Mock the TelegramService to avoid making actual API calls
     mock_service = Minitest::Mock.new
-    mock_service.expect(:publish, 123456)
+    mock_service.expect(:publish, "123456")
     
     TelegramService.stub(:new, mock_service) do
       book = Book.create!(
@@ -129,7 +129,7 @@ class BookTest < ActiveSupport::TestCase
       
       # Verify the telegram_post_id was set
       assert_not_nil book.telegram_post_id
-      assert_equal 123456, book.telegram_post_id
+      assert_equal "123456", book.telegram_post_id
       
       book.destroy
     end
