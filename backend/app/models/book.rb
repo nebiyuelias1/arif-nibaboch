@@ -16,12 +16,6 @@ class Book < ApplicationRecord
       .order(:rank)
   end
 
-  scope :with_snippets, ->(**options) do
-    select("books.*")
-      .select_snippet("title", 0, **options)
-      .select_snippet("title_en", 0, **options)
-  end
-
   def self.rebuild_search_index
       sql_query = <<-SQL
         insert into books_fts (

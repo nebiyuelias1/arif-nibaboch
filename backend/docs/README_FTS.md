@@ -6,7 +6,7 @@ This feature adds full-text search capability to the books table using SQLite's 
 
 - **Virtual Table**: `books_fts` - A FTS5 virtual table for efficient full-text searching
 - **Indexed Columns**: title, author, description, publisher, title_en, title_romanized, author_romanized
-- **Auto-sync Triggers**: Automatic triggers keep the FTS table synchronized with the books table
+- **Use rails hooks**: Use rails after_*_commit hooks to update the index automatically on create, update, and delete
 
 ## How to use
 
@@ -55,7 +55,7 @@ results = ActiveRecord::Base.connection.execute(
 Run the FTS tests:
 
 ```bash
-bin/rails test test/integration/books_fts_test.rb
+bin/rails test test/models/books_test.rb
 ```
 
 ## Rollback
