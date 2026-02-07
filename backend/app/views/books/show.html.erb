@@ -87,6 +87,31 @@
       <%= simple_format(@book.description) %>
     </div>
 
+    <%# TBR Section %>
+    <% if user_signed_in? %>
+      <div class="mb-6">
+        <% if @book.in_tbr?(current_user) %>
+          <%= button_to book_tbr_item_path(@book, @book.tbr_items.find_by(user: current_user)), 
+                method: :delete,
+                class: "w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105" do %>
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            In Your TBR List
+          <% end %>
+        <% else %>
+          <%= button_to book_tbr_items_path(@book), 
+                method: :post,
+                class: "w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:from-blue-600 hover:to-indigo-600 transition-all transform hover:scale-105" do %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            Add to TBR
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+
     <%# Interactive Rating Section %>
     <div class="mt-auto">
       <% if user_signed_in? %>
