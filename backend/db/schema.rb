@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_06_123441) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_07_065204) do
   create_table "book_tags", force: :cascade do |t|
     t.integer "book_id", null: false
     t.integer "tag_id", null: false
@@ -79,4 +79,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_06_123441) do
   add_foreign_key "book_tags", "tags"
   add_foreign_key "ratings", "books"
   add_foreign_key "ratings", "users"
+
+  # Virtual tables defined in this database.
+  # Note that virtual tables may not work with other database engines. Be careful if changing database.
+  create_virtual_table "books_fts", "fts5", ["title", "author", "description", "publisher", "title_en", "title_romanized", "author_romanized", "content=books", "content_rowid=id"]
 end
