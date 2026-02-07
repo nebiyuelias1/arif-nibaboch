@@ -9,3 +9,10 @@ two:
   title: "Sample Book Two"
   author: "Author Two"
   description: "Description for book two"
+
+three:
+  title: "ለምትኬ"
+  author: "ደረጀ ለማ ደገፉ"
+  description: "Author discusses ideal ways of parenting and child rearing as necessary factors for the formation of a progressive and civic-minded generation and society."
+  title_romanized: "lamtké"
+  author_romanized: "daraǧa lamā dagafu"

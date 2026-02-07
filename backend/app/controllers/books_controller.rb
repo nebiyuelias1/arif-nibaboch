@@ -52,8 +52,7 @@ class BooksController < ApplicationController
   def search
     query = params[:query]
     @books = if query.present?
-               Book.where("title LIKE :query OR author LIKE :query",
-                          query: "%#{query}%").limit(10)
+               Book.full_text_search(query).limit(10)
     else
                []
     end
