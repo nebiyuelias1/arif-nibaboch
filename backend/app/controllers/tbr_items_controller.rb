@@ -5,7 +5,7 @@ class TbrItemsController < ApplicationController
     @book = Book.find(params[:book_id])
     @tbr_item = @book.tbr_items.find_or_initialize_by(user: current_user)
 
-    if @tbr_item.new_record? && @tbr_item.save
+    if @tbr_item.save
       respond_to do |format|
         format.html { redirect_to @book, notice: "Book added to your TBR list." }
         format.json { render json: { tbr_item: @tbr_item, in_tbr: true } }
