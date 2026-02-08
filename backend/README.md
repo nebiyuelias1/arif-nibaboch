@@ -177,6 +177,51 @@ rubocop
 rubocop -A
 ```
 
+## Rake Tasks
+
+### Import Books
+
+Import books from the CSV data source:
+
+```bash
+# Import books without posting to Telegram
+rake import_books:sync_books
+```
+
+This task imports books from the remote CSV file and saves them to the database. It automatically skips Telegram posting during bulk imports to avoid rate limiting.
+
+### Publish to Telegram
+
+Publish unpublished books to Telegram with rate limiting:
+
+```bash
+# Publish with default 1-second delay
+rake import_books:publish_to_telegram
+
+# Publish with custom delay (e.g., 2 seconds)
+TELEGRAM_DELAY_SECONDS=2 rake import_books:publish_to_telegram
+```
+
+This task:
+- Finds all books without a `telegram_post_id`
+- Posts them to the configured Telegram channel one by one
+- Adds a configurable delay between posts to avoid rate limiting (default: 1 second)
+- Updates each book with the Telegram message ID
+
+**Environment Variables:**
+- `TELEGRAM_BOT_TOKEN`: Your Telegram bot token
+- `TELEGRAM_CHANNEL_USERNAME`: Your Telegram channel username (without @)
+- `TELEGRAM_DELAY_SECONDS`: Delay in seconds between posts (default: 1)
+
+**Example Workflow:**
+```bash
+# Step 1: Import all books from CSV
+rake import_books:sync_books
+
+# Step 2: Publish books to Telegram with rate limiting
+rake import_books:publish_to_telegram
+```
+
 ## Deployment
 
 This project uses Kamal for deployment. See `config/deploy.yml` for deployment configuration.

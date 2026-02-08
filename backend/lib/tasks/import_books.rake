@@ -17,7 +17,8 @@ namespace :import_books do
         title = row["title"]
         total_books_imported += 1
 
-        Book.find_or_create_by!(title: title) do |t|
+        book = Book.find_or_create_by!(title: title) do |t|
+          t.skip_telegram_callback = true
           t.author = row["author"]
           t.description = row["description"]
 
@@ -46,5 +47,39 @@ namespace :import_books do
       end
       puts "Imported a total of: #{total_books_imported} books."
     end
+  end
+
+  desc "Publish unpublished books to Telegram with rate limiting"
+  task publish_to_telegram: :environment do
+    # Telegram rate limits: 30 messages per second to the same group
+    # To be safe, we'll use a 1 second delay between posts
+    delay_seconds = ENV.fetch("TELEGRAM_DELAY_SECONDS", "1").to_f
+
+    books_without_telegram = Book.where(telegram_post_id: nil)
+    total_books = books_without_telegram.count
+
+    puts "Found #{total_books} books without Telegram posts"
+
+    if total_books.zero?
+      puts "✅ All books already published to Telegram"
+      return
+    end
+
+    books_without_telegram.find_each.with_index do |book, index|
+      puts "Publishing #{index + 1}/#{total_books}: #{book.title}"
+
+      message_id = TelegramService.new(book).publish
+      if message_id
+        book.update_column(:telegram_post_id, message_id)
+        puts "✅ Successfully published"
+      else
+        puts "❌ Failed to publish"
+      end
+
+      # Sleep to avoid rate limiting (skip for the last item)
+      sleep(delay_seconds) unless index == total_books - 1
+    end
+
+    puts "\n🎉 Finished publishing books to Telegram"
   end
 end
