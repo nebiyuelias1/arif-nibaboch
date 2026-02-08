@@ -7,6 +7,7 @@ class Book < ApplicationRecord
   has_many :ratings, dependent: :destroy
 
   after_create_commit  :create_in_book_fts
+  after_create_commit  :create_telegram_discussion
   after_update_commit  :update_in_book_fts
   after_destroy_commit :remove_from_book_fts
 
@@ -91,5 +92,12 @@ class Book < ApplicationRecord
 
     def execute_sql_with_binds(*statement)
       self.class.connection.execute self.class.sanitize_sql(statement)
+    end
+
+    def create_telegram_discussion
+      return if telegram_post_id.present?
+
+      message_id = TelegramService.new(self).publish
+      update_column(:telegram_post_id, message_id) if message_id
     end
 end
