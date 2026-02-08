@@ -150,8 +150,9 @@ class BookTest < ActiveSupport::TestCase
 
   test "skips telegram discussion creation when skip_telegram_callback is true" do
     mock_service = Minitest::Mock.new
+    # No expectations set - we expect TelegramService.new to NOT be called
 
-    TelegramService.stub(:new, mock_service) do
+    TelegramService.stub(:new, ->(_book) { mock_service }) do
       book = Book.new(
         title: "Book Skipping Telegram",
         author: "Test Author"
@@ -163,7 +164,7 @@ class BookTest < ActiveSupport::TestCase
       book.destroy
     end
 
-    # Verify that TelegramService.new was never called
-    mock_service.verify
+    # If TelegramService.new was called, the mock would have been invoked
+    # and publish would have been called (which would fail since we didn't stub it)
   end
 end

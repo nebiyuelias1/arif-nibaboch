@@ -76,8 +76,8 @@ namespace :import_books do
         puts "❌ Failed to publish"
       end
 
-      # Sleep to avoid rate limiting, except for the last item
-      sleep(delay_seconds) if index < total_books - 1
+      # Sleep to avoid rate limiting (skip for the last item)
+      sleep(delay_seconds) unless index == total_books - 1
     end
 
     puts "\n🎉 Finished publishing books to Telegram"
