@@ -1,6 +1,6 @@
 # Arif Nibaboch
 
-<img width="1024" height="1024" alt="turbo_react_native" src="https://github.com/user-attachments/assets/09a80b5e-6fe3-4f92-b594-5b5ded3bb4f6" />
+<img width="2816" height="1536" alt="Gemini_Generated_Image_fueswjfueswjfues (1)" src="https://github.com/user-attachments/assets/48e3dffb-e6b6-4a36-8eed-e3d471efa202" />
 
 Arif Nibaboch is a book review app focused on Ethiopic books.
 
