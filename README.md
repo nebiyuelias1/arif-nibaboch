@@ -2,7 +2,7 @@
 
 <img width="1024" height="1024" alt="turbo_react_native" src="https://github.com/user-attachments/assets/09a80b5e-6fe3-4f92-b594-5b5ded3bb4f6" />
 
-A comprehensive starter template for building hybrid mobile applications using Turbo Rails backend and React Native frontend.
+Arif Nibaboch is a book review app focused on Ethiopic books.
 
 ## Features
 
