@@ -156,10 +156,10 @@
 
       <script>
         document.addEventListener('DOMContentLoaded', function() {
-          // Check if we're in Telegram Mini App context
-          if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+          // Check if we're in Telegram Mini App context with valid initData
+          if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData && window.Telegram.WebApp.initData.length > 0) {
             // Hide the web widget and show the mini app button
-            document.getElementById('telegram-web-comments').style.display = 'none';
+            document.getElementById('telegram-web-comments').classList.add('hidden');
             document.getElementById('telegram-mini-app-comments').classList.remove('hidden');
           }
         });
