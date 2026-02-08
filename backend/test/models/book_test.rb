@@ -117,36 +117,34 @@ class BookTest < ActiveSupport::TestCase
   end
 
   test "creates telegram discussion after book creation" do
-    # Mock the TelegramService to avoid making actual API calls
     mock_service = Minitest::Mock.new
     mock_service.expect(:publish, "123456")
-    
+
     TelegramService.stub(:new, mock_service) do
       book = Book.create!(
         title: "Test Book for Telegram",
         author: "Test Author"
       )
-      
-      # Verify the telegram_post_id was set
+
       assert_not_nil book.telegram_post_id
       assert_equal "123456", book.telegram_post_id
-      
       book.destroy
     end
-    
     mock_service.verify
   end
 
   test "does not create telegram discussion if telegram_post_id already exists" do
-    book = Book.create!(
-      title: "Book with Existing Telegram Post",
-      author: "Test Author",
-      telegram_post_id: "existing_id"
-    )
-    
-    # The telegram_post_id should remain unchanged
-    assert_equal "existing_id", book.telegram_post_id
-    
-    book.destroy
+    mock_service = Minitest::Mock.new
+    TelegramService.stub(:new, mock_service) do
+      book = Book.create!(
+        title: "Book with Existing Telegram Post",
+        author: "Test Author",
+        telegram_post_id: "existing_id"
+      )
+      assert_equal "existing_id", book.telegram_post_id
+      book.destroy
+    end
+
+    mock_service.verify
   end
 end
