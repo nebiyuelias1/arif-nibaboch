@@ -147,4 +147,23 @@ class BookTest < ActiveSupport::TestCase
 
     mock_service.verify
   end
+
+  test "skips telegram discussion creation when skip_telegram_callback is true" do
+    mock_service = Minitest::Mock.new
+
+    TelegramService.stub(:new, mock_service) do
+      book = Book.new(
+        title: "Book Skipping Telegram",
+        author: "Test Author"
+      )
+      book.skip_telegram_callback = true
+      book.save!
+
+      assert_nil book.telegram_post_id
+      book.destroy
+    end
+
+    # Verify that TelegramService.new was never called
+    mock_service.verify
+  end
 end

@@ -7,9 +7,11 @@ class Book < ApplicationRecord
   has_many :ratings, dependent: :destroy
 
   after_create_commit  :create_in_book_fts
-  after_create_commit  :create_telegram_discussion
+  after_create_commit  :create_telegram_discussion, unless: :skip_telegram_callback?
   after_update_commit  :update_in_book_fts
   after_destroy_commit :remove_from_book_fts
+
+  attr_accessor :skip_telegram_callback
 
   scope :full_text_search, ->(query) do
     joins("join books_fts idx on books.id = idx.rowid")
@@ -33,6 +35,10 @@ class Book < ApplicationRecord
 
   def user_rating(user)
     ratings.find_by(user: user)
+  end
+
+  def skip_telegram_callback?
+    skip_telegram_callback == true
   end
 
   private
