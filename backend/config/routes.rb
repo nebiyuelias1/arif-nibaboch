@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   # Book resources (public)
   resources :books do
     resources :ratings, only: [ :create ]
+    resources :tbr_items, only: [ :create, :destroy ]
   end
 
   # Simple API namespace for small JSON endpoints
