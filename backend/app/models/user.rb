@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :ratings, dependent: :destroy
+  has_many :tbr_items, dependent: :destroy
+  has_many :tbr_books, through: :tbr_items, source: :book
 
   def self.from_telegram_auth(auth)
     user = where(telegram_id: auth["id"]).first_or_initialize do |u|
