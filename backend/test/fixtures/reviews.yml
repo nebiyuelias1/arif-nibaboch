@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  body: Test review on book one
+  book: one
+  user: one
+
+two:
+  body: Test review on book two
+  book: two
+  user: two

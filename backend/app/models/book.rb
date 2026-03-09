@@ -5,6 +5,7 @@ class Book < ApplicationRecord
   has_many :book_tags, dependent: :destroy
   has_many :tags, through: :book_tags
   has_many :ratings, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
   after_create_commit  :create_in_book_fts
   after_create_commit  :create_telegram_discussion
