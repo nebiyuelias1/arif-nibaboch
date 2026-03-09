@@ -34,4 +34,12 @@ class ReviewTest < ActiveSupport::TestCase
                    "Review :replies association should use dependent: :destroy when dependent is configured"
     end
   end
+
+  test "is invalid when parent_id references the review itself" do
+    review = reviews(:one)
+    review.parent_id = review.id
+
+    refute review.valid?, "Review should be invalid when parent_id equals its own id"
+    assert_includes review.errors[:parent_id], "cannot reference the review itself"
+  end
 end
