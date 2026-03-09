@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_07_065204) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_09_124207) do
   create_table "book_tags", force: :cascade do |t|
     t.integer "book_id", null: false
     t.integer "tag_id", null: false
@@ -53,6 +53,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_07_065204) do
     t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.text "body"
+    t.integer "book_id", null: false
+    t.integer "user_id", null: false
+    t.integer "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_reviews_on_book_id"
+    t.index ["parent_id"], name: "index_reviews_on_parent_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -79,6 +91,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_07_065204) do
   add_foreign_key "book_tags", "tags"
   add_foreign_key "ratings", "books"
   add_foreign_key "ratings", "users"
+  add_foreign_key "reviews", "books"
+  add_foreign_key "reviews", "reviews", column: "parent_id"
+  add_foreign_key "reviews", "users"
 
   # Virtual tables defined in this database.
   # Note that virtual tables may not work with other database engines. Be careful if changing database.
