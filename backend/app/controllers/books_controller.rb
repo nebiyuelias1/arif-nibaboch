@@ -18,7 +18,9 @@ class BooksController < ApplicationController
     end
   end
 
-  def show; end
+  def show
+    @reviews = @book.reviews.includes(:user).where(parent_id: nil).order(created_at: :desc)
+  end
 
   def new
     @book = Book.new
