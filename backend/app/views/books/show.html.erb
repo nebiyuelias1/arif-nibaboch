@@ -182,7 +182,7 @@
                     <div data-controller="review-like"
                          data-review-like-review-id-value="<%= review.id %>"
                          data-review-like-book-id-value="<%= @book.id %>"
-                         data-review-like-liked-value="<%= review.review_likes.any? { |rl| rl.user_id == current_user.id } %>">
+                         data-review-like-liked-value="<%= review.review_likes.exists?(user_id: current_user.id) %>">
                       <button type="button"
                               data-action="click->review-like#toggle"
                               class="inline-flex items-center gap-1.5 group/like focus:outline-none cursor-pointer">
