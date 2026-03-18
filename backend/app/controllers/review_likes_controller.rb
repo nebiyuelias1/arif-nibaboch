@@ -10,7 +10,15 @@ class ReviewLikesController < ApplicationController
       @review_like.destroy
       liked = false
     else
-      @review.review_likes.create!(user: current_user)
+      @review_like = @review.review_likes.create(user: current_user)
+      unless @review_like.persisted?
+        respond_to do |format|
+          format.json do
+            render json: { errors: @review_like.errors.full_messages }, status: :unprocessable_entity
+          end
+        end
+        return
+      end
       liked = true
     end
 
