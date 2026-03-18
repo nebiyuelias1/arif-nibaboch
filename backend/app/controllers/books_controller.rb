@@ -19,7 +19,7 @@ class BooksController < ApplicationController
   end
 
   def show
-    @reviews = @book.reviews.includes(:user).where(parent_id: nil).order(created_at: :desc)
+    @reviews = @book.reviews.includes(:user, :review_likes).where(parent_id: nil).order(created_at: :desc)
   end
 
   def new
