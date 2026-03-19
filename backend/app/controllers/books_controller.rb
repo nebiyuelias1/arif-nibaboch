@@ -20,6 +20,11 @@ class BooksController < ApplicationController
 
   def show
     @reviews = @book.reviews.includes(:user).where(parent_id: nil).order(created_at: :desc)
+    if current_user
+      @liked_review_ids = ReviewLike.where(user_id: current_user.id, review_id: @reviews).pluck(:review_id)
+    else
+      @liked_review_ids = []
+    end
   end
 
   def new

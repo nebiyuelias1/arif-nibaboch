@@ -23,7 +23,9 @@ Rails.application.routes.draw do
   # Book resources (public)
   resources :books do
     resources :ratings, only: [ :create ]
-    resources :reviews, only: [ :create ]
+    resources :reviews, only: [ :create ] do
+      resource :like, only: [ :create ], controller: "review_likes"
+    end
   end
 
   # Simple API namespace for small JSON endpoints
