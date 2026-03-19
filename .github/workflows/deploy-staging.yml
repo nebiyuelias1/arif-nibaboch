@@ -30,6 +30,12 @@ jobs:
     needs: test
     runs-on: self-hosted
     environment: staging
+    env:
+      KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_USERNAME: ${{ secrets.TELEGRAM_CHANNEL_USERNAME }}
+      TELEGRAM_BOT_NAME: ${{ secrets.TELEGRAM_BOT_NAME }}
     permissions:
       contents: read
     defaults:
@@ -42,13 +48,10 @@ jobs:
       - name: Install Kamal
         run: gem install kamal
 
+      - name: Kamal Proxy Reboot
+        run: kamal proxy reboot
+
       - name: Kamal Deploy
-        env:
-          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_USERNAME: ${{ secrets.TELEGRAM_CHANNEL_USERNAME }}
-          TELEGRAM_BOT_NAME: ${{ secrets.TELEGRAM_BOT_NAME }}
         run: kamal deploy
 
       - name: Kamal Clean
