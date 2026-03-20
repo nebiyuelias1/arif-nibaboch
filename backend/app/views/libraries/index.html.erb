@@ -1,0 +1,18 @@
+<div class="max-w-3xl mx-auto text-center py-24">
+  <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-4">Your Library</h1>
+  <p class="text-lg text-gray-500 mb-8">This is where your reading lists and saved books will appear.</p>
+  
+  <div class="inline-flex flex-col items-center justify-center p-12 bg-white rounded-2xl shadow-sm border border-gray-100 w-full">
+    <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4">
+      <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+      </svg>
+    </div>
+    <h3 class="text-xl font-semibold text-gray-900">Coming Soon</h3>
+    <p class="mt-2 text-sm text-gray-500 max-w-sm">We are working on letting you organize your favorite books and reading history. Check back soon!</p>
+    
+    <div class="mt-6">
+      <%= link_to "Discover Books", books_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+  </div>
+</div>

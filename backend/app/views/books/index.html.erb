@@ -49,3 +49,17 @@
     <h3 class="mt-4 text-lg font-semibold text-gray-900">No books found</h3>
   </div>
 <% end %>
+
+<nav class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 sm:hidden pb-safe">
+  <div class="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
+    <% main_navigation_items.each do |item| %>
+      <% is_active = is_active_nav_item?(item) %>
+      <%= link_to item[:path], class: "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 group" do %>
+        <svg class="w-6 h-6 mb-1 <%= is_active ? 'text-blue-600' : 'text-gray-500 group-hover:text-blue-600' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <%= item[:icon].html_safe %>
+        </svg>
+        <span class="text-xs <%= is_active ? 'text-blue-600' : 'text-gray-500 group-hover:text-blue-600' %>"><%= item[:name] %></span>
+      <% end %>
+    <% end %>
+  </div>
+</nav>
