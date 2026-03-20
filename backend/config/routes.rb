@@ -28,6 +28,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :clubs do
+  end
+
+  get "library", to: "libraries#index", as: :library
+
   # Simple API namespace for small JSON endpoints
   namespace :api do
     namespace :v1 do

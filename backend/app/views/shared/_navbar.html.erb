@@ -10,19 +10,12 @@
           </div>
           <span class="font-bold text-xl tracking-tight text-gray-900">Arif Nibaboch</span>
         <% end %>
-        
-        <div class="hidden ml-10 space-x-8 lg:block">
-          <%= link_to "Browse Books", books_path, class: "text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors #{'text-blue-600' if current_page?(books_path)}" %>
-          <%# Add more links here like 'Authors', 'Categories' in future %>
-        </div>
       </div>
       
       <div class="ml-10 space-x-4 flex items-center">
         <% if user_signed_in? %>
           <div class="hidden sm:flex items-center gap-3">
              <span class="text-sm text-gray-700">Welcome, <strong><%= current_user.username.presence || current_user.email.split('@').first %></strong></span>
-             <%= link_to "Profile", profile_path, class: "text-sm font-medium text-gray-500 hover:text-gray-900" %>
-             <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "inline-block rounded-md border border-transparent bg-gray-100 px-4 py-2 text-base font-medium text-gray-900 hover:bg-gray-200" %>
           </div>
         <% else %>
           <div class="hidden sm:flex items-center gap-3">
@@ -31,11 +24,33 @@
           </div>
         <% end %>
 
+        <div class="hidden sm:block ml-2">
+          <details class="relative group">
+            <summary class="list-none cursor-pointer flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 [&::-webkit-details-marker]:hidden">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </summary>
+            
+            <div class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 z-50 overflow-hidden">
+              <div class="py-1">
+                <% main_navigation_items.each do |item| %>
+                  <% is_active = is_active_nav_item?(item) %>
+                  <%= link_to item[:path], class: "flex items-center gap-3 px-4 py-3 text-sm transition-colors group/link #{is_active ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}" do %>
+                    <svg class="w-5 h-5 transition-colors <%= is_active ? 'text-blue-600' : 'text-gray-400 group-hover/link:text-blue-600' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <%= item[:icon].html_safe %>
+                    </svg>
+                    <%= item[:name] %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </details>
+        </div>
+
         <%# Mobile Menu Button Placeholder - simple pure CSS or JS toggle needed for real implementation %>
         <div class="sm:hidden">
-          <% if user_signed_in? %>
-             <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-sm font-medium text-red-600" %>
-          <% else %>
+          <% unless user_signed_in? %>
              <%= link_to "Sign in", new_user_session_path, class: "text-sm font-medium text-blue-600" %>
           <% end %>
         </div>
