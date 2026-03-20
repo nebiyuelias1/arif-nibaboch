@@ -49,10 +49,10 @@ jobs:
         run: gem install kamal
 
       - name: Kamal Proxy Reboot
-        run: kamal proxy reboot
+        run: kamal proxy reboot -y
 
       - name: Kamal Deploy
         run: kamal deploy
 
       - name: Kamal Clean
-        run: kamal prune all
+        run: kamal prune all -y
