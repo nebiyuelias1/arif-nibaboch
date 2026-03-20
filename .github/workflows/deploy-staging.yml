@@ -55,4 +55,4 @@ jobs:
         run: kamal deploy
 
       - name: Kamal Clean
-        run: kamal prune all -y
+        run: kamal prune all
