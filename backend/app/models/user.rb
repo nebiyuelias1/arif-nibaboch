@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :ratings, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :review_likes, dependent: :destroy
+  has_many :owned_book_clubs, class_name: "BookClub", foreign_key: "owner_id", dependent: :nullify
 
   def self.from_telegram_auth(auth)
     user = where(telegram_id: auth["id"]).first_or_initialize do |u|
@@ -19,5 +20,9 @@ class User < ApplicationRecord
     user.telegram_id = auth["id"]
     user.save!
     user
+  end
+
+  def to_s
+    name.presence || username.presence || email || "Unknown"
   end
 end

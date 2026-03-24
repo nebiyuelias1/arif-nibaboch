@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ClubControllerTest < ActionDispatch::IntegrationTest
+class BookClubTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
