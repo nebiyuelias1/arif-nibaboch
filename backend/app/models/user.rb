@@ -23,6 +23,6 @@ class User < ApplicationRecord
   end
 
   def to_s
-    name || username || email || "Unknown"
+    name.presence || username.presence || email || "Unknown"
   end
 end
