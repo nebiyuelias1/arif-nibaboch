@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :clubs do
+  resources :book_clubs do
   end
 
   get "library", to: "libraries#index", as: :library

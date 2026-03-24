@@ -2,8 +2,12 @@
 
 one:
   email: user1@example.com
-  encrypted_password: <%= BCrypt::Password.create('password123', cost: 4) %>
+  encrypted_password: "<%= BCrypt::Password.create('password123', cost: 4) %>"
+  name: "Test User One"
+  username: "testuser1"
 
 two:
   email: user2@example.com
-  encrypted_password: <%= BCrypt::Password.create('password123', cost: 4) %>
+  encrypted_password: "<%= BCrypt::Password.create('password123', cost: 4) %>"
+  name: "Test User Two"
+  username: "testuser2"

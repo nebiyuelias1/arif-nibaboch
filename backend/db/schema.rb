@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_23_133044) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_23_143519) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -42,8 +42,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_133044) do
   create_table "book_clubs", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.boolean "is_private"
-    t.integer "owner_id", null: false
+    t.boolean "is_private", default: false
+    t.integer "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owner_id"], name: "index_book_clubs_on_owner_id"
@@ -138,7 +138,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_133044) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "book_clubs", "owners"
+  add_foreign_key "book_clubs", "users", column: "owner_id"
   add_foreign_key "book_tags", "books"
   add_foreign_key "book_tags", "tags"
   add_foreign_key "ratings", "books"
