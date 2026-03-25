@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  book: one
+  book_club: one
+  start_date: 2026-03-24
+  end_date: 2026-03-24
+  status: 1
+
+two:
+  book: two
+  book_club: two
+  start_date: 2026-03-24
+  end_date: 2026-03-24
+  status: 1
