@@ -1,6 +1,5 @@
 <div class="max-w-4xl mx-auto">
-  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
-    <% if @club.cover_photo.attached? %>
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8"> <% if @club.cover_photo.attached? %>
       <div class="h-64 w-full bg-gray-200 relative">
         <%= image_tag @club.cover_photo, class: "w-full h-full object-cover" %>
       </div>
@@ -61,9 +60,7 @@
     <h3 class="text-lg font-medium text-gray-900 mb-1">No active reading session</h3>
     <p class="text-gray-500 mb-4">The club admin hasn't selected a book to read yet.</p>
     <% if user_signed_in? && @club.owner == current_user %>
-      <button class="bg-blue-50 text-blue-700 hover:bg-blue-100 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-        Start a New Read
-      </button>
+      <%= button_to "Start a New Read", new_book_club_book_read_path(@club.id), method: :get, class: "bg-blue-50 text-blue-700 hover:bg-blue-100 px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
     <% end %>
   </div>
 </div>
