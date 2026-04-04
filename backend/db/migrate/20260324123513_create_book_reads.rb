@@ -3,9 +3,9 @@ class CreateBookReads < ActiveRecord::Migration[8.0]
     create_table :book_reads do |t|
       t.references :book, null: false, foreign_key: true
       t.references :book_club, null: false, foreign_key: true
-      t.date :start_date
+      t.date :start_date, null: false
       t.date :end_date
-      t.integer :status
+      t.integer :status, null: false, default: 0
 
       t.timestamps
     end
