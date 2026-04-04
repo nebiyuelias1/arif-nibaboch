@@ -63,7 +63,19 @@ class BooksController < ApplicationController
                []
     end
 
-    render layout: false
+    respond_to do |format|
+      format.html { render layout: false }
+      format.json do
+        render json: @books.map { |book|
+          {
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            cover_url: book.cover_image.presence
+          }
+        }
+      end
+    end
   end
 
   private
