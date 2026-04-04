@@ -9,13 +9,17 @@ export default class extends Controller {
     this.lastSelectedTitle = this.inputTarget.value;
 
     // Close dropdown when clicking outside
-    document.addEventListener("click", (e) => {
+    this.boundDocumentClick = (e) => {
       if (!this.element.contains(e.target)) {
         this.hideResults();
       }
-    });
+    };
+    document.addEventListener("click", this.boundDocumentClick);
   }
 
+  disconnect() {
+    document.removeEventListener("click", this.boundDocumentClick);
+  }
   performSearch(event) {
     clearTimeout(this.timeout);
     const query = this.inputTarget.value.trim();
