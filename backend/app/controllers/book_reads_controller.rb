@@ -1,7 +1,8 @@
 class BookReadsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_book_club
-  before_action :authorize_club_owner!, only: [ :new, :create ]
+  before_action :set_book_read, only: [ :show, :edit, :update ]
+  before_action :authorize_club_owner!, only: [ :new, :create, :edit, :update ]
 
   def index
     @tab = params[:tab] || "upcoming"
@@ -13,11 +14,13 @@ class BookReadsController < ApplicationController
   end
 
   def show
-    @book_read = @book_club.book_reads.find(params[:id])
   end
 
   def new
     @book_read = @book_club.book_reads.build
+  end
+
+  def edit
   end
 
   def create
@@ -29,10 +32,22 @@ class BookReadsController < ApplicationController
     end
   end
 
+  def update
+    if @book_read.update(book_read_params)
+      redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_book_club
     @book_club = BookClub.find(params[:book_club_id])
+  end
+
+  def set_book_read
+    @book_read = @book_club.book_reads.find(params[:id])
   end
 
   def authorize_club_owner!

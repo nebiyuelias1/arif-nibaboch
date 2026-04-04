@@ -72,6 +72,9 @@
         <div class="mt-auto flex flex-wrap gap-4">
           <%= link_to "View Book Details", book_path(@book_read.book), class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
           <%= link_to "Back to Club", book_club_path(@book_club), class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+          <% if user_signed_in? && @book_club.owner == current_user %>
+            <%= link_to "Edit Session", edit_book_club_book_read_path(@book_club, @book_read), class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors ml-auto" %>
+          <% end %>
         </div>
       </div>
     </div>
