@@ -4,7 +4,12 @@ class BookReadsController < ApplicationController
   before_action :authorize_club_owner!, only: [ :new, :create ]
 
   def index
-    @book_reads = @book_club.book_reads.order(created_at: :desc)
+    @tab = params[:tab] || "upcoming"
+    if @tab == "past"
+      @reads = @book_club.book_reads.completed.order(end_date: :desc)
+    else
+      @reads = @book_club.book_reads.where(status: [ :active, :upcoming ]).order(start_date: :asc)
+    end
   end
 
   def show

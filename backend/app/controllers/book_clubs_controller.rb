@@ -1,5 +1,5 @@
 class BookClubsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [ :index, :show ]
 
   def index
     @clubs = BookClub.all.order(created_at: :desc)
@@ -7,6 +7,7 @@ class BookClubsController < ApplicationController
 
   def show
     @club = BookClub.find(params[:id])
+    @current_read = @club.book_reads.active.order(start_date: :asc).first || @club.book_reads.upcoming.order(start_date: :asc).first
   end
 
   def new

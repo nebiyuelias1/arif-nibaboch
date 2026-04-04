@@ -1,0 +1,37 @@
+<div class="max-w-4xl mx-auto mt-8">
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center gap-4">
+      <%= link_to book_club_path(@book_club), class: "text-gray-500 hover:text-gray-700" do %>
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+      <% end %>
+      <h1 class="text-2xl font-bold text-gray-900"><%= @book_club.name %> Reads</h1>
+    </div>
+    
+    <% if user_signed_in? && @book_club.owner == current_user %>
+      <%= link_to "Start a New Read", new_book_club_book_read_path(@book_club), class: "bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm" %>
+    <% end %>
+  </div>
+
+  <div class="border-b border-gray-200 mb-6">
+    <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+      <%= link_to "Active & Upcoming", book_club_book_reads_path(@book_club, tab: 'upcoming'), 
+          class: "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm #{ @tab == 'upcoming' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }" %>
+      <%= link_to "Past Reads", book_club_book_reads_path(@book_club, tab: 'past'), 
+          class: "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm #{ @tab == 'past' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }" %>
+    </nav>
+  </div>
+
+  <% if @reads.any? %>
+    <div class="space-y-4">
+      <% @reads.each do |read| %>
+        <%= render partial: "book_reads/card", locals: { read: read, club: @book_club } %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-12 bg-white rounded-lg border border-dashed border-gray-300">
+      <p class="text-gray-500">No <%= @tab == 'past' ? 'past' : 'active or upcoming' %> reads found.</p>
+    </div>
+  <% end %>
+</div>

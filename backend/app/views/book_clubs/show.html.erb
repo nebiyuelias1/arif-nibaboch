@@ -49,68 +49,21 @@
   </div>
 
   <div class="flex justify-between items-center mb-6 mt-12">
-    <h2 class="text-2xl font-bold text-gray-900">Reading Sessions</h2>
-    <% if user_signed_in? && @club.owner == current_user %>
-      <%= link_to "Start a New Read", new_book_club_book_read_path(@club), class: "bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm" %>
-    <% end %>
+    <h2 class="text-2xl font-bold text-gray-900">Current Reading</h2>
+    <%= link_to "See all", book_club_book_reads_path(@club), class: "text-blue-600 hover:text-blue-800 text-sm font-medium" %>
   </div>
 
-  <% if @club.book_reads.any? %>
-    <div class="space-y-4">
-      <% @club.book_reads.order(created_at: :desc).each do |read| %>
-        <%= link_to book_club_book_read_path(@club, read), class: "block bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 transition-colors p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6 group" do %>
-          <% if read.book.cover_image.present? %>
-            <div class="w-16 h-24 shrink-0 shadow-sm rounded overflow-hidden">
-              <%= image_tag read.book.cover_image, class: "w-full h-full object-cover" %>
-            </div>
-          <% else %>
-            <div class="w-16 h-24 bg-gray-100 shrink-0 rounded flex items-center justify-center shadow-inner border border-gray-200">
-              <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-          <% end %>
-
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-3 mb-1">
-              <h3 class="text-lg font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors"><%= read.book.title %></h3>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap
-                <%= read.status == 'completed' ? 'bg-green-100 text-green-800' :
-                    read.status == 'active' ? 'bg-blue-100 text-blue-800' :
-                    'bg-gray-100 text-gray-800' %>">
-                <%= read.status.titleize %>
-              </span>
-            </div>
-            
-            <p class="text-sm text-gray-600 mb-2 truncate">By <%= read.book.author %></p>
-            
-            <div class="flex items-center text-sm text-gray-500 gap-4">
-              <div class="flex items-center gap-1.5">
-                <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span><%= read.start_date&.strftime("%b %d, %Y") || 'TBD' %> - <%= read.end_date&.strftime("%b %d, %Y") || 'TBD' %></span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="shrink-0 text-blue-600 hidden sm:block">
-            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
+  <% if @current_read %>
+    <%= render partial: "book_reads/card", locals: { read: @current_read } %>
   <% else %>
-    <div class="bg-white rounded-lg shadow-sm p-12 text-center border border-dashed border-gray-300">
+    <div class="bg-white rounded-lg shadow-sm p-8 text-center border border-dashed border-gray-300">
       <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
-      <h3 class="text-lg font-medium text-gray-900 mb-1">No reading sessions yet</h3>
-      <p class="text-gray-500 mb-6">This club hasn't scheduled any books to read yet.</p>
+      <h3 class="text-lg font-medium text-gray-900 mb-1">No active reading session</h3>
+      <p class="text-gray-500 mb-4">The club admin hasn't selected a book to read yet.</p>
       <% if user_signed_in? && @club.owner == current_user %>
-        <%= link_to "Start the First Read", new_book_club_book_read_path(@club), class: "inline-flex items-center justify-center bg-blue-50 text-blue-700 hover:bg-blue-100 px-6 py-2.5 rounded-md text-sm font-medium transition-colors" %>
+        <%= link_to "Start a New Read", new_book_club_book_read_path(@club), class: "inline-flex items-center justify-center bg-blue-50 text-blue-700 hover:bg-blue-100 px-6 py-2.5 rounded-md text-sm font-medium transition-colors" %>
       <% end %>
     </div>
   <% end %>
