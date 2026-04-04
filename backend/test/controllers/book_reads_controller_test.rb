@@ -51,4 +51,29 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
     assert_select "form"
     assert_select "div.bg-red-50" # Error explanation div
   end
+
+  test "should not get new if not owner" do
+    sign_in users(:two) # user two does not own book_club one
+    get new_book_club_book_read_url(@book_club.id)
+    assert_redirected_to book_club_url(@book_club)
+    assert_equal "You are not authorized to perform this action.", flash[:alert]
+  end
+
+  test "should not create book_read if not owner" do
+    sign_in users(:two)
+    assert_no_difference("BookRead.count") do
+      post book_club_book_reads_url(@book_club.id), params: {
+        book_read: {
+          book_id: @book.id,
+          book_club_id: @book_club.id,
+          start_date: Date.today,
+          end_date: 1.month.from_now.to_date,
+          status: "upcoming"
+        }
+      }
+    end
+
+    assert_redirected_to book_club_url(@book_club)
+    assert_equal "You are not authorized to perform this action.", flash[:alert]
+  end
 end
