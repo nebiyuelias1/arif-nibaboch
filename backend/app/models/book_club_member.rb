@@ -4,5 +4,5 @@ class BookClubMember < ApplicationRecord
 
   enum :role, { member: 0, admin: 1 }
 
-  validates :user_id, uniqueness: { scope: :book_club_id, message: "has already been taken" }
+  validates :user_id, uniqueness: { scope: :book_club_id, message: "is already a member of this book club" }
 end
