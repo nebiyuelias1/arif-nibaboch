@@ -3,6 +3,9 @@ require "uri"
 require "json"
 
 class LineLoginController < ApplicationController
+  # The callback is a GET redirect from LINE's servers, which cannot include
+  # a Rails CSRF token. CSRF protection is provided by the OAuth `state` parameter
+  # validated in the callback action.
   skip_before_action :verify_authenticity_token, only: [ :callback ]
 
   LINE_AUTH_URL = "https://access.line.me/oauth2/v2.1/authorize"
