@@ -29,6 +29,19 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Book Club created successfully.", flash[:notice]
   end
 
+  test "should create a membership record when user creates club" do
+    sign_in @user
+
+    post book_clubs_url, params: @club_params
+
+    created_club = BookClub.last
+    assert_equal 1, created_club.book_club_members_count
+    membership = created_club.book_club_members.find_by(user: @user)
+
+    assert_not_nil membership
+    assert membership.admin?
+  end
+
   test "should not create club if user is not signed in" do
     assert_no_difference("BookClub.count") do
       post book_clubs_url, params: @club_params
