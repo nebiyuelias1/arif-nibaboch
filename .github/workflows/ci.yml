@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: self-hosted
+    environment: staging
     env:
       RAILS_ENV: test
     permissions:
