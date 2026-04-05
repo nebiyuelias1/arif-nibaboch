@@ -22,6 +22,17 @@ class User < ApplicationRecord
     user
   end
 
+  def self.from_line_auth(auth)
+    user = where(line_id: auth["userId"]).first_or_initialize do |u|
+      u.password = Devise.friendly_token[0, 20]
+      u.email = "#{auth["userId"]}@line.com"
+    end
+    user.name = auth["displayName"]
+    user.line_id = auth["userId"]
+    user.save!
+    user
+  end
+
   def to_s
     name.presence || username.presence || email || "Unknown"
   end
