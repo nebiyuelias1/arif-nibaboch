@@ -17,6 +17,6 @@ class BookClubMemberTest < ActiveSupport::TestCase
     duplicate_member = BookClubMember.new(user: user, book_club: book_club)
 
     assert_not duplicate_member.valid?, "Duplicate membership should be invalid"
-    assert_includes duplicate_member.errors[:user_id], "has already been taken"
+    assert_includes duplicate_member.errors[:user_id], "is already a member of this book club"
   end
 end
