@@ -10,6 +10,9 @@ Rails.application.routes.draw do
 
   get "/telegram_login/callback", to: "telegram_login#callback", as: :telegram_login_callback
 
+  get "/line_login/authorize", to: "line_login#authorize", as: :line_login_authorize
+  get "/line_login/callback", to: "line_login#callback", as: :line_login_callback
+
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
