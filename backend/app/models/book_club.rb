@@ -12,6 +12,12 @@ class BookClub < ApplicationRecord
 
   after_create :add_owner_as_admin
 
+  def has_member?(user)
+    return false unless user
+
+    book_club_members.exists?(user: user)
+  end
+
   private
 
   def add_owner_as_admin

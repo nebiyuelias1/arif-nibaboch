@@ -1,5 +1,7 @@
-<div class="max-w-4xl mx-auto">
-  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8"> <% if @club.cover_photo.attached? %>
+<div data-controller="book-club" class="max-w-4xl mx-auto"
+     data-book-club-club-id-value="<%= @club.id %>" > 
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8"> 
+    <% if @club.cover_photo.attached? %>
       <div class="h-64 w-full bg-gray-200 relative">
         <%= image_tag @club.cover_photo, class: "w-full h-full object-cover" %>
       </div>
@@ -32,8 +34,8 @@
             </button>
           </div>
         <% else %>
-          <button class="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-md text-sm font-medium transition-colors">
-            Join Club
+          <button class="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-md text-sm font-medium transition-colors" data-action="click->book-club#toggle" data-book-club-target="button">
+            <%= @club.has_member?(current_user) ? 'Leave Club' : 'Join Club' %>
           </button>
         <% end %>
       </div>
