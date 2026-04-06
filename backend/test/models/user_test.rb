@@ -8,7 +8,7 @@ class UserTest < ActiveSupport::TestCase
       user = User.from_line_auth(profile)
       assert_equal "U_new_line_user", user.line_id
       assert_equal "LINE User", user.name
-      assert_equal "U_new_line_user@line.com", user.email
+      assert_equal "u_new_line_user@line.com", user.email
     end
   end
 

@@ -35,14 +35,14 @@ class LineLoginControllerTest < ActionDispatch::IntegrationTest
     get line_login_authorize_url
     state = session[:line_oauth_state]
 
-    token_response = Minitest::Mock.new
-    token_response.expect(:body, '{"access_token":"fake_token"}')
+    fake_token_response = Struct.new(:body).new('{"access_token":"fake_token"}')
+    profile_body = "{\"userId\":\"#{line_user_id}\",\"displayName\":\"#{display_name}\"}"
+    fake_profile_response = Struct.new(:body).new(profile_body)
+    fake_http = Object.new
+    fake_http.define_singleton_method(:request) { |_req| fake_profile_response }
 
-    profile_response = Minitest::Mock.new
-    profile_response.expect(:body, "{\"userId\":\"#{line_user_id}\",\"displayName\":\"#{display_name}\"}")
-
-    Net::HTTP.stub(:post_form, token_response) do
-      Net::HTTP.stub(:start, profile_response) do
+    Net::HTTP.stub(:post_form, fake_token_response) do
+      Net::HTTP.stub(:start, ->(*_args, &blk) { blk.call(fake_http) }) do
         assert_difference("User.count", 1) do
           get line_login_callback_url, params: { code: "valid_code", state: state }
         end
@@ -60,21 +60,21 @@ class LineLoginControllerTest < ActionDispatch::IntegrationTest
     User.create!(
       line_id: line_user_id,
       name: "Existing LINE User",
-      email: "#{line_user_id}@line.com",
+      email: "#{line_user_id.downcase}@line.com",
       password: Devise.friendly_token[0, 20]
     )
 
     get line_login_authorize_url
     state = session[:line_oauth_state]
 
-    token_response = Minitest::Mock.new
-    token_response.expect(:body, '{"access_token":"fake_token"}')
+    fake_token_response = Struct.new(:body).new('{"access_token":"fake_token"}')
+    profile_body = "{\"userId\":\"#{line_user_id}\",\"displayName\":\"Updated Name\"}"
+    fake_profile_response = Struct.new(:body).new(profile_body)
+    fake_http = Object.new
+    fake_http.define_singleton_method(:request) { |_req| fake_profile_response }
 
-    profile_response = Minitest::Mock.new
-    profile_response.expect(:body, "{\"userId\":\"#{line_user_id}\",\"displayName\":\"Updated Name\"}")
-
-    Net::HTTP.stub(:post_form, token_response) do
-      Net::HTTP.stub(:start, profile_response) do
+    Net::HTTP.stub(:post_form, fake_token_response) do
+      Net::HTTP.stub(:start, ->(*_args, &blk) { blk.call(fake_http) }) do
         assert_no_difference("User.count") do
           get line_login_callback_url, params: { code: "valid_code", state: state }
         end
