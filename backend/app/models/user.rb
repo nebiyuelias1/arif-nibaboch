@@ -28,6 +28,7 @@ class User < ApplicationRecord
       u.email = "#{auth["userId"]}@line.com"
     end
     user.name = auth["displayName"]
+    user.username = auth["displayName"]
     user.line_id = auth["userId"]
     user.save!
     user
