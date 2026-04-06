@@ -1,7 +1,7 @@
 name: Deploy
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
@@ -36,6 +36,9 @@ jobs:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHANNEL_USERNAME: ${{ secrets.TELEGRAM_CHANNEL_USERNAME }}
       TELEGRAM_BOT_NAME: ${{ secrets.TELEGRAM_BOT_NAME }}
+      LINE_CHANNEL_ID: ${{ secrets.LINE_CHANNEL_ID }}
+      LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
+
     permissions:
       contents: read
     defaults:
