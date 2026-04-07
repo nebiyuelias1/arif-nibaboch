@@ -2,6 +2,8 @@ class BookRead < ApplicationRecord
   belongs_to :book
   belongs_to :book_club
 
+  has_many :discussion_questions, dependent: :destroy
+
   validates :start_date, presence: true
 
   enum :status, { upcoming: 0, active: 1, completed: 2 }, default: :upcoming
