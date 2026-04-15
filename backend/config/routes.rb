@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   resources :book_clubs do
     resource :membership, controller: "book_club_members", only: [ :create, :destroy ]
     resources :book_reads do
+      resources :discussion_questions, only: [ :create ]
     end
   end
 

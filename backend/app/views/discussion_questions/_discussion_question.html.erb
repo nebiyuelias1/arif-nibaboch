@@ -1,0 +1,20 @@
+<div id="<%= dom_id(discussion_question) %>" class="p-5 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 relative overflow-hidden group">
+  <div class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-600 font-bold text-base shadow-inner border border-blue-100">
+    <%= discussion_question.position %>
+  </div>
+  
+  <div class="flex-grow pt-1">
+    <p class="text-gray-800 text-lg leading-relaxed"><%= discussion_question.content %></p>
+    
+    <% if discussion_question.draft? %>
+      <div class="mt-3 flex items-center gap-2">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+          <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+          </svg>
+          Draft
+        </span>
+      </div>
+    <% end %>
+  </div>
+</div>
