@@ -25,6 +25,18 @@ class DiscussionQuestionTest < ActiveSupport::TestCase
     assert question.draft?, "Question should default to draft status"
   end
 
+  test "position increments automatically for each new discussion question" do
+    DiscussionQuestion.destroy_all # clear existing
+    q1 = DiscussionQuestion.create!(book_read: @book_read, content: "First question")
+    assert_equal 1, q1.position
+
+    q2 = DiscussionQuestion.create!(book_read: @book_read, content: "Second question")
+    assert_equal 2, q2.position
+
+    q3 = DiscussionQuestion.create!(book_read: @book_read, content: "Third question")
+    assert_equal 3, q3.position
+  end
+
   test "can change status to revealed" do
     question = discussion_questions(:one)
     question.revealed!
