@@ -2,7 +2,7 @@ require "test_helper"
 
 class DiscussionQuestionTest < ActiveSupport::TestCase
   setup do
-    @book_read = book_reads(:one) # Assuming you have a book_reads fixture
+    @book_read = book_reads(:one)
   end
 
   test "should be valid with valid attributes" do
@@ -26,7 +26,7 @@ class DiscussionQuestionTest < ActiveSupport::TestCase
   end
 
   test "position increments automatically for each new discussion question" do
-    DiscussionQuestion.destroy_all # clear existing
+    @book_read.discussion_questions.destroy_all # clear existing questions for this read only
     q1 = DiscussionQuestion.create!(book_read: @book_read, content: "First question")
     assert_equal 1, q1.position
 
@@ -42,5 +42,11 @@ class DiscussionQuestionTest < ActiveSupport::TestCase
     question.revealed!
 
     assert question.revealed?
+  end
+
+  test "should require content" do
+    question = DiscussionQuestion.new(book_read: @book_read, content: nil)
+    assert_not question.valid?
+    assert_includes question.errors[:content], "can't be blank"
   end
 end

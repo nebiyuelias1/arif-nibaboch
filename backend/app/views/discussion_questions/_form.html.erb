@@ -1,13 +1,35 @@
-<div id="new_discussion_question_form">
+<div id="new_discussion_question_form" class="mb-8">
   <% if user_signed_in? && book_club.owner == current_user %>
-    <%= form_with model: [book_club, book_read, discussion_question], class: "flex flex-col", data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |form| %>
-      <%= form.text_area :content, size: "autox2", required: true, class: "bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body", placeholder: "Write Your Question" %>
-      <%= form.button class: "inline-flex items-end px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-sm self-end mt-2" do %>
-        <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    <div class="bg-gray-50 rounded-xl p-5 border border-gray-200 shadow-sm transition-all focus-within:shadow-md focus-within:border-blue-300">
+      <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+        <svg class="w-4 h-4 mr-1.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
         </svg>
-        Add Question
+        New Discussion Question
+      </h3>
+      <%= form_with model: [book_club, book_read, discussion_question], class: "flex flex-col gap-3", data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |form| %>
+        
+        <% if discussion_question.errors.any? %>
+          <div class="bg-red-50 text-red-700 p-3 rounded-lg border border-red-200 text-sm">
+            <ul class="list-disc list-inside ml-4">
+              <% discussion_question.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= form.text_area :content, rows: 3, required: true, class: "w-full rounded-lg border-gray-300 shadow-inner bg-white text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block p-3.5 placeholder-gray-400 resize-y #{'border-red-300 focus:border-red-500 focus:ring-red-500 bg-red-50' if discussion_question.errors.any?}", placeholder: "What did you think about the main character's decision in chapter 3?" %>
+        
+        <div class="flex justify-end">
+          <%= form.button class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all transform active:scale-95" do %>
+            <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Post Question
+          <% end %>
+        </div>
       <% end %>
-    <% end %>
+    </div>
   <% end %>
 </div>
