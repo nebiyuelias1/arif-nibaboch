@@ -9,8 +9,8 @@ class DiscussionQuestionTest < ActiveSupport::TestCase
     question = DiscussionQuestion.new(
       book_read: @book_read,
       content: "What is the main theme of the book?",
-      position: 1
     )
+
     assert question.valid?
   end
 
