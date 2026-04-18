@@ -5,9 +5,11 @@ one:
   encrypted_password: "<%= BCrypt::Password.create('password123', cost: 4) %>"
   name: "Test User One"
   username: "testuser1"
+  admin: true
 
 two:
   email: user2@example.com
   encrypted_password: "<%= BCrypt::Password.create('password123', cost: 4) %>"
   name: "Test User Two"
   username: "testuser2"
+  admin: false
