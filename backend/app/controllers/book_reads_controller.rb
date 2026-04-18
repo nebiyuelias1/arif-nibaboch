@@ -2,7 +2,7 @@ class BookReadsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_book_club
   before_action :set_book_read, only: [ :show, :edit, :update ]
-  before_action :authorize_club_owner!, only: [ :new, :create, :edit, :update ]
+  before_action -> { authorize_club_owner!(@book_club) }, only: [ :new, :create, :edit, :update ]
 
   def index
     @tab = params[:tab] || "upcoming"
@@ -48,12 +48,6 @@ class BookReadsController < ApplicationController
 
   def set_book_read
     @book_read = @book_club.book_reads.find(params[:id])
-  end
-
-  def authorize_club_owner!
-    unless @book_club.owner == current_user
-      redirect_to book_club_path(@book_club), alert: "You are not authorized to perform this action."
-    end
   end
 
   def book_read_params

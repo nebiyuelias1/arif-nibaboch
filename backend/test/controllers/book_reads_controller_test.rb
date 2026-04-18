@@ -76,4 +76,50 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to book_club_url(@book_club)
     assert_equal "You are not authorized to perform this action.", flash[:alert]
   end
+
+  test "should get edit for owner" do
+    @book_read = book_reads(:one)
+    sign_in @user
+    get edit_book_club_book_read_url(@book_club, @book_read)
+    assert_response :success
+    assert_select "form"
+  end
+
+  test "should not get edit if not owner" do
+    @book_read = book_reads(:one)
+    sign_in users(:two) # User two is not the owner
+    get edit_book_club_book_read_url(@book_club, @book_read)
+    assert_redirected_to book_club_url(@book_club)
+    assert_equal "You are not authorized to perform this action.", flash[:alert]
+  end
+
+  test "should update book_read for owner" do
+    @book_read = book_reads(:one)
+    sign_in @user
+    new_end_date = 2.months.from_now.to_date
+    patch book_club_book_read_url(@book_club, @book_read), params: {
+      book_read: {
+        end_date: new_end_date
+      }
+    }
+    assert_redirected_to book_club_book_read_url(@book_club, @book_read)
+    assert_equal "Book read was successfully updated.", flash[:notice]
+    @book_read.reload
+    assert_equal new_end_date, @book_read.end_date
+  end
+
+  test "should not update book_read if not owner" do
+    @book_read = book_reads(:one)
+    sign_in users(:two)
+    original_end_date = @book_read.end_date
+    patch book_club_book_read_url(@book_club, @book_read), params: {
+      book_read: {
+        end_date: 2.months.from_now.to_date
+      }
+    }
+    assert_redirected_to book_club_url(@book_club)
+    assert_equal "You are not authorized to perform this action.", flash[:alert]
+    @book_read.reload
+    assert_equal original_end_date, @book_read.end_date
+  end
 end
