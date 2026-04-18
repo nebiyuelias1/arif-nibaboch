@@ -70,8 +70,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_15_122902) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "meetup_location"
-    t.float "meetup_location_lat"
-    t.float "meetup_location_lon"
+    t.decimal "meetup_location_lat", precision: 10, scale: 6
+    t.decimal "meetup_location_lon", precision: 10, scale: 6
     t.datetime "meetup_time"
     t.index ["book_club_id"], name: "index_book_reads_on_book_club_id"
     t.index ["book_id"], name: "index_book_reads_on_book_id"
