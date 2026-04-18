@@ -1,12 +1,13 @@
 class BookClubsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :set_book_club, only: [ :show, :edit, :update ]
+  before_action -> { authorize_club_owner!(@club) }, only: [ :edit, :update ]
 
   def index
     @clubs = BookClub.all.order(created_at: :desc)
   end
 
   def show
-    @club = BookClub.find(params[:id])
     @current_read = @club.book_reads.active.order(start_date: :asc).first || @club.book_reads.upcoming.order(start_date: :asc).first
   end
 
@@ -23,9 +24,24 @@ class BookClubsController < ApplicationController
     end
   end
 
+  def update
+    if @club.update(club_params)
+      redirect_to book_club_path(@club), notice: "Book Club updated successfully."
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+  end
+
   private
 
   def club_params
     params.require(:book_club).permit(:name, :description, :is_private, :cover_photo)
+  end
+
+  def set_book_club
+    @club = BookClub.find(params[:id])
   end
 end

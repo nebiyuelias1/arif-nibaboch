@@ -1,7 +1,7 @@
 class DiscussionQuestionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_book_club_and_read
-  before_action :authorize_owner!, only: [ :create ]
+  before_action -> { authorize_club_owner!(@book_club, redirect_url: book_club_book_read_path(@book_club, @book_read)) }, only: [ :create ]
 
   def create
     @discussion_question = @book_read.discussion_questions.build(discussion_question_params)
@@ -22,12 +22,6 @@ class DiscussionQuestionsController < ApplicationController
   def set_book_club_and_read
     @book_club = BookClub.find(params[:book_club_id])
     @book_read = @book_club.book_reads.find(params[:book_read_id])
-  end
-
-  def authorize_owner!
-    unless @book_club.owner == current_user
-      redirect_to book_club_book_read_path(@book_club, @book_read), alert: "You are not authorized to perform this action."
-    end
   end
 
   def discussion_question_params
