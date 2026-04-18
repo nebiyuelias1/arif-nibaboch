@@ -29,7 +29,7 @@
         
         <% if user_signed_in? && @club.owner == current_user %>
           <div class="flex space-x-3">
-            <%= button_to "Edit Club", edit_book_club_path, method: :get, class: "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
+            <%= button_to "Edit Club", edit_book_club_path(@club), method: :get, class: "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
           </div>
         <% else %>
           <button class="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-md text-sm font-medium transition-colors" data-action="click->book-club#toggle" data-book-club-target="button">

@@ -1,4 +1,5 @@
-<%= form_with(model: @club, local: true, class: "space-y-6") do |form| %> <% if @club.errors.any? %>
+<%= form_with(model: @club, local: true, class: "space-y-6") do |form| %> 
+  <% if @club.errors.any? %>
     <div class="bg-red-50 text-red-700 p-4 rounded-md">
       <h2 class="font-bold mb-2"><%= pluralize(@club.errors.count, "error") %> prohibited this club from being saved:</h2>
       <ul class="list-disc pl-5">
