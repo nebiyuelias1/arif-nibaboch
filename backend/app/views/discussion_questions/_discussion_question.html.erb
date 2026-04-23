@@ -4,7 +4,7 @@
   </div>
   
   <div class="flex-grow pt-1">
-    <p class="text-gray-800 text-lg leading-relaxed"><%= discussion_question.content %></p>
+    <p class="text-gray-800 text-lg leading-relaxed"><%= discussion_question.content_for_language(user_device_language) %></p>
     
     <% if discussion_question.draft? %>
       <div class="mt-3 flex items-center gap-2">

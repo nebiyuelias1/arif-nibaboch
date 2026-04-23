@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  discussion_question: one
+  language_code: EN
+  content: What do you think about this topic?
+
+two:
+  discussion_question: two
+  language_code: ZH-HANT
+  content: 你對這個主題有什麼看法？
