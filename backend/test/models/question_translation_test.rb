@@ -5,7 +5,7 @@ class QuestionTranslationTest < ActiveSupport::TestCase
     translation = build_translation(discussion_question_id: nil)
 
     assert_not translation.valid?
-    assert_includes translation.errors[:discussion_question], "can't be blank"
+    assert_includes translation.errors[:discussion_question], "must exist"
   end
 
   test "is invalid without a language_code" do
@@ -16,20 +16,22 @@ class QuestionTranslationTest < ActiveSupport::TestCase
   end
 
   test "is invalid when language_code is duplicated for the same discussion_question" do
-    existing = build_translation(discussion_question_id: 1001, language_code: "en")
+    discussion_question = discussion_questions(:one)
+    existing = build_translation(discussion_question_id: discussion_question.id, language_code: "en")
     existing.save!(validate: false)
 
-    duplicate = build_translation(discussion_question_id: 1001, language_code: "en")
+    duplicate = build_translation(discussion_question_id: discussion_question.id, language_code: "en")
 
     assert_not duplicate.valid?
-    assert_includes duplicate.errors[:language_code], "has already been taken"
+    assert_includes duplicate.errors[:language_code], "translation already exists for this language"
   end
 
   test "is valid when the same discussion_question has a different language_code" do
-    existing = build_translation(discussion_question_id: 1002, language_code: "en")
+    discussion_question = discussion_questions(:one)
+    existing = build_translation(discussion_question_id: discussion_question.id, language_code: "en")
     existing.save!(validate: false)
 
-    translation = build_translation(discussion_question_id: 1002, language_code: "es")
+    translation = build_translation(discussion_question_id: discussion_question.id, language_code: "es")
 
     assert translation.valid?, translation.errors.full_messages.to_sentence
   end

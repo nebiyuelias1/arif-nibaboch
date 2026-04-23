@@ -16,7 +16,6 @@ class DiscussionQuestion < ApplicationRecord
   def content_for_language(lang_code)
     lang_code = lang_code.to_s.upcase
 
-    # Normalize Chinese language codes for database lookup
     if lang_code.match?(/^ZH-(TW|HK|MO|HANT)/)
       lang_code = "ZH-HANT" # Traditional
     elsif lang_code.start_with?("ZH")
