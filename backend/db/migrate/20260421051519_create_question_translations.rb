@@ -8,6 +8,6 @@ class CreateQuestionTranslations < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :question_translations, [ :discussion_question_id, :language_code ], unique: true, name: 'index_question_translations_on_question_and_lang'
+    add_index :question_translations, [:discussion_question_id, :language_code], unique: true, name: "index_question_translations_on_question_and_lang"
   end
 end
