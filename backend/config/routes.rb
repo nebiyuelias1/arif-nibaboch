@@ -63,6 +63,11 @@ Rails.application.routes.draw do
     end
   end
 
+  # Secure jobs dashboard (Mission Control) to only admin users
+  authenticate :user, ->(u) { u.admin? } do
+    mount MissionControl::Jobs::Engine, at: "/jobs"
+  end
+
   authenticate :user do
     resources :users, only: [ :index, :show ]
     get "profile", to: "users#show", as: :profile
