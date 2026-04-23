@@ -38,6 +38,7 @@ jobs:
       TELEGRAM_BOT_NAME: ${{ secrets.TELEGRAM_BOT_NAME }}
       LINE_CHANNEL_ID: ${{ secrets.LINE_CHANNEL_ID }}
       LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
+      DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
 
     permissions:
       contents: read
