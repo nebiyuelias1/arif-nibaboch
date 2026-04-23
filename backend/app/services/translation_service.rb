@@ -1,4 +1,5 @@
 require "net/http"
+require "uri"
 
 class TranslationService
   def initialize(text, target_lang: "ZH")
@@ -20,7 +21,7 @@ class TranslationService
       "target_lang" => @target_lang
     })
 
-    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true, read_timeout: 10, open_timeout: 5) do |http|
       http.request(request)
     end
 
