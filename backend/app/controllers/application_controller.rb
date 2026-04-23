@@ -16,8 +16,8 @@ class ApplicationController < ActionController::Base
 
   def user_device_language
     @user_device_language ||= begin
-      lang = request.env["HTTP_ACCEPT_LANGUAGE"]&.split(",")&.first || ""
-      (lang || "EN").upcase
+      lang = request.env["HTTP_ACCEPT_LANGUAGE"]&.split(",")&.first
+      (lang.presence || "EN").upcase
     end
   end
 end
