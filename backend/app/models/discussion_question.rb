@@ -22,7 +22,7 @@ class DiscussionQuestion < ApplicationRecord
       lang_code = "ZH" # Simplified
     end
 
-    return content if lang_code == "EN" || lang_code.blank?
+    return content if lang_code.start_with?("EN") || lang_code.blank?
 
     translation = question_translations.find_by(language_code: lang_code)
     translation ? translation.content : content
