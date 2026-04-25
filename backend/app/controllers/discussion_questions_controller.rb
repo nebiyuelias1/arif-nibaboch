@@ -27,6 +27,7 @@ class DiscussionQuestionsController < ApplicationController
       end
     else
       respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@discussion_question, partial: "discussion_questions/discussion_question", locals: { discussion_question: @discussion_question }), status: :unprocessable_entity }
         format.html { redirect_to book_club_book_read_path(@book_club, @book_read), alert: "Failed to update question." }
       end
     end
