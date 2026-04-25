@@ -14,6 +14,11 @@ class BookReadsController < ApplicationController
   end
 
   def show
+    if user_signed_in? && @book_club.owner == current_user
+      @discussion_questions = @book_read.discussion_questions.order(:position)
+    else
+      @discussion_questions = @book_read.discussion_questions.revealed.order(:position)
+    end
   end
 
   def new

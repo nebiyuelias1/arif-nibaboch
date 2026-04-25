@@ -12,6 +12,7 @@ class DiscussionQuestion < ApplicationRecord
 
   before_create :set_position
   after_commit :translate_content, on: [ :create, :update ]
+  after_update_commit :broadcast_reveal, if: -> { saved_change_to_status? && revealed? }
 
   def content_for_language(lang_code)
     lang_code = lang_code.to_s.upcase
@@ -36,6 +37,11 @@ class DiscussionQuestion < ApplicationRecord
         TranslateDiscussionQuestionJob.perform_later(id, lang_code)
       end
     end
+  end
+
+  def broadcast_reveal
+    broadcast_append_to [ book_read, :discussion_questions ], target: "discussion_questions_list"
+    broadcast_remove_to [ book_read, :discussion_questions ], target: "no_discussion_questions"
   end
 
   def set_position
