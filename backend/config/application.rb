@@ -16,6 +16,11 @@ module BackendWithContainer
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    config.logger = Logtail::Logger.create_default_logger(
+      "5hbu342ztcrPttCdTnPa3ukZ",
+      ingesting_host: "s2397354.eu-fsn-3.betterstackdata.com",
+    )
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

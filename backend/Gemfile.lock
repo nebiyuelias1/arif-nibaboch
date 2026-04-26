@@ -109,7 +109,10 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    dotenv (3.1.8)
+    dotenv (3.2.0)
+    dotenv-rails (3.2.0)
+      dotenv (= 3.2.0)
+      railties (>= 6.1)
     drb (2.2.3)
     ed25519 (1.4.0)
     erb (5.0.2)
@@ -153,6 +156,17 @@ GEM
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
+    logtail (0.1.17)
+      msgpack (~> 1.0)
+    logtail-rack (0.2.6)
+      logtail (~> 0.1)
+      rack (>= 1.2, < 4.0)
+    logtail-rails (0.2.12)
+      actionpack (>= 5.0.0)
+      activerecord (>= 5.0.0)
+      logtail (~> 0.1, >= 0.1.14)
+      logtail-rack (~> 0.1)
+      railties (>= 5.0.0)
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -407,10 +421,12 @@ DEPENDENCIES
   csv
   debug
   devise (~> 4.9)
+  dotenv-rails
   geared_pagination (~> 1.2)
   importmap-rails
   jbuilder
   kamal
+  logtail-rails (~> 0.2.12)
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.3)
@@ -430,4 +446,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   2.6.9
+  4.0.10
