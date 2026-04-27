@@ -60,7 +60,7 @@ This is the backend Rails application for the Turbo Rails + React Native starter
 
 5. **Access the application**
 
-   Open your browser and navigate to: `
+   Open your browser and navigate to: `http://localhost:3000`
    `
 
 ### Option 2: Development with Docker (Devcontainer)
