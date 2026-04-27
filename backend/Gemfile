@@ -73,3 +73,7 @@ end
 gem "devise", "~> 4.9"
 
 gem "shadcn-ui", "~> 0.0.15"
+
+gem "logtail-rails", "~> 0.2.12"
+
+gem "dotenv-rails"
