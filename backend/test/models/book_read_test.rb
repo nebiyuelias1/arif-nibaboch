@@ -14,12 +14,39 @@ class BookReadTest < ActiveSupport::TestCase
   end
 
   test "should be valid with valid attributes" do
+    @book_read.book_selection_mode = "book"
     assert @book_read.valid?
   end
 
-  test "should require a book" do
+  test "should require a book if mode is book" do
+    @book_read.book_selection_mode = "book"
     @book_read.book = nil
     assert_not @book_read.valid?
+    assert_includes @book_read.errors[:book_id], "must be selected"
+  end
+
+  test "should not require a book if mode is poll" do
+    @book_read.book = nil
+    @book_read.book_selection_mode = "poll"
+    @book_read.build_poll(title: "What next?", deadline: 1.day.from_now)
+    @book_read.poll.poll_options.build(content: "The Hobbit")
+    assert @book_read.valid?
+  end
+
+  test "should require a poll if mode is poll" do
+    @book_read.book = nil
+    @book_read.book_selection_mode = "poll"
+    @book_read.poll = nil
+    assert_not @book_read.valid?
+    assert_includes @book_read.errors[:base], "Poll must have a question"
+  end
+
+  test "should be invalid if neither book nor poll is selected when mode is blank" do
+    @book_read.book_selection_mode = nil
+    @book_read.book = nil
+    @book_read.poll = nil
+    assert_not @book_read.valid?
+    assert_includes @book_read.errors[:base], "You must either select a book or create a poll"
   end
 
 
@@ -51,4 +78,3 @@ class BookReadTest < ActiveSupport::TestCase
     assert_equal "upcoming", new_read.status
   end
 end
-

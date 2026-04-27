@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  book_read: one
+  title: MyText
+  description: MyText
+  deadline: 2026-04-27 09:08:26
+
+two:
+  book_read: two
+  title: MyText
+  description: MyText
+  deadline: 2026-04-27 09:08:26

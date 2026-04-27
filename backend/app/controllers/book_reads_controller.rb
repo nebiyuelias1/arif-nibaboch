@@ -23,11 +23,9 @@ class BookReadsController < ApplicationController
 
   def new
     @book_read = @book_club.book_reads.build
-    prepare_poll_options
   end
 
   def edit
-    prepare_poll_options
   end
 
   def create
@@ -35,7 +33,6 @@ class BookReadsController < ApplicationController
     if @book_read.save
       redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read created successfully."
     else
-      prepare_poll_options
       render :new, status: :unprocessable_entity
     end
   end
@@ -44,18 +41,11 @@ class BookReadsController < ApplicationController
     if @book_read.update(book_read_params)
       redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read was successfully updated."
     else
-      prepare_poll_options
       render :edit, status: :unprocessable_entity
     end
   end
 
   private
-
-  def prepare_poll_options
-    @book_read.build_poll if @book_read.poll.nil?
-    options_needed = 3 - @book_read.poll.poll_options.reject(&:marked_for_destruction?).size
-    options_needed.times { @book_read.poll.poll_options.build } if options_needed > 0
-  end
 
   def set_book_club
     @book_club = BookClub.find(params[:book_club_id])
@@ -68,7 +58,6 @@ class BookReadsController < ApplicationController
   def book_read_params
     params.require(:book_read).permit(
       :book_selection_mode, :book_id, :start_date, :end_date, :status,
-      poll_attributes: [ :id, :title, :description, :status, poll_options_attributes: [ :id, :content, :_destroy ] ]
     )
   end
 end

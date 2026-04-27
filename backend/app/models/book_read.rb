@@ -3,12 +3,15 @@ class BookRead < ApplicationRecord
   belongs_to :book_club
 
   has_many :discussion_questions, dependent: :destroy
+  has_one :poll
 
   validates :start_date, presence: true
 
   enum :status, { upcoming: 0, active: 1, completed: 2 }, default: :upcoming
 
   validate :end_date_after_start_date
+
+  attr_accessor :book_selection_mode
 
   private
 
