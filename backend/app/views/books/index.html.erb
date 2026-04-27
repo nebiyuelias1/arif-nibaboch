@@ -1,28 +1,11 @@
 <div class="mb-12">
   <div class="max-w-3xl mx-auto text-center mb-8">
     <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-4">Discover Your Next Favorite Book</h1>
-    <p class="text-lg text-gray-500 max-w-2xl mx-auto">Explore a curated collection of timeless Ethiopian literature and modern classics.</p>
+    <p class="text-lg text-gray-500 max-w-2xl mx-auto">Explore a curated collection of timeless literature and modern classics.</p>
   </div>
 
   <div class="max-w-2xl mx-auto">
     <%= render partial: "books/search_bar" %>
-
-    <%# Dynamic Filter Chips %>
-    <div class="flex flex-wrap items-center justify-center gap-2">
-      <%
-        base_classes = "px-4 py-2 rounded-full text-sm font-medium cursor-pointer transition-colors"
-        active_classes = "bg-blue-600 text-white shadow-sm"
-        inactive_classes = "bg-white border border-gray-200 text-gray-600 hover:border-blue-500 hover:text-blue-600"
-      %>
-
-      <%# "All" link %>
-      <%= link_to "All", books_path, class: "#{base_classes} #{@active_tag.blank? ? active_classes : inactive_classes}" %>
-
-      <%# Links for each tag %>
-      <% @tags.each do |tag| %>
-        <%= link_to tag.name, books_path(tag: tag.name), class: "#{base_classes} #{@active_tag == tag.name ? active_classes : inactive_classes}" %>
-      <% end %>
-    </div>
   </div>
 </div>
 

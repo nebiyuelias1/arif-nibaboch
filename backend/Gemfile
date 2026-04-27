@@ -77,3 +77,6 @@ gem "shadcn-ui", "~> 0.0.15"
 gem "logtail-rails", "~> 0.2.12"
 
 gem "dotenv-rails"
+gem "administrate", "~> 1.0"
+
+gem "mission_control-jobs", "~> 1.1"

@@ -1,0 +1,5 @@
+<%= turbo_stream.append "discussion_questions_list" do %>
+  <%= render partial: "discussion_questions/discussion_question", locals: { discussion_question: @discussion_question } %>
+<% end %>
+
+<%= turbo_stream.remove "no_discussion_questions" %>

@@ -40,6 +40,7 @@ jobs:
       LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
       LOGTAIL_SOURCE_TOKEN: ${{ secrets.LOGTAIL_SOURCE_TOKEN }}
       LOGTAIL_INGESTING_HOST: ${{ secrets.LOGTAIL_INGESTING_HOST }}
+      DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
 
     permissions:
       contents: read

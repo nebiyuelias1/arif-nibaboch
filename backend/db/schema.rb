@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_05_082019) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_21_051519) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -69,6 +69,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_05_082019) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "meetup_location"
+    t.decimal "meetup_location_lat", precision: 10, scale: 6
+    t.decimal "meetup_location_lon", precision: 10, scale: 6
+    t.datetime "meetup_time"
     t.index ["book_club_id"], name: "index_book_reads_on_book_club_id"
     t.index ["book_id"], name: "index_book_reads_on_book_id"
   end
@@ -103,6 +107,26 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_05_082019) do
     t.string "title_romanized"
     t.string "author_romanized"
     t.integer "page_count"
+  end
+
+  create_table "discussion_questions", force: :cascade do |t|
+    t.integer "book_read_id", null: false
+    t.integer "status", default: 0
+    t.text "content", null: false
+    t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_read_id"], name: "index_discussion_questions_on_book_read_id"
+  end
+
+  create_table "question_translations", force: :cascade do |t|
+    t.integer "discussion_question_id", null: false
+    t.string "language_code", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["discussion_question_id", "language_code"], name: "index_question_translations_on_question_and_lang", unique: true
+    t.index ["discussion_question_id"], name: "index_question_translations_on_discussion_question_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -157,6 +181,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_05_082019) do
     t.string "name"
     t.string "username"
     t.string "line_id"
+    t.boolean "admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["line_id"], name: "index_users_on_line_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -171,6 +196,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_05_082019) do
   add_foreign_key "book_reads", "books"
   add_foreign_key "book_tags", "books"
   add_foreign_key "book_tags", "tags"
+  add_foreign_key "discussion_questions", "book_reads"
+  add_foreign_key "question_translations", "discussion_questions"
   add_foreign_key "ratings", "books"
   add_foreign_key "ratings", "users"
   add_foreign_key "review_likes", "reviews"

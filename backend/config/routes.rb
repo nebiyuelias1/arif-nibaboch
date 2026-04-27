@@ -1,4 +1,19 @@
 Rails.application.routes.draw do
+  namespace :admin do
+      resources :books
+      resources :book_clubs
+      resources :book_club_members
+      resources :book_reads
+      resources :book_tags
+      resources :discussion_questions
+      resources :ratings
+      resources :reviews
+      resources :review_likes
+      resources :tags
+      resources :users
+
+      root to: "books#index"
+    end
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -34,6 +49,7 @@ Rails.application.routes.draw do
   resources :book_clubs do
     resource :membership, controller: "book_club_members", only: [ :create, :destroy ]
     resources :book_reads do
+      resources :discussion_questions, only: [ :create, :update ]
     end
   end
 
@@ -45,6 +61,11 @@ Rails.application.routes.draw do
       # GET /api/v1/auth/check - returns JSON about current authentication state
       get "auth/check", to: "auth#check"
     end
+  end
+
+  # Secure jobs dashboard (Mission Control) to only admin users
+  authenticate :user, ->(u) { u.admin? } do
+    mount MissionControl::Jobs::Engine, at: "/jobs"
   end
 
   authenticate :user do

@@ -42,6 +42,7 @@ env:
     - LINE_CHANNEL_SECRET
     - LOGTAIL_SOURCE_TOKEN
     - LOGTAIL_INGESTING_HOST
+    - DEEPL_AUTH_KEY
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.

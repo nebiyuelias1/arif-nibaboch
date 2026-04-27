@@ -23,7 +23,7 @@
     </ol>
   </nav>
 
-  <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-100 mb-8">
     <div class="flex flex-col md:flex-row gap-8">
       <div class="w-full md:w-1/3 shrink-0">
         <% if @book_read.book.cover_image.present? %>
@@ -77,6 +77,33 @@
           <% end %>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Discussion Questions Section -->
+  <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-100">
+    <h2 class="text-2xl font-bold text-gray-900">Discussion Questions</h2>
+    
+    <% if user_signed_in? && @book_club.owner == current_user %>
+      <div class="mb-6 flex flex-col">
+        <%= render partial: "discussion_questions/form", locals: { book_club: @book_club, book_read: @book_read, discussion_question: DiscussionQuestion.new } %>
+      </div>
+    <% else %>
+      <%= turbo_stream_from @book_read, :discussion_questions %>
+    <% end %>
+
+    <div id="discussion_questions_list" class="space-y-5">
+      <% @discussion_questions.where.not(id: nil).each do |question| %>
+        <%= render partial: "discussion_questions/discussion_question", locals: { discussion_question: question } %>
+      <% end %>
+    </div>
+
+    <div id="no_discussion_questions" class="text-center py-10 bg-gray-50 rounded-lg border border-dashed border-gray-300 mt-4 <%= 'hidden' if @discussion_questions.any? %>">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No discussion so far</h3>
+      <p class="mt-1 text-sm text-gray-500">Check back later for questions to discuss!</p>
     </div>
   </div>
 </div>

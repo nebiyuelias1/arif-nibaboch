@@ -49,4 +49,44 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to new_user_session_url
   end
+
+  test "should get edit for owner" do
+    @club = book_clubs(:one)
+    sign_in @user # User one is the owner
+    get edit_book_club_url(@club)
+    assert_response :success
+  end
+
+  test "should not get edit for non-owner" do
+    @club = book_clubs(:two) # User two is the owner
+    sign_in @user # User one
+    get edit_book_club_url(@club)
+    assert_redirected_to book_club_url(@club)
+    assert_equal "You are not authorized to perform this action.", flash[:alert]
+  end
+
+  test "should not get edit if not signed in" do
+    @club = book_clubs(:one)
+    get edit_book_club_url(@club)
+    assert_redirected_to new_user_session_url
+  end
+
+  test "should update club for owner" do
+    @club = book_clubs(:one)
+    sign_in @user
+    patch book_club_url(@club), params: {
+      book_club: {
+        name: "Updated Club Name",
+        description: "New updated description",
+        is_private: true
+      }
+    }
+    assert_redirected_to book_club_url(@club)
+    assert_equal "Book Club updated successfully.", flash[:notice]
+
+    @club.reload
+    assert_equal "Updated Club Name", @club.name
+    assert_equal "New updated description", @club.description
+    assert_equal true, @club.is_private
+  end
 end
