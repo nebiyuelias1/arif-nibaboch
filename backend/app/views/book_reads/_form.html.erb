@@ -1,4 +1,4 @@
-<%= form_with(model: [book_club, book_read], class: "space-y-6") do |form| %>
+<%= form_with(model: [book_club, book_read], class: "space-y-6", data: { controller: "poll-toggle" }) do |form| %>
   <% if @book_read.errors.any? %>
     <div class="bg-red-50 text-red-700 p-4 rounded-md mb-6">
       <h2 class="font-bold"><%= pluralize(@book_read.errors.count, "error") %> prohibited this book read from being saved:</h2>
@@ -10,7 +10,24 @@
     </div>
   <% end %>
 
-  <div data-controller="book-autocomplete" data-book-autocomplete-url-value="<%= books_search_path(format: :json) %>" class="relative">
+  <div class="mb-6">
+    <label class="text-base font-medium text-gray-900">How would you like to select the book?</label>
+    <p class="text-sm leading-5 text-gray-500">Pick a book right away, or let the club vote on it.</p>
+    <fieldset class="mt-4">
+      <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
+        <div class="flex items-center">
+          <input id="mode_select" name="book_selection_mode" type="radio" value="book" data-action="poll-toggle#selectBook" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300" <%= 'checked' if @book_read.poll.nil? || (@book_read.poll.new_record? && @book_read.poll.title.blank?) %>>
+          <label for="mode_select" class="ml-3 block text-sm font-medium text-gray-700"> Select a Book </label>
+        </div>
+        <div class="flex items-center">
+          <input id="mode_poll" name="book_selection_mode" type="radio" value="poll" data-action="poll-toggle#selectPoll" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300" <%= 'checked' if @book_read.poll.present? && !@book_read.poll.title.blank? %>>
+          <label for="mode_poll" class="ml-3 block text-sm font-medium text-gray-700"> Create a Poll </label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div data-poll-toggle-target="bookSection" data-controller="book-autocomplete" data-book-autocomplete-url-value="<%= books_search_path(format: :json) %>" class="relative">
     <%= form.label :book_id, "Select a Book", class: "block text-sm font-medium text-gray-700", for: "book_search_input" %>
     
     <div class="relative mt-1">
@@ -34,6 +51,30 @@
     <div data-book-autocomplete-target="results" 
          class="hidden absolute z-50 mt-1 w-full bg-white shadow-xl max-h-80 rounded-md overflow-y-auto border border-gray-200 ring-1 ring-black ring-opacity-5">
     </div>
+  </div>
+
+  <div data-poll-toggle-target="pollSection" class="hidden bg-gray-50 p-5 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">Book Poll</h3>
+    <%= form.fields_for :poll do |poll_form| %>
+      <div class="mb-4">
+        <%= poll_form.label :title, "Poll Question", class: "block text-sm font-medium text-gray-700" %>
+        <%= poll_form.text_field :title, placeholder: "e.g., Which book should we read next?", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+      </div>
+      
+      <div class="mb-4">
+        <%= poll_form.label :description, "Description (Optional)", class: "block text-sm font-medium text-gray-700" %>
+        <%= poll_form.text_area :description, rows: 2, placeholder: "Any extra context for the vote...", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+      </div>
+
+      <div class="space-y-3">
+        <label class="block text-sm font-medium text-gray-700">Options for readers to vote on</label>
+        <%= poll_form.fields_for :poll_options do |option_form| %>
+          <div class="flex items-center space-x-2">
+            <%= option_form.text_field :content, placeholder: "Option text (e.g. Book title)", class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
   <div>
