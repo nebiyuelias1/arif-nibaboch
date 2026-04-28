@@ -38,6 +38,8 @@ jobs:
       TELEGRAM_BOT_NAME: ${{ secrets.TELEGRAM_BOT_NAME }}
       LINE_CHANNEL_ID: ${{ secrets.LINE_CHANNEL_ID }}
       LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
+      LOGTAIL_SOURCE_TOKEN: ${{ secrets.LOGTAIL_SOURCE_TOKEN }}
+      LOGTAIL_INGESTING_HOST: ${{ secrets.LOGTAIL_INGESTING_HOST }}
       DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
 
     permissions:

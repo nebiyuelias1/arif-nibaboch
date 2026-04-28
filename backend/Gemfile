@@ -68,11 +68,15 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "minitest", "~> 6.0"
+  gem "minitest-mock", "~> 5.27"
 end
 
 gem "devise", "~> 4.9"
 
 gem "shadcn-ui", "~> 0.0.15"
+
+gem "logtail-rails", "~> 0.2.12"
 
 gem "administrate", "~> 1.0"
 
