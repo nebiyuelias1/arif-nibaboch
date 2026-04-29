@@ -34,10 +34,14 @@ Rails.application.configure do
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
   config.log_tags = [ :request_id ]
-  config.logger = Logtail::Logger.create_default_logger(
-    ENV["LOGTAIL_SOURCE_TOKEN"],
-    ingesting_host: ENV["LOGTAIL_INGESTING_HOST"],
-  )
+
+  if ENV["LOGTAIL_SOURCE_TOKEN"].present?
+    config.logger = Logtail::Logger.create_default_logger(
+      ENV["LOGTAIL_SOURCE_TOKEN"],
+      ingesting_host: ENV["LOGTAIL_INGESTING_HOST"]
+    )
+  end
+
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
