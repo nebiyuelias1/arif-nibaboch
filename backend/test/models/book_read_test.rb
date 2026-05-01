@@ -29,7 +29,7 @@ class BookReadTest < ActiveSupport::TestCase
 
   test "should allow having a poll" do
     @book_read.save!
-    poll = @book_read.build_poll(text: "What to read?")
+    poll = @book_read.build_poll(text: "What to read?", end_date: 1.days.from_now)
     assert poll.valid?
   end
 
