@@ -1,0 +1,7 @@
+one:
+  poll_option: one
+  user: one
+
+two:
+  poll_option: two
+  user: two
