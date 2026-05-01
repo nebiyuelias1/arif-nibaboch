@@ -17,11 +17,21 @@ class BookReadTest < ActiveSupport::TestCase
     assert @book_read.valid?
   end
 
-  test "should require a book" do
+  test "should not require a book" do
     @book_read.book = nil
-    assert_not @book_read.valid?
+    assert @book_read.valid?
   end
 
+  test "should not require a poll" do
+    @book_read.poll = nil
+    assert @book_read.valid?
+  end
+
+  test "should allow having a poll" do
+    @book_read.save!
+    poll = @book_read.build_poll(text: "What to read?", end_date: 1.days.from_now)
+    assert poll.valid?
+  end
 
   test "should require a book_club" do
     @book_read.book_club = nil
@@ -32,7 +42,6 @@ class BookReadTest < ActiveSupport::TestCase
     @book_read.start_date = nil
     assert_not @book_read.valid?
   end
-
 
   test "should be valid without an end_date" do
     @book_read.end_date = nil
@@ -51,4 +60,3 @@ class BookReadTest < ActiveSupport::TestCase
     assert_equal "upcoming", new_read.status
   end
 end
-

@@ -1,0 +1,9 @@
+one:
+  poll: one
+  book: one
+  content: The great gatsby
+
+two:
+  poll: one
+  book: two
+  content: Lord of the rings

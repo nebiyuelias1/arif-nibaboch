@@ -1,0 +1,11 @@
+one:
+  book_read: one
+  text: What should we read next?
+  description: Let's pick our next book for the club!
+  end_date: <%= 1.week.from_now %>
+
+two:
+  book_read: two
+  text: Our second poll
+  description: Another poll
+  end_date: <%= 1.day.ago %>

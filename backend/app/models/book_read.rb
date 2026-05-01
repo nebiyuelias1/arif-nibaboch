@@ -1,7 +1,8 @@
 class BookRead < ApplicationRecord
-  belongs_to :book
+  belongs_to :book, optional: true
   belongs_to :book_club
 
+  has_one :poll, dependent: :destroy
   has_many :discussion_questions, dependent: :destroy
 
   validates :start_date, presence: true

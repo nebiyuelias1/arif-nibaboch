@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_21_051519) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_01_001928) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -62,7 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_21_051519) do
   end
 
   create_table "book_reads", force: :cascade do |t|
-    t.integer "book_id", null: false
+    t.integer "book_id"
     t.integer "book_club_id", null: false
     t.date "start_date"
     t.date "end_date"
@@ -117,6 +117,36 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_21_051519) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_read_id"], name: "index_discussion_questions_on_book_read_id"
+  end
+
+  create_table "poll_options", force: :cascade do |t|
+    t.integer "poll_id", null: false
+    t.string "content", null: false
+    t.integer "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_poll_options_on_book_id"
+    t.index ["poll_id"], name: "index_poll_options_on_poll_id"
+  end
+
+  create_table "poll_votes", force: :cascade do |t|
+    t.integer "poll_option_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["poll_option_id", "user_id"], name: "index_poll_votes_on_poll_option_id_and_user_id", unique: true
+    t.index ["poll_option_id"], name: "index_poll_votes_on_poll_option_id"
+    t.index ["user_id"], name: "index_poll_votes_on_user_id"
+  end
+
+  create_table "polls", force: :cascade do |t|
+    t.integer "book_read_id", null: false
+    t.string "text", null: false
+    t.text "description"
+    t.datetime "end_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_read_id"], name: "index_polls_on_book_read_id"
   end
 
   create_table "question_translations", force: :cascade do |t|
@@ -197,6 +227,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_21_051519) do
   add_foreign_key "book_tags", "books"
   add_foreign_key "book_tags", "tags"
   add_foreign_key "discussion_questions", "book_reads"
+  add_foreign_key "poll_options", "books"
+  add_foreign_key "poll_options", "polls"
+  add_foreign_key "poll_votes", "poll_options"
+  add_foreign_key "poll_votes", "users"
+  add_foreign_key "polls", "book_reads"
   add_foreign_key "question_translations", "discussion_questions"
   add_foreign_key "ratings", "books"
   add_foreign_key "ratings", "users"
