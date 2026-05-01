@@ -4,7 +4,7 @@ class CreatePolls < ActiveRecord::Migration[8.0]
       t.references :book_read, null: false, foreign_key: true
       t.string :text, null: false
       t.text :description
-      t.datetime :end_date
+      t.datetime :end_date, null: false
 
       t.timestamps
     end

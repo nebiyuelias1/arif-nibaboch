@@ -5,6 +5,7 @@ class Poll < ApplicationRecord
   has_many :poll_votes, through: :poll_options
 
   validates :text, presence: true
+  validates :end_date, presence: true
 
   def active?
     end_date.nil? || end_date > Time.current

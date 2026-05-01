@@ -26,9 +26,9 @@ class PollTest < ActiveSupport::TestCase
     assert @poll.valid?
   end
 
-  test "should be valid without end_date" do
+  test "should not be valid without end_date" do
     @poll.end_date = nil
-    assert @poll.valid?
+    assert_not @poll.valid?
   end
 
   test "active? should be true if end_date is in the future or nil" do

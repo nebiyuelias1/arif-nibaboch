@@ -143,7 +143,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_01_001928) do
     t.integer "book_read_id", null: false
     t.string "text", null: false
     t.text "description"
-    t.datetime "end_date"
+    t.datetime "end_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["book_read_id"], name: "index_polls_on_book_read_id"
