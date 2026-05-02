@@ -3,13 +3,13 @@
 one:
   book: one
   book_club: one
-  start_date: 2026-03-24
-  end_date: 2026-03-24
+  meetup_time: 2026-03-24
+  meetup_location: Vino Vino Cafe
   status: 1
 
 two:
   book: two
   book_club: two
-  start_date: 2026-03-24
-  end_date: 2026-03-24
+  meetup_time: 2026-03-24
+  meetup_location: Dreamers cafe
   status: 1

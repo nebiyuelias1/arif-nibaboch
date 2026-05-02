@@ -1,8 +1,8 @@
-<%= form_with(model: [book_club, book_read], class: "space-y-6") do |form| %>
+<%= form_with(model: [book_club, book_read], class: "space-y-6", data: { controller: "book-read-form" }) do |form| %>
   <% if @book_read.errors.any? %>
-    <div class="bg-red-50 text-red-700 p-4 rounded-md mb-6">
-      <h2 class="font-bold"><%= pluralize(@book_read.errors.count, "error") %> prohibited this book read from being saved:</h2>
-      <ul class="list-disc pl-5 mt-2 text-sm">
+    <div id="error_explanation" class="bg-red-50 text-red-700 p-4 rounded-lg mb-6 border border-red-100">
+      <h2 class="font-bold text-sm"><%= pluralize(@book_read.errors.count, "error") %> prohibited this book read from being saved:</h2>
+      <ul class="list-disc pl-5 mt-2 text-xs">
         <% @book_read.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -10,49 +10,88 @@
     </div>
   <% end %>
 
-  <div data-controller="book-autocomplete" data-book-autocomplete-url-value="<%= books_search_path(format: :json) %>" class="relative">
-    <%= form.label :book_id, "Select a Book", class: "block text-sm font-medium text-gray-700", for: "book_search_input" %>
-    
-    <div class="relative mt-1">
-      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
+  <%# Selection Toggle %>
+  <div class="space-y-3">
+    <label class="block text-sm font-semibold text-gray-900 ml-1">What are we reading?</label>
+    <div class="flex p-1 bg-gray-100 rounded-lg border border-gray-200 w-fit">
+      <div data-book-read-form-target="selectionBtn" 
+           data-action="click->book-read-form#toggle"
+           class="relative flex items-center px-4 py-2 rounded-md cursor-pointer transition-all">
+        <span class="text-sm font-bold text-gray-700">Specific Book</span>
+        <%= radio_button_tag :selection_type, "book", true, class: "hidden" %>
       </div>
-      <input id="book_search_input" 
-             type="text" 
-             data-book-autocomplete-target="input" 
-             data-action="keyup->book-autocomplete#performSearch click->book-autocomplete#performSearch focus->book-autocomplete#performSearch"
-             placeholder="Search and select a book..." 
-             value="<%= @book_read.book&.title %>"
-             autocomplete="off"
-             class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-all duration-300">
-    </div>
 
-    <%= form.hidden_field :book_id, data: { book_autocomplete_target: "hidden" } %>
-
-    <div data-book-autocomplete-target="results" 
-         class="hidden absolute z-50 mt-1 w-full bg-white shadow-xl max-h-80 rounded-md overflow-y-auto border border-gray-200 ring-1 ring-black ring-opacity-5">
+      <div data-book-read-form-target="selectionBtn" 
+           data-action="click->book-read-form#toggle"
+           class="relative flex items-center px-4 py-2 rounded-md cursor-pointer transition-all">
+        <span class="text-sm font-bold text-gray-700">Poll</span>
+        <%= radio_button_tag :selection_type, "poll", false, class: "hidden" %>
+      </div>
     </div>
   </div>
 
-  <div>
-    <%= form.label :start_date, class: "block text-sm font-medium text-gray-700" %>
-    <%= form.date_field :start_date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+  <%# Dynamic Sections %>
+  <div class="relative">
+    <%# Book Selection Section %>
+    <div id="book_selection_field" data-book-read-form-target="bookSection" class="p-4 rounded-lg border border-gray-200 bg-white shadow-sm">
+      <div data-controller="book-autocomplete" data-book-autocomplete-url-value="<%= books_search_path(format: :json) %>" class="relative">
+        <label for="book_search_input" class="block text-sm font-medium text-gray-500 mb-2">Search for a book</label>
+        
+        <div class="relative group">
+          <input id="book_search_input" 
+                 type="text" 
+                 data-book-autocomplete-target="input" 
+                 data-action="keyup->book-autocomplete#performSearch click->book-autocomplete#performSearch focus->book-autocomplete#performSearch"
+                 placeholder="Type title..." 
+                 value="<%= @book_read.book&.title %>"
+                 autocomplete="off"
+                 class="block w-full rounded-md border-gray-300 bg-gray-50 py-2 px-3 text-sm text-gray-900 placeholder-gray-400 focus:bg-white focus:border-blue-500 transition-all outline-none">
+        </div>
+
+        <%= form.hidden_field :book_id, data: { book_autocomplete_target: "hidden" } %>
+
+        <div data-book-autocomplete-target="results" 
+             class="hidden absolute z-50 mt-1 w-full bg-white shadow-xl max-h-60 rounded-md overflow-y-auto border border-gray-200">
+        </div>
+      </div>
+    </div>
+
+    <%# Poll Selection Section %>
+    <div id="poll_fields" data-book-read-form-target="pollSection" class="hidden p-4 rounded-lg border border-gray-200 bg-white shadow-sm space-y-4">
+      <%= form.fields_for :poll, (@book_read.poll || Poll.new) do |poll_form| %>
+        <div class="space-y-1">
+          <%= poll_form.label :text, "Poll Question", class: "block text-sm font-medium text-gray-500" %>
+          <%= poll_form.text_field :text, 
+              class: "block w-full rounded-md border-gray-300 bg-gray-50 py-2 px-3 text-sm text-gray-900 placeholder-gray-400 focus:bg-white focus:border-blue-500 transition-all outline-none", 
+              placeholder: "e.g., Which book should we read next?" %>
+        </div>
+        <div class="space-y-1">
+          <%= poll_form.label :end_date, "Voting Ends On", class: "block text-sm font-medium text-gray-500" %>
+          <%= poll_form.date_field :end_date, 
+              class: "block w-full rounded-md border-gray-300 bg-gray-50 py-2 px-3 text-sm text-gray-900 focus:bg-white focus:border-blue-500 transition-all outline-none" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :end_date, class: "block text-sm font-medium text-gray-700" %>
-    <%= form.date_field :end_date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
+  <%# Shared Fields %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="space-y-1">
+      <%= form.label :meetup_time, class: "block text-sm font-medium text-gray-500" %>
+      <%= form.datetime_field :meetup_time, 
+          class: "block w-full rounded-md border-gray-300 bg-gray-50 py-2 px-3 text-sm text-gray-900 focus:bg-white focus:border-blue-500 transition-all outline-none" %>
+    </div>
+
+    <div class="space-y-1">
+      <%= form.label :meetup_location, class: "block text-sm font-medium text-gray-500" %>
+      <%= form.text_field :meetup_location, 
+          placeholder: "e.g., Starbucks",
+          class: "block w-full rounded-md border-gray-300 bg-gray-50 py-2 px-3 text-sm text-gray-900 focus:bg-white focus:border-blue-500 transition-all outline-none" %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :status, class: "block text-sm font-medium text-gray-700" %>
-    <%= form.select :status, BookRead.statuses.keys.map { |s| [s.humanize, s] }, {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" %>
-  </div>
-
-  <div class="flex justify-end space-x-3 pt-4">
-    <%= link_to "Cancel", book_club_path(@book_club), class: "px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
-    <%= form.submit @book_read.persisted? ? "Update Book Read" : "Start Book Read", class: "px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+  <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
+    <%= link_to "Cancel", book_club_path(@book_club), class: "px-4 py-2 text-sm font-medium text-gray-700" %>
+    <%= form.submit "Schedule Read", class: "px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-md hover:bg-blue-700 cursor-pointer" %>
   </div>
 <% end %>

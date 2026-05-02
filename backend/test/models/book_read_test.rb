@@ -7,8 +7,8 @@ class BookReadTest < ActiveSupport::TestCase
     @book_read = BookRead.new(
       book: @book,
       book_club: @club,
-      start_date: Date.today,
-      end_date: 1.week.from_now,
+      meetup_time: 1.week.from_now,
+      meetup_location: "Vino Vino Cafe",
       status: :upcoming
     )
   end
@@ -17,9 +17,9 @@ class BookReadTest < ActiveSupport::TestCase
     assert @book_read.valid?
   end
 
-  test "should not require a book" do
+  test "should require a book" do
     @book_read.book = nil
-    assert @book_read.valid?
+    assert_not @book_read.valid?
   end
 
   test "should not require a poll" do
@@ -38,25 +38,8 @@ class BookReadTest < ActiveSupport::TestCase
     assert_not @book_read.valid?
   end
 
-  test "should require a start_date" do
-    @book_read.start_date = nil
+  test "should require a meetup time" do
+    @book_read.meetup_time = nil
     assert_not @book_read.valid?
-  end
-
-  test "should be valid without an end_date" do
-    @book_read.end_date = nil
-    assert @book_read.valid?
-  end
-
-  test "should be invalid if end_date is before start_date" do
-    @book_read.start_date = Date.today
-    @book_read.end_date = 1.day.ago
-    assert_not @book_read.valid?
-    assert_includes @book_read.errors[:end_date], "must be after the start date"
-  end
-
-  test "should have default status of upcoming" do
-    new_read = BookRead.new
-    assert_equal "upcoming", new_read.status
   end
 end

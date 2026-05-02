@@ -5,19 +5,20 @@ class BookRead < ApplicationRecord
   has_one :poll, dependent: :destroy
   has_many :discussion_questions, dependent: :destroy
 
-  validates :start_date, presence: true
+  accepts_nested_attributes_for :poll, reject_if: :all_blank
+
+  validates :meetup_time, presence: true
+  validates :meetup_location, presence: true
+
+  validate :has_book_or_poll
 
   enum :status, { upcoming: 0, active: 1, completed: 2 }, default: :upcoming
 
-  validate :end_date_after_start_date
-
   private
 
-  def end_date_after_start_date
-    return if end_date.blank? || start_date.blank?
-
-    if end_date < start_date
-      errors.add(:end_date, "must be after the start date")
+  def has_book_or_poll
+    unless book_id.present? || poll.present?
+      errors.add(:base, "You must select a specific book or create a poll for this reading session")
     end
   end
 end

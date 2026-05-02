@@ -1,7 +1,13 @@
 <%= link_to book_club_book_read_path(read.book_club, read), class: "block bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 transition-colors p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6 group" do %>
-  <% if read.book.cover_image.present? %>
+  <% if read.book&.cover_image.present? %>
     <div class="w-16 h-24 shrink-0 shadow-sm rounded overflow-hidden">
       <%= image_tag read.book.cover_image, class: "w-full h-full object-cover" %>
+    </div>
+  <% elsif read.poll.present? %>
+    <div class="w-16 h-24 bg-gray-100 shrink-0 rounded flex items-center justify-center shadow-inner border border-gray-200">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-blue-600">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      </svg>
     </div>
   <% else %>
     <div class="w-16 h-24 bg-gray-100 shrink-0 rounded flex items-center justify-center shadow-inner border border-gray-200">
@@ -13,7 +19,9 @@
 
   <div class="flex-1 min-w-0">
     <div class="flex items-center gap-3 mb-1">
-      <h3 class="text-lg font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors"><%= read.book.title %></h3>
+      <h3 class="text-lg font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+        <%= read.book&.title || read.poll&.text || "New Reading Session" %>
+      </h3>
       <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap
         <%= read.status == 'completed' ? 'bg-green-100 text-green-800' :
             read.status == 'active' ? 'bg-blue-100 text-blue-800' :
@@ -22,14 +30,23 @@
       </span>
     </div>
     
-    <p class="text-sm text-gray-600 mb-2 truncate">By <%= read.book.author %></p>
+    <% if read.book.present? %>
+      <p class="text-sm text-gray-600 mb-2 truncate">By <%= read.book.author %></p>
+    <% end %>
     
     <div class="flex items-center text-sm text-gray-500 gap-4">
       <div class="flex items-center gap-1.5">
         <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span><%= read.start_date&.strftime("%b %d, %Y") || 'TBD' %> - <%= read.end_date&.strftime("%b %d, %Y") || 'TBD' %></span>
+        <span><%= read.meetup_time&.strftime("%b %d, %Y %H:%M") || 'TBD' %></span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span class="truncate"><%= read.meetup_location.presence || 'TBD' %></span>
       </div>
     </div>
   </div>
