@@ -13,9 +13,4 @@ class PollOptionTest < ActiveSupport::TestCase
     @poll_option.poll = nil
     assert_not @poll_option.valid?
   end
-
-  test "should require a book" do
-    @poll_option.book = nil
-    assert_not @poll_option.valid?
-  end
 end

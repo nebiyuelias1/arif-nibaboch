@@ -29,8 +29,15 @@ class BookReadTest < ActiveSupport::TestCase
 
   test "should allow having a poll" do
     @book_read.save!
-    poll = @book_read.build_poll(text: "What to read?", end_date: 1.days.from_now)
-    assert poll.valid?
+    poll = @book_read.build_poll(
+                    text: "What to read?",
+                    end_date: 1.days.from_now,
+                    poll_options_attributes: [
+                      { content: "Book A" },
+                      { content: "Book B" }
+                    ]
+          )
+    assert poll.valid?, poll.errors.full_messages.to_sentence
   end
 
   test "should require a book_club" do

@@ -67,6 +67,10 @@ class BookReadsController < ApplicationController
       :book_id,
       :meetup_time,
       :meetup_location,
+      poll_attributes: [
+        :id, :text, :end_date,
+        poll_options_attributes: [ :id, :book_id, :content, :_destroy ]
+      ]
     )
   end
 end
