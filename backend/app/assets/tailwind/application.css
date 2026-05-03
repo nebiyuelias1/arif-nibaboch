@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+@theme {
+  /*-------color-------*/
+  --color-brand-navy: #1A365D;
+  --color-brand-gold: #C09357;
+  --color-brand-cream: #FDFBF7;
+
+  /*-------font-------*/
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+
+}
+
+/* Brand utility classes using the theme variables */
+:root {
+  /* ensure variables are available globally */
+}
+
+.bg-brand-navy { background-color: var(--color-brand-navy) !important; }
+.bg-brand-gold { background-color: var(--color-brand-gold) !important; }
+.bg-brand-cream { background-color: var(--color-brand-cream) !important; }
+
+.text-brand-navy { color: var(--color-brand-navy) !important; }
+.text-brand-gold { color: var(--color-brand-gold) !important; }
+.text-brand-cream { color: var(--color-brand-cream) !important; }
+
+.border-brand-navy { border-color: var(--color-brand-navy) !important; }
+.border-brand-gold { border-color: var(--color-brand-gold) !important; }
+
+.bg-app-primary { background-color: var(--color-brand-navy) !important; }
+.bg-app-primary:hover { background-color: color-mix(in srgb, var(--color-brand-navy) 80%, black 20%); }
+
+.font-serif { font-family: var(--font-serif) !important; }
+.font-sans { font-family: var(--font-sans) !important; }
+
+.btn-primary { @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white; background-color: var(--color-brand-navy); }
+
+/* Small helpers */
+.brand-link:hover { color: var(--color-brand-gold) !important; }

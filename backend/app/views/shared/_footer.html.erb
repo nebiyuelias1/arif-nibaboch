@@ -1,25 +1,25 @@
-<footer class="bg-white border-t border-gray-100 mt-auto">
+<footer class="bg-brand-cream border-t border-brand-navy mt-auto">
   <div class="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
     <div class="flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-2">
-        <div class="flex items-center justify-center w-7 h-7 rounded bg-gray-900 text-white">
+        <div class="flex items-center justify-center w-7 h-7 rounded bg-brand-navy text-white">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
             <path d="M11.25 4.533A9.707 9.707 0 006 3.75a9.753 9.753 0 00-3.25.557.75.75 0 00-.5.713v13.715a.75.75 0 00.5.713A9.753 9.753 0 006 18.75c1.278 0 2.481-.237 3.618-.672.779-.298 1.631-.298 2.41 0a9.753 9.753 0 003.618.672c1.24 0 2.417-.22 3.503-.614a.75.75 0 00.5-.713V3.75a.75.75 0 00-.5-.713A9.75 9.75 0 0018 3.75c-1.278 0-2.481.237-3.618.672-.779.298-1.631.298-2.41 0zM12 5.34a9.707 9.707 0 01-3.75-.765V17.91a9.709 9.709 0 003.75.765v-13.333z" />
           </svg>
         </div>
-        <span class="font-bold text-gray-900">Arif Nibaboch</span>
+        <span class="font-bold text-brand-navy">Arif Nibaboch</span>
       </div>
       
       <div class="flex flex-wrap justify-center gap-x-8 gap-y-2">
-        <%= link_to "Library", books_path, class: "text-sm text-gray-500 hover:text-gray-900" %>
+        <%= link_to "Library", books_path, class: "text-sm text-brand-navy hover:brand-link" %>
         <% if user_signed_in? %>
-          <%= link_to "Profile", profile_path, class: "text-sm text-gray-500 hover:text-gray-900" %>
+          <%= link_to "Profile", profile_path, class: "text-sm text-brand-navy hover:brand-link" %>
         <% end %>
-        <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Privacy</a>
-        <a href="#" class="text-sm text-gray-500 hover:text-gray-900">Terms</a>
+        <a href="#" class="text-sm text-brand-navy hover:brand-link">Privacy</a>
+        <a href="#" class="text-sm text-brand-navy hover:brand-link">Terms</a>
       </div>
 
-      <p class="text-sm text-gray-400">
+      <p class="text-sm text-brand-navy">
         &copy; <%= Time.current.year %> Arif Nibaboch
       </p>
     </div>
