@@ -1,4 +1,4 @@
-<div id="<%= dom_id book %>" class="group relative flex flex-col bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden h-full">
+<div id="<%= dom_id book %>" class="group relative flex flex-col bg-white radius-card shadow-card card-hover-lift transform transition-all duration-300 border border-gray-100 overflow-hidden h-full">
   <%# Image Container %>
   <div class="relative aspect-[2/3] w-full overflow-hidden bg-gray-100">
     <% if book.cover_image.present? %>
@@ -20,7 +20,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
         </svg>
       <% end %>
-      <%= link_to edit_book_path(book), class: "p-2.5 bg-white/90 rounded-full hover:bg-white text-blue-600 shadow-sm transition-all hover:scale-110", title: "Edit Book" do %>
+      <%= link_to edit_book_path(book), class: "p-2.5 bg-white/90 rounded-full hover:bg-white text-brand-navy shadow-sm transition-all hover:scale-110", title: "Edit Book" do %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
         </svg>
@@ -31,7 +31,7 @@
   <%# Card Body %>
   <div class="flex flex-1 flex-col p-4">
     <div class="flex-1">
-      <h3 class="text-base font-bold text-gray-900 leading-snug mb-1 line-clamp-2 group-hover:text-blue-600 transition-colors">
+      <h3 class="text-base font-bold text-gray-900 leading-snug mb-1 line-clamp-2 group-hover:text-brand-navy transition-colors">
         <%= link_to book.title, book, class: "focus:outline-none" %>
       </h3>
       <p class="text-sm text-gray-500 mb-2 font-medium truncate">
@@ -54,7 +54,7 @@
     </div>
 
     <%# Footer / Mobile Actions %>
-    <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
+      <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
       <span class="text-xs text-gray-400 font-medium"><%= book.published_at&.strftime('%Y') || 'Unknown' %></span>
       
       <%# Mobile Only Actions %>
