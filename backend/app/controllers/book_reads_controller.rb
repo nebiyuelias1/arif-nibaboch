@@ -30,8 +30,15 @@ class BookReadsController < ApplicationController
 
   def create
     @book_read = @book_club.book_reads.build(book_read_params)
+
+    if params[:selection_type] == "book"
+      @book_read.poll = nil
+    elsif params[:selection_type] == "poll"
+      @book_read.book_id = nil
+    end
+
     if @book_read.save
-      redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read created successfully."
+      redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read scheduled successfully."
     else
       render :new, status: :unprocessable_entity
     end
@@ -56,6 +63,14 @@ class BookReadsController < ApplicationController
   end
 
   def book_read_params
-    params.require(:book_read).permit(:book_id, :start_date, :end_date, :status)
+    params.require(:book_read).permit(
+      :book_id,
+      :meetup_time,
+      :meetup_location,
+      poll_attributes: [
+        :id, :text, :end_date,
+        poll_options_attributes: [ :id, :book_id, :content, :_destroy ]
+      ]
+    )
   end
 end

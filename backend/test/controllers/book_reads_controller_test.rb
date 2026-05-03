@@ -23,9 +23,8 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
         book_read: {
           book_id: @book.id,
           book_club_id: @book_club.id,
-          start_date: Date.today,
-          end_date: 1.month.from_now.to_date,
-          status: "upcoming"
+          meetup_time: Date.today,
+          meetup_location: "Vino Vino Cafe"
         }
       }
     end
@@ -40,9 +39,7 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
         book_read: {
           book_id: @book.id,
           # Missing start_date which is required, and end_date before start_date
-          start_date: nil,
-          end_date: 1.month.ago.to_date,
-          status: "upcoming"
+          meetup_location: "Vino Vino Cafe"
         }
       }
     end
@@ -99,27 +96,27 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
     new_end_date = 2.months.from_now.to_date
     patch book_club_book_read_url(@book_club, @book_read), params: {
       book_read: {
-        end_date: new_end_date
+        meetup_time: new_end_date
       }
     }
     assert_redirected_to book_club_book_read_url(@book_club, @book_read)
     assert_equal "Book read was successfully updated.", flash[:notice]
     @book_read.reload
-    assert_equal new_end_date, @book_read.end_date
+    assert_equal new_end_date, @book_read.meetup_time
   end
 
   test "should not update book_read if not owner" do
     @book_read = book_reads(:one)
     sign_in users(:two)
-    original_end_date = @book_read.end_date
+    original_end_date = @book_read.meetup_time
     patch book_club_book_read_url(@book_club, @book_read), params: {
       book_read: {
-        end_date: 2.months.from_now.to_date
+        meetup_time: 2.months.from_now.to_date
       }
     }
     assert_redirected_to book_club_url(@book_club)
     assert_equal "You are not authorized to perform this action.", flash[:alert]
     @book_read.reload
-    assert_equal original_end_date, @book_read.end_date
+    assert_equal original_end_date, @book_read.meetup_time
   end
 end
