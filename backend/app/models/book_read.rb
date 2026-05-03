@@ -12,8 +12,6 @@ class BookRead < ApplicationRecord
 
   validate :has_book_or_poll
 
-  enum :status, { upcoming: 0, active: 1, completed: 2 }, default: :upcoming
-
   private
 
   def has_book_or_poll

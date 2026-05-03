@@ -8,8 +8,7 @@ class BookReadTest < ActiveSupport::TestCase
       book: @book,
       book_club: @club,
       meetup_time: 1.week.from_now,
-      meetup_location: "Vino Vino Cafe",
-      status: :upcoming
+      meetup_location: "Vino Vino Cafe"
     )
   end
 
