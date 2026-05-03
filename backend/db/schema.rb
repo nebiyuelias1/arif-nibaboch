@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_01_001928) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_03_143412) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -64,14 +64,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_01_001928) do
   create_table "book_reads", force: :cascade do |t|
     t.integer "book_id"
     t.integer "book_club_id", null: false
-    t.date "start_date"
-    t.date "end_date"
-    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "meetup_location"
-    t.decimal "meetup_location_lat", precision: 10, scale: 6
-    t.decimal "meetup_location_lon", precision: 10, scale: 6
     t.datetime "meetup_time"
     t.index ["book_club_id"], name: "index_book_reads_on_book_club_id"
     t.index ["book_id"], name: "index_book_reads_on_book_id"

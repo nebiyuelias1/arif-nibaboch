@@ -38,7 +38,7 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
       post book_club_book_reads_url(@book_club.id), params: {
         book_read: {
           book_id: @book.id,
-          # Missing start_date which is required, and end_date before start_date
+          # Missing meetup_time which is required
           meetup_location: "Vino Vino Cafe"
         }
       }
@@ -63,9 +63,8 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
         book_read: {
           book_id: @book.id,
           book_club_id: @book_club.id,
-          start_date: Date.today,
-          end_date: 1.month.from_now.to_date,
-          status: "upcoming"
+          meetup_time: Date.today,
+          meetup_location: "Vino Vino Cafe"
         }
       }
     end
@@ -93,30 +92,31 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
   test "should update book_read for owner" do
     @book_read = book_reads(:one)
     sign_in @user
-    new_end_date = 2.months.from_now.to_date
+    new_time = 2.months.from_now.to_datetime
     patch book_club_book_read_url(@book_club, @book_read), params: {
       book_read: {
-        meetup_time: new_end_date
+        meetup_time: new_time
       }
     }
     assert_redirected_to book_club_book_read_url(@book_club, @book_read)
     assert_equal "Book read was successfully updated.", flash[:notice]
     @book_read.reload
-    assert_equal new_end_date, @book_read.meetup_time
+    # Compare with a small tolerance for database time precision
+    assert_in_delta new_time.to_i, @book_read.meetup_time.to_i, 1
   end
 
   test "should not update book_read if not owner" do
     @book_read = book_reads(:one)
     sign_in users(:two)
-    original_end_date = @book_read.meetup_time
+    original_time = @book_read.meetup_time
     patch book_club_book_read_url(@book_club, @book_read), params: {
       book_read: {
-        meetup_time: 2.months.from_now.to_date
+        meetup_time: 2.months.from_now.to_datetime
       }
     }
     assert_redirected_to book_club_url(@book_club)
     assert_equal "You are not authorized to perform this action.", flash[:alert]
     @book_read.reload
-    assert_equal original_end_date, @book_read.meetup_time
+    assert_equal original_time.to_i, @book_read.meetup_time.to_i
   end
 end

@@ -7,9 +7,9 @@ class BookReadsController < ApplicationController
   def index
     @tab = params[:tab] || "upcoming"
     if @tab == "past"
-      @reads = @book_club.book_reads.includes(:book).completed.order(end_date: :desc)
+      @reads = @book_club.book_reads.includes(:book).where("meetup_time < ?", Time.current).order(meetup_time: :desc)
     else
-      @reads = @book_club.book_reads.includes(:book).where(status: [ :active, :upcoming ]).order(start_date: :asc)
+      @reads = @book_club.book_reads.includes(:book).where("meetup_time >= ?", Time.current).order(meetup_time: :desc)
     end
   end
 

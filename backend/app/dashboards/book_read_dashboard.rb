@@ -12,13 +12,8 @@ class BookReadDashboard < Administrate::BaseDashboard
     book: Field::BelongsTo,
     book_club: Field::BelongsTo,
     discussion_questions: Field::HasMany,
-    end_date: Field::Date,
     meetup_location: Field::String,
-    meetup_location_lat: Field::String.with_options(searchable: false),
-    meetup_location_lon: Field::String.with_options(searchable: false),
     meetup_time: Field::DateTime,
-    start_date: Field::Date,
-    status: Field::Select.with_options(searchable: false, collection: ->(field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -42,13 +37,8 @@ class BookReadDashboard < Administrate::BaseDashboard
     book
     book_club
     discussion_questions
-    end_date
     meetup_location
-    meetup_location_lat
-    meetup_location_lon
     meetup_time
-    start_date
-    status
     created_at
     updated_at
   ].freeze
@@ -60,13 +50,8 @@ class BookReadDashboard < Administrate::BaseDashboard
     book
     book_club
     discussion_questions
-    end_date
     meetup_location
-    meetup_location_lat
-    meetup_location_lon
     meetup_time
-    start_date
-    status
   ].freeze
 
   # COLLECTION_FILTERS
