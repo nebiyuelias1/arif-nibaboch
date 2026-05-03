@@ -19,10 +19,8 @@ class BookReadsTest < ApplicationSystemTestCase
 
     # Toggle to Poll
     find("[data-book-read-form-target='selectionBtn']", text: "Poll").click
-    
     assert_no_selector "#book_selection_field", visible: true
     assert_selector "#poll_fields", visible: true
-    
     # Check for simplified event fields
     assert_selector "label", text: "Meetup time"
     assert_selector "label", text: "Meetup location"
@@ -40,7 +38,6 @@ class BookReadsTest < ApplicationSystemTestCase
 
     # Search for and select a book
     fill_in "book_search_input", with: book.title
-    
     # Wait for autocomplete and click the first matching result
     assert_selector "[data-book-autocomplete-target='results'] div", text: book.title, wait: 5
     find("[data-book-autocomplete-target='results'] div", text: book.title, match: :first).click
@@ -73,7 +70,7 @@ class BookReadsTest < ApplicationSystemTestCase
 
     fill_in "Poll Question", with: "What should we read next?"
     fill_in "Voting Ends On", with: (Time.current + 3.days).strftime("%m%d%Y\t%I%M%p")
-    
+
     # Add Poll Options
     within "#poll_options" do
       # Enter first option
@@ -123,11 +120,11 @@ class BookReadsTest < ApplicationSystemTestCase
 
     # Should show error
     assert_text "prohibited this book read from being saved"
-    
+
     # Selection should still be Poll
     assert_selector "#poll_fields", visible: true
     assert_no_selector "#book_selection_field", visible: true
-    
+
     # The Poll radio should be checked
     assert find("input[name='selection_type'][value='poll']", visible: false).checked?
   end
@@ -140,13 +137,13 @@ class BookReadsTest < ApplicationSystemTestCase
 
     fill_in "Poll Question", with: "Poll with no options"
     fill_in "Voting Ends On", with: (Time.current + 3.days).strftime("%m%d%Y\t%I%M%p")
-    
+
     fill_in "Meetup time", with: (Time.current + 1.week).strftime("%m%d%Y\t%I%M%p")
     fill_in "Meetup location", with: "Public Library"
 
     # Ensure options are empty (they shouldn't be by default as we build 2, but let's assume we remove them or they are blank)
     # Our form builds 2 empty ones by default, so if we leave them blank they should be rejected by reject_if: :all_blank
-    
+
     click_on "Schedule Read"
 
     assert_text "Poll must have at least two options"
