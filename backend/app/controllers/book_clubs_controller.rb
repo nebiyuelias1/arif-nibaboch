@@ -8,7 +8,7 @@ class BookClubsController < ApplicationController
   end
 
   def show
-    @current_read = @club.book_reads.where("meetup_time >= ?", Time.current).order(meetup_time: :desc).first
+    @current_read = @club.book_reads.where("meetup_time >= ?", Time.current).order(meetup_time: :asc).first
   end
 
   def new
