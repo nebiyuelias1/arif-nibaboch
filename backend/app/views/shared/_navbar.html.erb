@@ -1,43 +1,43 @@
-<header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+<header class="bg-brand-cream border-b border-brand-navy sticky top-0 z-50">
   <nav class="container mx-auto px-4 sm:px-6 lg:px-8" aria-label="Top">
     <div class="flex h-16 items-center justify-between">
       <div class="flex items-center">
         <%= link_to root_path, class: "flex items-center gap-2 group" do %>
-          <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600 text-white group-hover:bg-blue-700 transition-colors">
+          <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-navy text-white group-hover:bg-brand-navy transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
               <path d="M11.25 4.533A9.707 9.707 0 006 3.75a9.753 9.753 0 00-3.25.557.75.75 0 00-.5.713v13.715a.75.75 0 00.5.713A9.753 9.753 0 006 18.75c1.278 0 2.481-.237 3.618-.672.779-.298 1.631-.298 2.41 0a9.753 9.753 0 003.618.672c1.24 0 2.417-.22 3.503-.614a.75.75 0 00.5-.713V3.75a.75.75 0 00-.5-.713A9.75 9.75 0 0018 3.75c-1.278 0-2.481.237-3.618.672-.779.298-1.631.298-2.41 0zM12 5.34a9.707 9.707 0 01-3.75-.765V17.91a9.709 9.709 0 003.75.765v-13.333z" />
             </svg>
           </div>
-          <span class="font-bold text-xl tracking-tight text-gray-900">Arif Nibaboch</span>
+          <span class="font-bold text-xl tracking-tight text-brand-navy">Arif Nibaboch</span>
         <% end %>
       </div>
       
       <div class="ml-10 space-x-4 flex items-center">
         <% if user_signed_in? %>
           <div class="hidden sm:flex items-center gap-3">
-             <span class="text-sm text-gray-700">Welcome, <strong><%= current_user.username.presence || current_user.email.split('@').first %></strong></span>
+             <span class="text-sm text-brand-navy">Welcome, <strong><%= current_user.username.presence || current_user.email.split('@').first %></strong></span>
           </div>
         <% else %>
           <div class="hidden sm:flex items-center gap-3">
-            <%= link_to "Sign in", new_user_session_path, data: { turbo: false }, class: "text-sm font-medium text-gray-500 hover:text-gray-900" %>
-            <%= link_to "Sign up", new_user_registration_path, data: { turbo: false }, class: "inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700" %>
+            <%= link_to "Sign in", new_user_session_path, data: { turbo: false }, class: "btn-secondary text-brand-navy" %>
+            <%= link_to "Sign up", new_user_registration_path, data: { turbo: false }, class: "btn-primary" %>
           </div>
         <% end %>
 
         <div class="hidden sm:block ml-2">
           <details class="relative group">
-            <summary class="list-none cursor-pointer flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 [&::-webkit-details-marker]:hidden">
+            <summary class="list-none cursor-pointer flex items-center justify-center p-2 rounded-md text-brand-navy hover:text-brand-gold hover:bg-brand-cream transition-colors focus:outline-none focus:ring-2 focus:ring-brand-navy [&::-webkit-details-marker]:hidden">
               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
               </svg>
             </summary>
             
-            <div class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 z-50 overflow-hidden">
+            <div class="absolute right-0 mt-2 w-56 bg-brand-cream rounded-lg shadow-xl border border-brand-navy z-50 overflow-hidden">
               <div class="py-1">
                 <% main_navigation_items.each do |item| %>
                   <% is_active = is_active_nav_item?(item) %>
-                  <%= link_to item[:path], class: "flex items-center gap-3 px-4 py-3 text-sm transition-colors group/link #{is_active ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}" do %>
-                    <svg class="w-5 h-5 transition-colors <%= is_active ? 'text-blue-600' : 'text-gray-400 group-hover/link:text-blue-600' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <%= link_to item[:path], class: "flex items-center gap-3 px-4 py-3 text-sm transition-colors group/link #{is_active ? 'bg-brand-cream text-brand-navy font-medium' : 'text-brand-navy hover:bg-brand-cream hover:text-brand-gold'}" do %>
+                    <svg class="w-5 h-5 transition-colors <%= is_active ? 'text-brand-navy' : 'text-brand-navy group-hover/link:text-brand-gold' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <%= item[:icon].html_safe %>
                     </svg>
                     <%= item[:name] %>
@@ -51,7 +51,7 @@
         <%# Mobile Menu Button Placeholder - simple pure CSS or JS toggle needed for real implementation %>
         <div class="sm:hidden">
           <% unless user_signed_in? %>
-             <%= link_to "Sign in", new_user_session_path, data: { turbo: false }, class: "text-sm font-medium text-blue-600" %>
+             <%= link_to "Sign in", new_user_session_path, data: { turbo: false }, class: "btn-secondary text-brand-navy" %>
           <% end %>
         </div>
       </div>

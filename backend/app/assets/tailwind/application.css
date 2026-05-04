@@ -1,1 +1,74 @@
 @import "tailwindcss";
+
+@theme {
+  /*-------color-------*/
+  --color-brand-navy: #1A365D;
+  --color-brand-gold: #C09357;
+  --color-brand-cream: #FDFBF7;
+
+  /*-------font-------*/
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Noto Sans Ethiopic", "Inter", sans-serif;
+
+  /*-------Custom design tokens-------*/
+  --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --radius-card: 1rem;
+
+  /* Text Colors */
+  --color-text-title: #1A202C; /* Dark Navy/Black */
+  --color-text-author: #4A5568; /* Soft Gray */
+  --color-text-meta: #718096;   /* Lighter Gray for year/count */
+  
+  /* Font Sizes */
+  --text-book-title: 1.125rem; /* 18px */
+  --text-book-author: 0.875rem; /* 14px */
+}
+
+/* Brand utility classes using the theme variables */
+:root {
+  /* ensure variables are available globally */
+}
+
+.bg-brand-navy { background-color: var(--color-brand-navy) !important; }
+.bg-brand-gold { background-color: var(--color-brand-gold) !important; }
+.bg-brand-cream { background-color: var(--color-brand-cream) !important; }
+
+.text-brand-navy { color: var(--color-brand-navy) !important; }
+.text-brand-gold { color: var(--color-brand-gold) !important; }
+.text-brand-cream { color: var(--color-brand-cream) !important; }
+
+.border-brand-navy { border-color: var(--color-brand-navy) !important; }
+.border-brand-gold { border-color: var(--color-brand-gold) !important; }
+
+.bg-app-primary { background-color: var(--color-brand-navy) !important; }
+.bg-app-primary:hover { background-color: color-mix(in srgb, var(--color-brand-navy) 80%, black 20%); }
+
+.font-serif { font-family: var(--font-serif) !important; }
+.font-sans { font-family: var(--font-sans) !important; }
+
+/* Buttons (primary / secondary) - hierarchical */
+.btn-primary { @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white; background-color: var(--color-brand-navy); }
+.btn-primary:hover { background-color: color-mix(in srgb, var(--color-brand-navy) 85%, black 15%); }
+
+.btn-secondary { @apply inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg border; color: var(--color-brand-navy); }
+.btn-secondary { border-color: color-mix(in srgb, var(--color-brand-navy) 12%, black 5%); background-color: transparent; }
+.btn-secondary:hover { color: var(--color-brand-gold); }
+
+/* Card shadows & radius using design tokens */
+.shadow-card { box-shadow: var(--shadow-card); }
+.shadow-card-hover { box-shadow: var(--shadow-card-hover); }
+.radius-card { border-radius: var(--radius-card); }
+
+/* Card hover lift */
+.card-hover-lift { transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s; }
+.card-hover-lift:hover { transform: translateY(-.5rem); }
+
+/* Search hero / input */
+.search-hero { max-width: 900px; margin-left: auto; margin-right: auto; }
+.search-container { position: relative; }
+.search-input { width: 100%; padding-left: 3.5rem; padding-right: 1rem; padding-top: .9rem; padding-bottom: .9rem; border-radius: 9999px; border: 1px solid rgba(15,23,42,.06); box-shadow: 0 1px 2px rgba(16,24,40,0.04); }
+.search-input:focus { outline: none; box-shadow: 0 10px 30px rgba(26,54,93,0.08); border-color: var(--color-brand-navy); }
+
+/* Small helpers */
+.brand-link:hover { color: var(--color-brand-gold) !important; }
