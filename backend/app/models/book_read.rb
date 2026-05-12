@@ -4,6 +4,8 @@ class BookRead < ApplicationRecord
 
   has_one :poll, dependent: :destroy
   has_many :discussion_questions, dependent: :destroy
+  has_many :book_read_rsvps, dependent: :destroy
+  has_many :rsvp_users, through: :book_read_rsvps, source: :user
 
   accepts_nested_attributes_for :poll, reject_if: :all_blank
 

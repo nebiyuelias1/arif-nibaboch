@@ -13,3 +13,10 @@ two:
   name: "Test User Two"
   username: "testuser2"
   admin: false
+
+three:
+  email: user3@example.com
+  encrypted_password: "<%= BCrypt::Password.create('password123', cost: 4) %>"
+  name: "Test User Three"
+  username: "testuser3"
+  admin: false

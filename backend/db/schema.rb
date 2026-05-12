@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_12_024713) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_12_110000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -59,6 +59,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_12_024713) do
     t.datetime "updated_at", null: false
     t.integer "book_club_members_count", default: 0, null: false
     t.index ["owner_id"], name: "index_book_clubs_on_owner_id"
+  end
+
+  create_table "book_read_rsvps", force: :cascade do |t|
+    t.integer "book_read_id", null: false
+    t.integer "user_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_read_id", "user_id"], name: "index_book_read_rsvps_on_book_read_id_and_user_id", unique: true
+    t.index ["book_read_id"], name: "index_book_read_rsvps_on_book_read_id"
+    t.index ["user_id"], name: "index_book_read_rsvps_on_user_id"
   end
 
   create_table "book_reads", force: :cascade do |t|
@@ -219,6 +230,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_12_024713) do
   add_foreign_key "book_club_members", "book_clubs"
   add_foreign_key "book_club_members", "users"
   add_foreign_key "book_clubs", "users", column: "owner_id"
+  add_foreign_key "book_read_rsvps", "book_reads"
+  add_foreign_key "book_read_rsvps", "users"
   add_foreign_key "book_reads", "book_clubs"
   add_foreign_key "book_reads", "books"
   add_foreign_key "book_tags", "books"

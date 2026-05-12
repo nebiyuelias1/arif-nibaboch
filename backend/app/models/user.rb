@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :review_likes, dependent: :destroy
   has_many :owned_book_clubs, class_name: "BookClub", foreign_key: "owner_id", dependent: :nullify
+  has_many :book_read_rsvps, dependent: :destroy
+  has_many :rsvp_book_reads, through: :book_read_rsvps, source: :book_read
 
   def self.from_telegram_auth(auth)
     user = where(telegram_id: auth["id"]).first_or_initialize do |u|
