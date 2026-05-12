@@ -4,9 +4,8 @@ class AddHostToBookReads < ActiveRecord::Migration[7.1]
 
     reversible do |dir|
       dir.up do
-        default_host_id = User.order(:id).limit(1).pick(:id)
-        if default_host_id
-          BookRead.where(host_id: nil).update_all(host_id: default_host_id)
+        BookRead.where(host_id: nil).find_each do |book_read|
+          book_read.update_columns(host_id: book_read.book_club.owner_id)
         end
       end
     end
