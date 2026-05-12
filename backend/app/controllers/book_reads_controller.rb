@@ -22,14 +22,14 @@ class BookReadsController < ApplicationController
   end
 
   def new
-    @book_read = @book_club.book_reads.build
+    @book_read = @book_club.book_reads.build(host: current_user)
   end
 
   def edit
   end
 
   def create
-    @book_read = @book_club.book_reads.build(book_read_params)
+    @book_read = @book_club.book_reads.build(book_read_params.merge(host: current_user))
 
     if params[:selection_type] == "book"
       @book_read.poll = nil

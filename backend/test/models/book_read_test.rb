@@ -7,6 +7,7 @@ class BookReadTest < ActiveSupport::TestCase
     @book_read = BookRead.new(
       book: @book,
       book_club: @club,
+      host: users(:one),
       meetup_time: 1.week.from_now,
       meetup_location: "Vino Vino Cafe"
     )
@@ -46,6 +47,11 @@ class BookReadTest < ActiveSupport::TestCase
 
   test "should require a meetup time" do
     @book_read.meetup_time = nil
+    assert_not @book_read.valid?
+  end
+
+  test "should require a host" do
+    @book_read.host = nil
     assert_not @book_read.valid?
   end
 

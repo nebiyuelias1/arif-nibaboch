@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_club_owner!(club, redirect_url: nil)
-    unless club.owner == current_user
+    unless club.owner == current_user || club.book_club_members.exists?(user: current_user, role: :admin)
       redirect_to (redirect_url || book_club_path(club)), alert: "You are not authorized to perform this action."
     end
   end

@@ -1,6 +1,7 @@
 class BookRead < ApplicationRecord
   belongs_to :book, optional: true
   belongs_to :book_club
+  belongs_to :host, class_name: "User"
 
   has_one :poll, dependent: :destroy
   has_many :discussion_questions, dependent: :destroy
@@ -12,6 +13,7 @@ class BookRead < ApplicationRecord
   validates :meetup_time, presence: true
   validates :meetup_location, presence: true
   validates :max_capacity, numericality: { only_integer: true, greater_than_or_equal_to: 2 }, allow_nil: true
+  validates :host, presence: true
 
   validate :has_book_or_poll
 

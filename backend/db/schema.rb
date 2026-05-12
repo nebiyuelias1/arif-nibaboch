@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_12_110000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_12_111500) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -80,8 +80,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_12_110000) do
     t.string "meetup_location"
     t.datetime "meetup_time"
     t.integer "max_capacity"
+    t.integer "host_id", null: false
     t.index ["book_club_id"], name: "index_book_reads_on_book_club_id"
     t.index ["book_id"], name: "index_book_reads_on_book_id"
+    t.index ["host_id"], name: "index_book_reads_on_host_id"
     t.check_constraint "max_capacity IS NULL OR max_capacity >= 2", name: "book_reads_max_capacity_min"
   end
 
@@ -234,6 +236,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_12_110000) do
   add_foreign_key "book_read_rsvps", "users"
   add_foreign_key "book_reads", "book_clubs"
   add_foreign_key "book_reads", "books"
+  add_foreign_key "book_reads", "users", column: "host_id"
   add_foreign_key "book_tags", "books"
   add_foreign_key "book_tags", "tags"
   add_foreign_key "discussion_questions", "book_reads"

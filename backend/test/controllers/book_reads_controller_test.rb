@@ -30,6 +30,7 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to book_club_book_read_url(@book_club, BookRead.last)
+    assert_equal @user, BookRead.last.host
   end
 
   test "should not create book_read with invalid params" do
@@ -71,6 +72,24 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to book_club_url(@book_club)
     assert_equal "You are not authorized to perform this action.", flash[:alert]
+  end
+
+  test "admin should create book_read as host" do
+    admin = users(:one)
+
+    sign_in admin
+    assert_difference("BookRead.count") do
+      post book_club_book_reads_url(@book_club.id), params: {
+        book_read: {
+          book_id: @book.id,
+          book_club_id: @book_club.id,
+          meetup_time: Date.today,
+          meetup_location: "Vino Vino Cafe"
+        }
+      }
+    end
+
+    assert_equal admin, BookRead.last.host
   end
 
   test "should get edit for owner" do
