@@ -30,7 +30,7 @@ class BookReadRsvp < ApplicationRecord
   def capacity_available_for_going
     return if book_read.max_capacity.blank?
 
-    going_count = book_read.book_read_rsvps.going.count
+    going_count = book_read.book_read_rsvps.going.where.not(id: id).count
     return if going_count < book_read.max_capacity
 
     errors.add(:base, "This session is full")

@@ -16,8 +16,8 @@ class BookReadRsvpsControllerTest < ActionDispatch::IntegrationTest
       post book_club_book_read_rsvp_url(@book_club, @book_read)
     end
 
-    assert BookClubMember.exists?(book_club: @book_club, user: user)
-    assert_equal user, BookReadRsvp.last.user
+    created_rsvp = BookReadRsvp.find_by!(book_read: @book_read, user: user)
+    assert_equal user, created_rsvp.user
   end
 
   test "cancels rsvp via update" do
