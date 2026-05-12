@@ -48,4 +48,19 @@ class BookReadTest < ActiveSupport::TestCase
     @book_read.meetup_time = nil
     assert_not @book_read.valid?
   end
+
+  test "should allow nil max_capacity" do
+    @book_read.max_capacity = nil
+    assert @book_read.valid?
+  end
+
+  test "should allow max_capacity of 2" do
+    @book_read.max_capacity = 2
+    assert @book_read.valid?
+  end
+
+  test "should not allow max_capacity below 2" do
+    @book_read.max_capacity = 1
+    assert_not @book_read.valid?
+  end
 end

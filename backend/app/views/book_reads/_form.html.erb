@@ -112,6 +112,14 @@
   <%# Shared Fields %>
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div class="space-y-1">
+      <%= form.label :max_capacity, class: "block text-sm font-medium text-gray-500" %>
+      <%= form.number_field :max_capacity,
+          min: 2,
+          placeholder: "e.g., 12",
+          class: "block w-full rounded-md border-gray-300 bg-gray-50 py-2 px-3 text-sm text-gray-900 focus:bg-white focus:border-blue-500 transition-all outline-none" %>
+    </div>
+
+    <div class="space-y-1">
       <%= form.label :meetup_time, class: "block text-sm font-medium text-gray-500" %>
       <%= form.datetime_field :meetup_time, 
           class: "block w-full rounded-md border-gray-300 bg-gray-50 py-2 px-3 text-sm text-gray-900 focus:bg-white focus:border-blue-500 transition-all outline-none" %>

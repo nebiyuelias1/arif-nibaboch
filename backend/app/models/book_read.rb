@@ -9,6 +9,7 @@ class BookRead < ApplicationRecord
 
   validates :meetup_time, presence: true
   validates :meetup_location, presence: true
+  validates :max_capacity, numericality: { only_integer: true, greater_than_or_equal_to: 2 }, allow_nil: true
 
   validate :has_book_or_poll
 

@@ -65,6 +65,7 @@ class BookReadsController < ApplicationController
   def book_read_params
     params.require(:book_read).permit(
       :book_id,
+      :max_capacity,
       :meetup_time,
       :meetup_location,
       poll_attributes: [
