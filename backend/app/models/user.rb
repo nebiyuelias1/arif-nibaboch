@@ -19,6 +19,7 @@ class User < ApplicationRecord
     end
     user.name = [ auth["first_name"], auth["last_name"] ].join(" ").strip
     user.username = auth["username"]
+    user.avatar_url = auth["photo_url"] if auth["photo_url"].present?
     user.telegram_id = auth["id"]
     user.save!
     user
@@ -31,6 +32,7 @@ class User < ApplicationRecord
     end
     user.name = auth["displayName"]
     user.username = auth["displayName"]
+    user.avatar_url = auth["pictureUrl"] if auth["pictureUrl"].present?
     user.line_id = auth["userId"]
     user.save!
     user

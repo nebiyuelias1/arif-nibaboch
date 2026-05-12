@@ -11,7 +11,7 @@
 %>
 <div class="rounded-full flex items-center justify-center overflow-hidden <%= classes %>" title="<%= title %>" aria-label="<%= aria_label %>">
   <% if user.respond_to?(:avatar_url) && user.avatar_url.present? %>
-    <img src="<%= user.avatar_url %>" alt="<%= aria_label %>" class="w-full h-full object-cover">
+    <img src="<%= user.avatar_url %>" alt="<%= aria_label %>" class="w-full h-full object-cover" loading="lazy" referrerpolicy="no-referrer">
   <% else %>
     <%= user.name_initial %>
   <% end %>
