@@ -3,6 +3,10 @@ class DiscussionQuestionsController < ApplicationController
   before_action :set_book_club_and_read
   before_action -> { authorize_discussion_question_permission }, only: [ :create, :update ]
 
+  ##
+  # Creates a discussion question for the current book read, assigning it to the current user, and responds via Turbo Stream or HTML redirect.
+  # On success, emits a Turbo Stream update or redirects to the book read page with a success notice.
+  # On failure, emits a Turbo Stream that replaces the new question form with the form partial and returns HTTP 422, or redirects to the book read page with an error alert.
   def create
     @discussion_question = @book_read.discussion_questions.build(discussion_question_params.merge(user: current_user))
 
@@ -44,10 +48,18 @@ class DiscussionQuestionsController < ApplicationController
     params.require(:discussion_question).permit(:content)
   end
 
+  ##
+  # Strong parameters for updating a discussion question.
+  # Permits the `:content` and `:status` attributes from the `discussion_question` params.
+  # @return [ActionController::Parameters] Permitted parameters containing `:content` and `:status`.
   def discussion_question_update_params
     params.require(:discussion_question).permit(:content, :status)
   end
 
+  ##
+  # Ensures the current user is permitted to create or update discussion questions:
+  # allows the action when the user has RSVP'd for the book read; otherwise enforces
+  # club-owner authorization and redirects back to the book read page.
   def authorize_discussion_question_permission
     has_rsvp = @book_read.rsvp_users.exists?(id: current_user.id)
     return if has_rsvp

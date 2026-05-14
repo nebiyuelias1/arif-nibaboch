@@ -17,6 +17,11 @@ class BookRead < ApplicationRecord
 
   validate :has_book_or_poll
 
+  ##
+  # Determine whether the given user is allowed to post a discussion question for this reading session.
+  # Returns `false` for a blank or nil user; otherwise checks membership in the session's RSVP users.
+  # @param [User, nil] user - The user to check.
+  # @return [Boolean] `true` if the user is an RSVP for this BookRead, `false` otherwise.
   def can_post_discussion_question?(user)
     return false if user.blank?
 
@@ -25,6 +30,10 @@ class BookRead < ApplicationRecord
 
   private
 
+  ##
+  # Ensures the record has either an associated book or a poll.
+  # Adds an error on :base with message "You must select a specific book or create a poll for this reading session"
+  # when neither `book_id` nor `poll` is present.
   def has_book_or_poll
     unless book_id.present? || poll.present?
       errors.add(:base, "You must select a specific book or create a poll for this reading session")
