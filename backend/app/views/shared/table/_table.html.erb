@@ -61,9 +61,9 @@
 
   # Build container wrapper classes
   container_wrapper_classes = [
-    "bg-white dark:bg-gray-900 overflow-hidden",
+    "bg-surface overflow-hidden",
     rounded_classes,
-    bordered ? "border border-black/10 dark:border-white/10" : "",
+    bordered ? "border border-border" : "",
     "shadow-xs",
     container_classes
   ].compact.reject(&:empty?).join(" ")
@@ -84,26 +84,26 @@
 
   # Build thead classes
   thead_classes = if sticky_header
-    "sticky top-0 z-10 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm backdrop-filter"
+    "sticky top-0 z-10 bg-surface/95 backdrop-blur-sm backdrop-filter"
   else
-    "bg-white dark:bg-gray-900"
+    "bg-surface"
   end
 
   # Build tbody classes
   tbody_classes = [
-    striped ? "*:even:bg-gray-50 dark:*:even:bg-gray-800/50" : "",
+    striped ? "*:even:bg-background" : "",
     density.to_s == "compact" ? "*:*:py-3" : "*:*:py-4"
   ].compact.reject(&:empty?).join(" ")
 
   # Header row classes
   th_row_classes = [
     density.to_s == "compact" ? "*:py-2.5" : "*:py-3",
-    "*:text-left *:[box-shadow:inset_0_-1px_0_0_rgb(229_229_229)] dark:*:[box-shadow:inset_0_-1px_0_0_rgb(46_46_46)]"
+    "*:text-left *:[box-shadow:inset_0_-1px_0_0_rgb(229_224_211)]"
   ].join(" ")
 
   # Row border style
-  row_border = "[box-shadow:inset_0_-1px_0_0_rgb(229_229_229)] dark:[box-shadow:inset_0_-1px_0_0_rgb(46_46_46)]"
-  row_hover = hoverable ? "hover:bg-gray-50 dark:hover:bg-gray-800/50" : ""
+  row_border = "[box-shadow:inset_0_-1px_0_0_rgb(229_224_211)]"
+  row_hover = hoverable ? "hover:bg-background" : ""
 %>
 
 <% if container %>
@@ -112,7 +112,7 @@
 <% end %>
       <table class="<%= table_classes %>">
         <% if caption.present? %>
-          <caption class="px-6 py-3 text-left text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-900">
+          <caption class="px-6 py-3 text-left text-sm text-content-subtle bg-surface">
             <%= caption %>
           </caption>
         <% end %>
@@ -138,7 +138,7 @@
                   end
                   
                   th_classes = [
-                    "text-sm font-semibold text-gray-900 dark:text-gray-50",
+                    "text-sm font-semibold text-content",
                     align_class,
                     idx == 0 ? "pl-6 pr-3" : (idx == columns.length - 1 ? "pl-3 pr-6" : "px-3"),
                     col_classes
@@ -185,7 +185,7 @@
                       else ""
                     end
                     
-                    color_class = cell_primary ? "font-medium text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-400"
+                    color_class = cell_primary ? "font-medium text-content" : "text-content-subtle"
                     
                     td_classes = [
                       "text-sm",
@@ -209,7 +209,7 @@
         <% end %>
 
         <% if foot_content.present? %>
-          <tfoot class="bg-gray-50 dark:bg-gray-800/50">
+          <tfoot class="bg-background">
             <%= foot_content.html_safe %>
           </tfoot>
         <% end %>

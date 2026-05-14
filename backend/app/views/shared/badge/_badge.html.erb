@@ -74,14 +74,14 @@
       }
     when "blue"
       {
-        bg: "bg-blue-50 dark:bg-blue-400/10",
-        text: "text-blue-700 dark:text-blue-400",
-        outline: "outline outline-blue-600/20 dark:outline-blue-400/25",
-        dot: "bg-blue-500 dark:bg-blue-400",
-        button_bg: "bg-blue-100 dark:bg-blue-400/10",
-        button_text: "text-blue-600 dark:text-blue-400",
-        button_hover: "hover:bg-blue-200 hover:dark:bg-blue-400/20",
-        button_outline: "outline outline-blue-500/20 dark:outline-blue-400/25"
+        bg: "bg-background",
+        text: "text-primary",
+        outline: "outline outline-primary/20",
+        dot: "bg-primary",
+        button_bg: "bg-background",
+        button_text: "text-primary",
+        button_hover: "hover:bg-background",
+        button_outline: "outline outline-primary/20"
       }
     when "purple"
       {
@@ -107,14 +107,14 @@
       }
     else # :gray
       {
-        bg: "bg-gray-50 dark:bg-gray-400/10",
-        text: "text-gray-700 dark:text-gray-400",
-        outline: "outline outline-gray-500/20 dark:outline-gray-400/25",
-        dot: "bg-gray-500 dark:bg-gray-400",
-        button_bg: "bg-gray-100 dark:bg-gray-400/10",
-        button_text: "text-gray-600 dark:text-gray-400",
-        button_hover: "hover:bg-gray-200 hover:dark:bg-gray-400/20",
-        button_outline: "outline outline-gray-500/20 dark:outline-gray-400/25"
+        bg: "bg-background",
+        text: "text-content-subtle",
+        outline: "outline outline-border",
+        dot: "bg-content-muted",
+        button_bg: "bg-background",
+        button_text: "text-content-subtle",
+        button_hover: "hover:bg-background",
+        button_outline: "outline outline-border"
       }
     end
 
@@ -146,7 +146,7 @@
   wrapper_classes = [base_classes, size_classes, shape_classes, colors[:bg], colors[:text], colors[:outline], classes].compact.reject(&:empty?).join(" ")
 
   # Build button classes
-  button_classes = [button_shape_classes, colors[:button_bg], colors[:button_text], colors[:button_hover], colors[:button_outline], button_size_classes, "focus-visible:outline-gray-500 focus-visible:dark:outline-gray-400"].join(" ")
+  button_classes = [button_shape_classes, colors[:button_bg], colors[:button_text], colors[:button_hover], colors[:button_outline], button_size_classes, "focus-visible:outline-primary"].join(" ")
 
   # Build dot classes
   dot_classes = ["rounded-full", colors[:dot], dot_size_classes].join(" ")

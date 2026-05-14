@@ -5,14 +5,14 @@
   <div class="flex-1">
     <%= form.text_field :content, 
         placeholder: "Enter book title or option...", 
-        class: "block w-full rounded-md border-gray-300 bg-gray-50 py-2 px-3 text-sm text-gray-900 focus:bg-white focus:border-blue-500 outline-none" %>
+        class: "block w-full rounded-md border-border bg-background py-2 px-3 text-sm text-content placeholder:text-content-muted focus:bg-surface focus:border-primary outline-none" %>
   </div>
 
   <%= form.hidden_field :_destroy %>
   
   <button type="button" 
           data-action="click->dynamic-nested-fields#remove" 
-          class="p-2 text-gray-400 hover:text-red-500 transition-colors"
+          class="p-2 text-content-muted hover:text-red-500 transition-colors"
           title="Remove option">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />

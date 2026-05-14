@@ -38,16 +38,18 @@ export default class extends Controller {
       const isSelected = input.value === selection
       
       if (isSelected) {
-        btn.classList.add("bg-blue-600")
+        btn.classList.add("bg-primary")
+        btn.classList.remove("bg-transparent")
         if (label) {
-          label.classList.remove("text-gray-700")
-          label.classList.add("text-white")
+          label.classList.remove("text-content")
+          label.classList.add("text-primary-contrast")
         }
       } else {
-        btn.classList.remove("bg-blue-600")
+        btn.classList.remove("bg-primary")
+        btn.classList.add("bg-transparent")
         if (label) {
-          label.classList.remove("text-white")
-          label.classList.add("text-gray-700")
+          label.classList.remove("text-primary-contrast")
+          label.classList.add("text-content")
         }
       }
     })

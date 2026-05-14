@@ -1,15 +1,15 @@
 <%
   is_last ||= false
 %>
-<tr class="hover:bg-gray-50 transition-colors <%= is_last ? '' : '[box-shadow:inset_0_-1px_0_0_rgb(229_229_229)]' %>">
+<tr class="hover:bg-background transition-colors <%= is_last ? '' : '[box-shadow:inset_0_-1px_0_0_rgb(229_224_211)]' %>">
   <td class="px-6 py-4 whitespace-nowrap">
     <div class="flex items-center">
       <div class="shrink-0 h-10 w-10">
-        <%= render "shared/avatar", user: user, classes: "w-10 h-10 ring-2 ring-white bg-blue-600 text-white text-sm font-semibold" %>
+        <%= render "shared/avatar", user: user, classes: "w-10 h-10 ring-2 ring-surface bg-primary text-primary-contrast text-sm font-semibold" %>
       </div>
       <div class="ml-4">
-        <div class="text-sm font-medium text-gray-900"><%= user.name.presence || user.username.presence || "No Name Provided" %></div>
-        <div class="text-sm text-gray-500"><%= user.email %></div>
+        <div class="text-sm font-medium text-content"><%= user.name.presence || user.username.presence || "No Name Provided" %></div>
+        <div class="text-sm text-content-subtle"><%= user.email %></div>
       </div>
     </div>
   </td>

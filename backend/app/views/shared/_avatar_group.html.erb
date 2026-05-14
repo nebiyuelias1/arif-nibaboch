@@ -4,7 +4,7 @@
   size_classes ||= "w-9 h-9"
   text_size ||= "text-xs"
   container_classes ||= "mt-4"
-  avatar_classes = "#{size_classes} ring-2 ring-white bg-blue-600 text-white #{text_size} font-semibold"
+  avatar_classes = "#{size_classes} ring-2 ring-surface bg-primary text-primary-contrast #{text_size} font-semibold"
 %>
 <div class="flex items-center space-x-3 <%= container_classes %>">
   <div class="flex items-center -space-x-2">
@@ -12,7 +12,7 @@
       <%= render "shared/avatar", user: user, classes: avatar_classes %>
     <% end %>
     <% if users.size > limit %>
-      <div class="rounded-full ring-2 ring-white bg-gray-100 text-gray-600 <%= text_size %> font-semibold flex items-center justify-center relative z-10 <%= size_classes %>" title="<%= pluralize(users.size - limit, 'more member') %>">
+      <div class="rounded-full ring-2 ring-surface bg-background text-content-subtle <%= text_size %> font-semibold flex items-center justify-center relative z-10 <%= size_classes %>" title="<%= pluralize(users.size - limit, 'more member') %>">
         +<%= users.size - limit %>
       </div>
     <% end %>

@@ -1,11 +1,11 @@
 <%= turbo_frame_tag "book_read_rsvp" do %>
-  <div class="bg-white p-5 rounded-xl border border-gray-200 mb-8">
+  <div class="bg-surface p-5 rounded-xl border border-border mb-8">
     <%= form_with url: book_club_book_read_rsvp_path(book_club, book_read), method: (rsvp ? :patch : :post), scope: :book_read_rsvp, class: "flex flex-col sm:flex-row sm:items-center gap-4" do |form| %>
       <% next_status = rsvp&.going? || rsvp&.waitlisted? ? "cancelled" : "going" %>
       <%= form.hidden_field :status, value: next_status %>
       <%= form.submit(
         (next_status == "going") ? "RSVP" : "Cancel RSVP",
-        class: "px-4 py-2 text-sm font-bold rounded-md cursor-pointer #{next_status == "going" ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}",
+        class: "px-4 py-2 text-sm font-bold rounded-md cursor-pointer #{next_status == "going" ? "bg-primary text-primary-contrast hover:bg-primary" : "bg-background text-content hover:bg-surface"}",
         data: (next_status == "cancelled" ? { turbo_confirm: "Cancel your RSVP?" } : {})
       ) %>
       <% if rsvp&.waitlisted? %>

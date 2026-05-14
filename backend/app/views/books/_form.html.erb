@@ -11,26 +11,26 @@
   <% end %>
 
   <div>
-    <%= form.label :title, class: 'block text-sm font-medium text-gray-700' %>
-    <%= form.text_field :title, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500' %>
+    <%= form.label :title, class: 'block text-sm font-medium text-content' %>
+    <%= form.text_field :title, class: 'mt-1 block w-full border-border bg-surface text-content rounded-md shadow-sm focus:ring-primary focus:border-primary placeholder:text-content-muted' %>
   </div>
 
   <div>
-    <%= form.label :author, class: 'block text-sm font-medium text-gray-700' %>
-    <%= form.text_field :author, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500' %>
+    <%= form.label :author, class: 'block text-sm font-medium text-content' %>
+    <%= form.text_field :author, class: 'mt-1 block w-full border-border bg-surface text-content rounded-md shadow-sm focus:ring-primary focus:border-primary placeholder:text-content-muted' %>
   </div>
 
   <div>
-    <%= form.label :published_at, class: 'block text-sm font-medium text-gray-700' %>
-    <%= form.date_field :published_at, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500' %>
+    <%= form.label :published_at, class: 'block text-sm font-medium text-content' %>
+    <%= form.date_field :published_at, class: 'mt-1 block w-full border-border bg-surface text-content rounded-md shadow-sm focus:ring-primary focus:border-primary' %>
   </div>
 
   <div>
-    <%= form.label :description, class: 'block text-sm font-medium text-gray-700' %>
-    <%= form.text_area :description, rows: 6, class: 'mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500' %>
+    <%= form.label :description, class: 'block text-sm font-medium text-content' %>
+    <%= form.text_area :description, rows: 6, class: 'mt-1 block w-full border-border bg-surface text-content rounded-md shadow-sm focus:ring-primary focus:border-primary placeholder:text-content-muted' %>
   </div>
 
   <div class="pt-2">
-    <%= form.submit class: 'inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700' %>
+    <%= form.submit class: 'inline-block bg-primary text-primary-contrast px-4 py-2 rounded hover:bg-primary' %>
   </div>
 <% end %>
