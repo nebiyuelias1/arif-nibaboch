@@ -2,14 +2,16 @@
 
 @theme {
   /*-------color-------*/
-  --color-primary: #1A365D;
-  --color-accent: #C09357;
-  --color-background: #FDFBF7;
+  --color-primary: #22324A;
+  --color-primary-contrast: #FFFFFF;
+  --color-accent: #D39A3E;
+  --color-accent-contrast: #1A202C;
+  --color-background: #F7F3EE;
   --color-surface: #FFFFFF;
 
   /*-------font-------*/
   --font-serif: "Playfair Display", serif;
-  --font-sans: "Noto Sans Ethiopic", "Inter", sans-serif;
+  --font-sans: "Noto Sans Ethiopic", "Inter", sans-serif; /* Ethiopic-first stack */
 
   /*-------Custom design tokens-------*/
   --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -17,26 +19,36 @@
   --radius-card: 1rem;
 
   /* Text Colors */
-  --color-content: #1A202C; /* Dark Navy/Black */
-  --color-content-subtle: #4A5568; /* Soft Gray */
-  --color-content-muted: #718096;   /* Lighter Gray for year/count */
+  --color-content: #1F2430; /* Dark Charcoal */
+  --color-content-subtle: #4B5563; /* Soft Gray */
+  --color-content-muted: #6B7280;   /* Lighter Gray */
   
   /* Font Sizes */
-  --text-title: 1.125rem; /* 18px */
+  --text-title-sm: 1rem; /* 16px */
+  --text-title: 1.25rem; /* 20px */
+  --text-title-lg: 1.5rem; /* 24px */
   --text-small: 0.875rem; /* 14px */
 
+  /* Title rhythm */
+  --leading-title: 1.25;
+  --tracking-title: -0.01em;
+
   /*-------UI elemens-------*/
-  --color-border: #E2E8F0;
+  --color-border: #E4DED6;
   
 }
 /* Buttons (primary / secondary) - hierarchical */
 
-.btn-primary { @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white; background-color: var(--color-primary); }
-.btn-primary:hover { background-color: color-mix(in srgb, var(--color-primary) 85%, black 15%); }
+.btn-primary { @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white; background-color: var(--color-primary); color: var(--color-primary-contrast); }
+.btn-primary:hover { background-color: #142f52; background-color: color-mix(in srgb, var(--color-primary) 85%, black 15%); }
 
-.btn-secondary { @apply inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg border; color: var(--color-primary); }
-.btn-secondary { border-color: color-mix(in srgb, var(--color-primary) 12%, black 5%); background-color: transparent; }
+.btn-secondary { @apply inline-flex items-center px-3 py-2 text-sm font-medium rounded-lg border; color: var(--color-primary); border-color: #d9e1ea; border-color: color-mix(in srgb, var(--color-primary) 12%, black 5%); background-color: transparent; }
 .btn-secondary:hover { color: var(--color-accent); }
+
+/* Title utilities */
+.title-sm { font-family: var(--font-serif); font-size: var(--text-title-sm); line-height: var(--leading-title); letter-spacing: var(--tracking-title); }
+.title { font-family: var(--font-serif); font-size: var(--text-title); line-height: var(--leading-title); letter-spacing: var(--tracking-title); }
+.title-lg { font-family: var(--font-serif); font-size: var(--text-title-lg); line-height: var(--leading-title); letter-spacing: var(--tracking-title); }
 
 /* Card shadows & radius using design tokens */
 .shadow-card { box-shadow: var(--shadow-card); }

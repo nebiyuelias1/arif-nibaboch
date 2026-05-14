@@ -1,6 +1,6 @@
 <%# Back Navigation %>
 <nav class="mb-6 sm:mb-8">
-  <%= link_to books_path, class: "inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors group" do %>
+  <%= link_to books_path, class: "inline-flex items-center text-sm font-medium text-content-subtle hover:text-accent transition-colors group" do %>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform">
       <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
     </svg>
@@ -11,89 +11,89 @@
 <div class="flex flex-col md:flex-row gap-8 items-start">
   <%# Left Column: Cover Image (Sticky) %>
   <div class="w-full md:w-72 lg:w-80 flex-shrink-0 md:sticky md:top-24">
-    <div class="aspect-[2/3] w-full rounded-2xl shadow-xl overflow-hidden bg-gray-100 border border-gray-100 relative group">
+    <div class="aspect-[2/3] w-full rounded-2xl shadow-xl overflow-hidden bg-background border border-border relative group">
       <% if @book.cover_image.present? %>
         <img src="<%= @book.cover_image %>" alt="<%= @book.title %>" class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-2xl"></div>
       <% else %>
-        <div class="flex h-full w-full flex-col items-center justify-center text-gray-400 p-8 text-center bg-gray-50">
+        <div class="flex h-full w-full flex-col items-center justify-center text-content-muted p-8 text-center bg-background">
           <svg class="h-16 w-16 mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
-          <span class="text-sm font-medium text-gray-500">No Cover</span>
+          <span class="text-sm font-medium text-content-muted">No Cover</span>
         </div>
       <% end %>
     </div>
   </div>
 
   <%# Right Column: Details %>
-  <div class="flex-1 w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8 lg:p-10">
+  <div class="flex-1 w-full bg-surface rounded-3xl shadow-sm border border-border p-6 sm:p-8 lg:p-10">
     
     <%# Header %>
-    <div class="mb-8 border-b border-gray-100 pb-8">
+    <div class="mb-8 border-b border-border pb-8">
       <div class="flex flex-wrap gap-2 mb-4">
         <% @book.tags.each do |tag| %>
-          <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+          <span class="inline-flex items-center rounded-full bg-background px-2.5 py-0.5 text-xs font-medium text-primary ring-1 ring-inset ring-primary/10">
             <%= tag.name %>
           </span>
         <% end %>
       </div>
 
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-2"><%= @book.title %></h1>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-content tracking-tight mb-2"><%= @book.title %></h1>
       
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <p class="text-lg text-gray-600 font-medium">
-          by <span class="text-gray-900"><%= @book.author.presence || 'Unknown' %></span>
+        <p class="text-lg text-content-subtle font-medium">
+          by <span class="text-content"><%= @book.author.presence || 'Unknown' %></span>
         </p>
         
         <%# Global Rating %>
-        <div class="flex items-center gap-2 bg-yellow-50 px-3 py-1.5 rounded-lg w-fit">
-          <div class="flex text-yellow-400">
+        <div class="flex items-center gap-2 bg-background px-3 py-1.5 rounded-lg w-fit">
+          <div class="flex text-accent">
             <% 5.times do |i| %>
-              <svg class="w-5 h-5 <%= i < @book.average_rating.round ? 'fill-current' : 'text-gray-300' %>" viewBox="0 0 20 20" fill="currentColor">
+              <svg class="w-5 h-5 <%= i < @book.average_rating.round ? 'fill-current' : 'text-content-muted' %>" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
             <% end %>
           </div>
-          <div class="text-sm font-bold text-gray-900"><%= @book.average_rating %></div>
-          <div class="text-xs text-gray-500 font-medium">(<%= pluralize(@book.reviews_count, 'review') %>)</div>
+          <div class="text-sm font-bold text-content"><%= @book.average_rating %></div>
+          <div class="text-xs text-content-subtle font-medium">(<%= pluralize(@book.reviews_count, 'review') %>)</div>
         </div>
       </div>
     </div>
 
     <%# Metadata %>
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8 text-sm border-b border-gray-100 pb-8">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8 text-sm border-b border-border pb-8">
       <div>
-        <span class="block text-gray-500 mb-1">Published</span>
-        <span class="font-medium text-gray-900"><%= @book.published_at&.strftime('%B %Y') || 'N/A' %></span>
+        <span class="block text-content-muted mb-1">Published</span>
+        <span class="font-medium text-content"><%= @book.published_at&.strftime('%B %Y') || 'N/A' %></span>
       </div>
       <div>
-        <span class="block text-gray-500 mb-1">Publisher</span>
-        <span class="font-medium text-gray-900"><%= @book.publisher.presence || 'N/A' %></span>
+        <span class="block text-content-muted mb-1">Publisher</span>
+        <span class="font-medium text-content"><%= @book.publisher.presence || 'N/A' %></span>
       </div>
       <div>
-        <span class="block text-gray-500 mb-1">Language</span>
-        <span class="font-medium text-gray-900"><%= @book.language.presence&.upcase || 'N/A' %></span>
+        <span class="block text-content-muted mb-1">Language</span>
+        <span class="font-medium text-content"><%= @book.language.presence&.upcase || 'N/A' %></span>
       </div>
     </div>
 
     <%# Description %>
-    <div class="prose prose-blue prose-sm sm:prose-base text-gray-600 max-w-none mb-10">
-      <h3 class="text-gray-900 font-semibold text-lg mb-3">About this book</h3>
+    <div class="prose prose-sm sm:prose-base text-content-subtle max-w-none mb-10">
+      <h3 class="text-content font-semibold text-lg mb-3">About this book</h3>
       <%= simple_format(@book.description) %>
     </div>
 
     <%# Interactive Rating Section %>
     <div class="mt-auto">
       <% if user_signed_in? %>
-        <div class="bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-2xl p-6 border border-blue-100/50" 
+        <div class="bg-background rounded-2xl p-6 border border-border" 
              data-controller="rating" 
              data-rating-book-id-value="<%= @book.id %>" 
              data-rating-current-value="<%= @book.user_rating(current_user)&.score || 0 %>">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h4 class="text-base font-bold text-gray-900">Have you read this?</h4>
-              <p class="text-sm text-gray-500 mt-0.5">Rate it to share your opinion</p>
+              <h4 class="text-base font-bold text-content">Have you read this?</h4>
+              <p class="text-sm text-content-subtle mt-0.5">Rate it to share your opinion</p>
             </div>
             <div class="flex items-center gap-2">
               <% 5.times do |i| %>
@@ -101,59 +101,59 @@
                         data-rating-target="star"
                         data-action="click->rating#rate mouseover->rating#hover mouseout->rating#unhover"
                         data-rating-value="<%= i + 1 %>"
-                        class="focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-full p-1 transition-transform hover:scale-110 active:scale-95">
-                  <svg class="w-8 h-8 transition-colors text-gray-300 shadow-sm" fill="currentColor" viewBox="0 0 20 20">
+                        class="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-1 transition-transform hover:scale-110 active:scale-95">
+                  <svg class="w-8 h-8 transition-colors text-content-muted shadow-sm" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.602-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                   </svg>
                 </button>
               <% end %>
             </div>
           </div>
-          <p class="text-sm font-medium text-green-600 mt-2 text-center sm:text-right hidden" data-rating-target="message">
-            <span class="inline-flex items-center bg-white px-3 py-1 rounded-full shadow-sm border border-green-100">
+          <p class="text-sm font-medium text-primary mt-2 text-center sm:text-right hidden" data-rating-target="message">
+            <span class="inline-flex items-center bg-surface px-3 py-1 rounded-full shadow-sm border border-border">
               <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
               Rating saved
             </span>
           </p>
         </div>
       <% else %>
-        <div class="rounded-2xl p-6 bg-gray-50 border border-gray-100 text-center">
-          <p class="text-base text-gray-900 font-medium mb-2">Read this book?</p>
-          <p class="text-sm text-gray-500 mb-4">Sign in to rate it and add it to your collection.</p>
-          <%= link_to "Sign In to Rate", new_user_session_path, class: "inline-block bg-white text-gray-900 border border-gray-200 px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm hover:bg-gray-50 hover:text-blue-600 hover:border-blue-200 transition-all" %>
+        <div class="rounded-2xl p-6 bg-background border border-border text-center">
+          <p class="text-base text-content font-medium mb-2">Read this book?</p>
+          <p class="text-sm text-content-subtle mb-4">Sign in to rate it and add it to your collection.</p>
+          <%= link_to "Sign In to Rate", new_user_session_path, class: "inline-block bg-surface text-content border border-border px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm hover:bg-background hover:text-accent hover:border-border transition-all" %>
         </div>
       <% end %>
     </div>
 
     <%# Write a Review Section %>
-    <div class="mt-8 border-t border-gray-100 pt-8">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">Write a Review</h3>
+    <div class="mt-8 border-t border-border pt-8">
+      <h3 class="text-lg font-semibold text-content mb-4">Write a Review</h3>
       <% if user_signed_in? %>
         <%= form_with(model: [@book, Review.new], class: "space-y-4") do |f| %>
           <div>
             <%= f.text_area :body,
               rows: 4,
               placeholder: "Share your thoughts about this book...",
-              class: "w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:outline-none transition-all resize-y min-h-[100px]" %>
+              class: "w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-content placeholder:text-content-muted focus:border-primary focus:bg-surface focus:ring-2 focus:ring-primary focus:outline-none transition-all resize-y min-h-[100px]" %>
           </div>
           <div class="flex justify-end">
             <%= f.submit "Post Review",
-              class: "inline-flex items-center px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all cursor-pointer" %>
+              class: "inline-flex items-center px-5 py-2.5 bg-primary text-primary-contrast text-sm font-semibold rounded-xl shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all cursor-pointer" %>
           </div>
         <% end %>
       <% else %>
-        <div class="rounded-2xl p-6 bg-gray-50 border border-gray-100 text-center">
-          <p class="text-sm text-gray-500 mb-3">Sign in to share your thoughts on this book.</p>
-          <%= link_to "Sign In to Review", new_user_session_path, class: "inline-block bg-white text-gray-900 border border-gray-200 px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm hover:bg-gray-50 hover:text-blue-600 hover:border-blue-200 transition-all" %>
+        <div class="rounded-2xl p-6 bg-background border border-border text-center">
+          <p class="text-sm text-content-subtle mb-3">Sign in to share your thoughts on this book.</p>
+          <%= link_to "Sign In to Review", new_user_session_path, class: "inline-block bg-surface text-content border border-border px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm hover:bg-background hover:text-accent hover:border-border transition-all" %>
         </div>
       <% end %>
     </div>
 
     <%# Reviews List %>
-    <div class="mt-8 border-t border-gray-100 pt-8">
+    <div class="mt-8 border-t border-border pt-8">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-lg font-semibold text-gray-900">Reviews</h3>
-        <span class="text-sm text-gray-500 font-medium"><%= pluralize(@book.reviews_count, 'review') %></span>
+        <h3 class="text-lg font-semibold text-content">Reviews</h3>
+        <span class="text-sm text-content-subtle font-medium"><%= pluralize(@book.reviews_count, 'review') %></span>
       </div>
 
       <% if @reviews.any? %>
@@ -161,19 +161,19 @@
           <% @reviews.each do |review| %>
             <div class="flex gap-4">
               <div class="flex-shrink-0">
-                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                  <span class="text-sm font-semibold text-blue-700"><%= review.user.name.present? ? review.user.name[0].upcase : review.user.email[0].upcase %></span>
+                <div class="w-10 h-10 rounded-full bg-background flex items-center justify-center">
+                  <span class="text-sm font-semibold text-primary"><%= review.user.name.present? ? review.user.name[0].upcase : review.user.email[0].upcase %></span>
                 </div>
               </div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1">
-                  <span class="text-sm font-semibold text-gray-900"><%= review.user.name.presence || review.user.username.presence || review.user.email.split('@').first %></span>
-                  <span class="text-xs text-gray-400"><%= time_ago_in_words(review.created_at) %> ago</span>
+                  <span class="text-sm font-semibold text-content"><%= review.user.name.presence || review.user.username.presence || review.user.email.split('@').first %></span>
+                  <span class="text-xs text-content-muted"><%= time_ago_in_words(review.created_at) %> ago</span>
                 </div>
-                <div class="text-sm text-gray-700 leading-relaxed">
+                <div class="text-sm text-content leading-relaxed">
                   <%= simple_format(review.body, class: "mb-0") %>
                 </div>
-                <div class="text-sm text-gray-500">
+                <div class="text-sm text-content-subtle">
                   <% if user_signed_in? %>
                     <div data-controller="review-like"
                          data-review-like-review-id-value="<%= review.id %>"
@@ -188,16 +188,16 @@
                           </svg>
                         </span>
                         <span data-review-like-target="count" class="text-sm font-medium"><%= review.review_likes_count %></span>
-                        <span data-review-like-target="text" class="text-sm font-medium text-gray-500"><%= review.review_likes_count == 1 ? 'like' : 'likes' %></span>
+                        <span data-review-like-target="text" class="text-sm font-medium text-content-subtle"><%= review.review_likes_count == 1 ? 'like' : 'likes' %></span>
                       </button>
                     </div>
                   <% else %>
-                    <div class="inline-flex items-center gap-1.5 text-gray-400">
+                    <div class="inline-flex items-center gap-1.5 text-content-muted">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                       </svg>
                       <span class="text-sm font-medium"><%= review.review_likes_count %></span>
-                      <span class="text-sm font-medium text-gray-500"><%= review.review_likes_count == 1 ? 'like' : 'likes' %></span>
+                      <span class="text-sm font-medium text-content-subtle"><%= review.review_likes_count == 1 ? 'like' : 'likes' %></span>
                     </div>
                   <% end %>
                 </div>
@@ -207,10 +207,10 @@
         </div>
       <% else %>
         <div class="text-center py-8">
-          <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-12 h-12 text-content-muted mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
           </svg>
-          <p class="text-sm text-gray-500">No reviews yet. Be the first to share your thoughts!</p>
+          <p class="text-sm text-content-subtle">No reviews yet. Be the first to share your thoughts!</p>
         </div>
       <% end %>
     </div>

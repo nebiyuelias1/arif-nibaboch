@@ -1,20 +1,20 @@
 <div class="flex-1 min-h-screen flex items-center justify-center">
-  <div class="w-full bg-white shadow-md rounded-lg p-6 sm:p-8">
+  <div class="w-full bg-surface shadow-md rounded-lg p-6 sm:p-8">
     <div class="text-center mb-5">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900">Sign in to your account</h2>
-      <p class="mt-1 text-xs sm:text-sm text-gray-600">Welcome back — enter your details to access your account.</p>
+      <h2 class="text-xl sm:text-2xl font-extrabold text-content">Sign in to your account</h2>
+      <p class="mt-1 text-xs sm:text-sm text-content-subtle">Welcome back — enter your details to access your account.</p>
     </div>
 
     <% if flash.any? %>
       <% flash.each do |name, msg| %>
-        <div class="mb-3 p-3 rounded text-sm <%= name.to_s == 'alert' || name.to_s == 'error' ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800' %>">
+        <div class="mb-3 p-3 rounded text-sm <%= name.to_s == 'alert' || name.to_s == 'error' ? 'bg-red-50 text-red-800' : 'bg-background text-content' %>">
           <%= msg %>
         </div>
       <% end %>
     <% end %>
 
     <% if resource.errors.any? %>
-      <div class="mb-3 p-3 border border-red-200 bg-red-50 rounded">
+    <div class="mb-3 p-3 border border-red-200 bg-red-50 rounded">
         <ul class="list-disc list-inside text-sm sm:text-sm text-red-700">
           <% resource.errors.full_messages.each do |m| %>
             <li><%= m %></li>
@@ -26,18 +26,18 @@
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo: false } }) do |f| %>
       <div class="space-y-3">
         <div>
-          <%= f.label :email, class: "block text-sm sm:text-base font-medium text-gray-700" %>
+          <%= f.label :email, class: "block text-sm sm:text-base font-medium text-content" %>
           <div class="mt-1">
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-sm" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-border rounded-md shadow-sm placeholder:text-content-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-sm text-content bg-surface" %>
           </div>
         </div>
 
         <div class="w-full">
           <%= f.label :password, class: "label mb-1.5 text-sm" %>
           <div class="relative" data-controller="password">
-            <%= f.password_field :password, autocomplete: "current-password", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-sm", data: { password_target: "input" } %>
+            <%= f.password_field :password, autocomplete: "current-password", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-border rounded-md shadow-sm placeholder:text-content-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-sm text-content bg-surface", data: { password_target: "input" } %>
             <button type="button"
-                    class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-content-muted hover:text-content transition-colors"
                     data-action="click->password#toggle"
                     aria-label="Toggle password visibility">
               <span data-password-target="toggleIcon">
@@ -49,19 +49,19 @@
 
         <% if devise_mapping.rememberable? %>
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <label class="flex items-center text-sm text-gray-700">
-              <%= f.check_box :remember_me, class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" %>
+            <label class="flex items-center text-sm text-content">
+              <%= f.check_box :remember_me, class: "h-4 w-4 text-primary focus:ring-primary border-border rounded" %>
               <span class="ml-2 text-sm">Remember me</span>
             </label>
 
             <div class="text-sm">
-              <%= link_to "Forgot your password?", new_password_path(resource_name), class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+              <%= link_to "Forgot your password?", new_password_path(resource_name), class: "font-medium text-primary hover:text-accent" %>
             </div>
           </div>
         <% end %>
 
         <div>
-          <%= f.submit "Log in", class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= f.submit "Log in", class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
         </div>
       </div>
     <% end %>
@@ -78,7 +78,7 @@
       <% end %>
     </div>
 
-    <div class="mt-6 text-center text-sm text-gray-600">
+    <div class="mt-6 text-center text-sm text-content-subtle">
       <%= render "devise/shared/links" %>
     </div>
   </div>

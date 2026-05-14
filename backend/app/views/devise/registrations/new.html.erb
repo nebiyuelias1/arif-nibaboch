@@ -1,13 +1,13 @@
 <div class="flex-1 min-h-screen flex items-center justify-center">
-  <div class="w-full bg-white shadow-md rounded-lg p-6 sm:p-8">
+  <div class="w-full bg-surface shadow-md rounded-lg p-6 sm:p-8">
     <div class="text-center mb-5">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900">Create your account</h2>
-      <p class="mt-1 text-xs sm:text-sm text-gray-600">Start your free account — join us today.</p>
+      <h2 class="text-xl sm:text-2xl font-extrabold text-content">Create your account</h2>
+      <p class="mt-1 text-xs sm:text-sm text-content-subtle">Start your free account — join us today.</p>
     </div>
 
     <% if flash.any? %>
       <% flash.each do |name, msg| %>
-        <div class="mb-3 p-3 rounded text-sm <%= name.to_s == 'alert' || name.to_s == 'error' ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800' %>">
+        <div class="mb-3 p-3 rounded text-sm <%= name.to_s == 'alert' || name.to_s == 'error' ? 'bg-red-50 text-red-800' : 'bg-background text-content' %>">
           <%= msg %>
         </div>
       <% end %>
@@ -18,38 +18,38 @@
 
       <div class="space-y-3">
         <div>
-          <%= f.label :email, class: "block text-sm sm:text-base font-medium text-gray-700" %>
+          <%= f.label :email, class: "block text-sm sm:text-base font-medium text-content" %>
           <div class="mt-1">
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-sm" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-border rounded-md shadow-sm placeholder:text-content-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-sm text-content bg-surface" %>
           </div>
         </div>
 
         <div>
           <div class="flex items-baseline justify-between">
-            <%= f.label :password, class: "block text-sm sm:text-base font-medium text-gray-700" %>
+            <%= f.label :password, class: "block text-sm sm:text-base font-medium text-content" %>
             <% if @minimum_password_length %>
-              <span class="text-xs text-gray-500">(<%= @minimum_password_length %> characters minimum)</span>
+              <span class="text-xs text-content-muted">(<%= @minimum_password_length %> characters minimum)</span>
             <% end %>
           </div>
           <div class="mt-1">
-            <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-sm" %>
+            <%= f.password_field :password, autocomplete: "new-password", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-border rounded-md shadow-sm placeholder:text-content-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-sm text-content bg-surface" %>
           </div>
         </div>
 
         <div>
-          <%= f.label :password_confirmation, class: "block text-sm sm:text-base font-medium text-gray-700" %>
+          <%= f.label :password_confirmation, class: "block text-sm sm:text-base font-medium text-content" %>
           <div class="mt-1">
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-sm" %>
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "appearance-none block w-full px-3 py-3 sm:py-2 border border-border rounded-md shadow-sm placeholder:text-content-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm sm:text-sm text-content bg-surface" %>
           </div>
         </div>
 
         <div>
-          <%= f.submit "Sign up", class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        <%= f.submit "Sign up", class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
         </div>
       </div>
     <% end %>
 
-    <div class="mt-6 text-center text-sm text-gray-600">
+    <div class="mt-6 text-center text-sm text-content-subtle">
       <%= render "devise/shared/links" %>
     </div>
   </div>

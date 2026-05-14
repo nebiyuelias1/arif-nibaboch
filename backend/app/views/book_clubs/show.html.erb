@@ -1,12 +1,12 @@
 <div data-controller="book-club" class="max-w-4xl mx-auto"
      data-book-club-club-id-value="<%= @club.id %>" > 
-  <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8"> 
+  <div class="bg-surface rounded-lg shadow-sm overflow-hidden mb-8"> 
     <% if @club.cover_photo.attached? %>
-      <div class="h-64 w-full bg-gray-200 relative">
+      <div class="h-64 w-full bg-background relative">
         <%= image_tag @club.cover_photo, class: "w-full h-full object-cover" %>
       </div>
     <% else %>
-      <div class="h-48 w-full bg-blue-600 flex items-center justify-center text-white">
+      <div class="h-48 w-full bg-primary flex items-center justify-center text-primary-contrast">
         <svg class="w-16 h-16 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
@@ -16,12 +16,12 @@
     <div class="p-8">
       <div class="flex justify-between items-start">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900 mb-2"><%= @club.name %></h1>
+          <h1 class="text-3xl font-bold text-content mb-2"><%= @club.name %></h1>
           <div class="flex items-center space-x-4 mb-6">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= @club.is_private ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' %>">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= @club.is_private ? 'bg-red-100 text-red-800' : 'bg-background text-primary' %>">
               <%= @club.is_private ? 'Private Club' : 'Public Club' %>
             </span>
-            <span class="text-sm text-gray-500">
+            <span class="text-sm text-content-subtle">
               Created by <%= @club.owner ? (@club.owner.name.presence || @club.owner.username.presence || "Unknown User") : "Deleted User" %>
             </span>
           </div>
@@ -29,41 +29,41 @@
         
         <% if user_signed_in? && @club.owner == current_user %>
           <div class="flex space-x-3">
-            <%= button_to "Edit Club", edit_book_club_path(@club), method: :get, class: "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
+            <%= button_to "Edit Club", edit_book_club_path(@club), method: :get, class: "bg-surface border border-border text-content hover:bg-background px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
           </div>
         <% else %>
-          <button class="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-md text-sm font-medium transition-colors" data-action="click->book-club#toggle" data-book-club-target="button">
+          <button class="bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm font-medium transition-colors" data-action="click->book-club#toggle" data-book-club-target="button">
             <%= @club.has_member?(current_user) ? 'Leave Club' : 'Join Club' %>
           </button>
         <% end %>
       </div>
 
-      <div class="prose max-w-none text-gray-600 mt-6">
+      <div class="prose max-w-none text-content-subtle mt-6">
         <% if @club.description.present? %>
           <%= simple_format(@club.description) %>
         <% else %>
-          <p class="italic text-gray-400">No description provided for this club yet.</p>
+          <p class="italic text-content-muted">No description provided for this club yet.</p>
         <% end %>
       </div>
     </div>
   </div>
 
   <div class="flex justify-between items-center mb-6 mt-12">
-    <h2 class="text-2xl font-bold text-gray-900">Current Reading</h2>
-    <%= link_to "See all", book_club_book_reads_path(@club), class: "text-blue-600 hover:text-blue-800 text-sm font-medium" %>
+    <h2 class="text-2xl font-bold text-content">Current Reading</h2>
+    <%= link_to "See all", book_club_book_reads_path(@club), class: "text-primary hover:text-accent text-sm font-medium" %>
   </div>
 
   <% if @current_read %>
     <%= render partial: "book_reads/card", locals: { read: @current_read } %>
   <% else %>
-    <div class="bg-white rounded-lg shadow-sm p-8 text-center border border-dashed border-gray-300">
-      <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="bg-surface rounded-lg shadow-sm p-8 text-center border border-dashed border-border">
+      <svg class="mx-auto h-12 w-12 text-content-muted mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
-      <h3 class="text-lg font-medium text-gray-900 mb-1">No active reading session</h3>
-      <p class="text-gray-500 mb-4">The club admin hasn't selected a book to read yet.</p>
+      <h3 class="text-lg font-medium text-content mb-1">No active reading session</h3>
+      <p class="text-content-subtle mb-4">The club admin hasn't selected a book to read yet.</p>
       <% if user_signed_in? && @club.owner == current_user %>
-        <%= link_to "Start a New Read", new_book_club_book_read_path(@club), class: "inline-flex items-center justify-center bg-blue-50 text-blue-700 hover:bg-blue-100 px-6 py-2.5 rounded-md text-sm font-medium transition-colors" %>
+        <%= link_to "Start a New Read", new_book_club_book_read_path(@club), class: "inline-flex items-center justify-center bg-background text-primary hover:bg-background px-6 py-2.5 rounded-md text-sm font-medium transition-colors" %>
       <% end %>
     </div>
   <% end %>
