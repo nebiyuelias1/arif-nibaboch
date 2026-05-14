@@ -8,6 +8,7 @@ class UserDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    admin: Field::Boolean,
     id: Field::Number,
     email: Field::String,
     encrypted_password: Field::String,
@@ -23,7 +24,7 @@ class UserDashboard < Administrate::BaseDashboard
     telegram_id: Field::String,
     username: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -63,6 +64,7 @@ class UserDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
+    admin
     email
     encrypted_password
     line_id

@@ -161,9 +161,7 @@
           <% @reviews.each do |review| %>
             <div class="flex gap-4">
               <div class="flex-shrink-0">
-                <div class="w-10 h-10 rounded-full bg-background flex items-center justify-center">
-                  <span class="text-sm font-semibold text-primary"><%= review.user.name.present? ? review.user.name[0].upcase : review.user.email[0].upcase %></span>
-                </div>
+                <%= render "shared/avatar", user: review.user, classes: "w-10 h-10 bg-background text-primary text-sm font-semibold ring-1 ring-border" %>
               </div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1">
