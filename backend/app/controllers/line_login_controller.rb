@@ -53,6 +53,7 @@ class LineLoginController < ApplicationController
     end
 
     user = User.from_line_auth(profile)
+    user.remember_me = true
     sign_in(user)
     redirect_to root_path, notice: "Successfully logged in with LINE."
   end
