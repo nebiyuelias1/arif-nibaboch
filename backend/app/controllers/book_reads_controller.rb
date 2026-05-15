@@ -17,9 +17,14 @@ class BookReadsController < ApplicationController
     if user_signed_in? && @book_club.owner == current_user
       @discussion_questions = @book_read.discussion_questions.order(:position)
     else
-      @discussion_questions = @book_read.discussion_questions.revealed.order(:position)
+      @discussion_questions = @book_read.discussion_questions
+        .revealed
+        .or(@book_read.discussion_questions.where(user: current_user))
+        .order(:position)
     end
 
+    draft_content = session.delete(:discussion_question_draft)
+    @new_discussion_question = DiscussionQuestion.new(content: draft_content)
     @rsvp = @book_read.book_read_rsvps.find_by(user: current_user) if user_signed_in?
     @rsvp_users = @book_read.book_read_rsvps.going.includes(:user).map(&:user)
     @rsvp_records = @book_read.book_read_rsvps.includes(:user).order(created_at: :asc)

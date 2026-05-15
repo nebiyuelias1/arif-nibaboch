@@ -1,4 +1,5 @@
 class DiscussionQuestionsController < ApplicationController
+  prepend_before_action :store_discussion_question_draft, only: [ :create ]
   before_action :authenticate_user!
   before_action :set_book_club_and_read
   before_action -> { authorize_discussion_question_permission }, only: [ :create, :update ]
@@ -8,6 +9,8 @@ class DiscussionQuestionsController < ApplicationController
 
     respond_to do |format|
       if @discussion_question.save
+        session.delete(:discussion_question_draft)
+        flash.now[:notice] = "Question added successfully."
         format.turbo_stream
         format.html { redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Question added successfully." }
       else
@@ -46,6 +49,13 @@ class DiscussionQuestionsController < ApplicationController
 
   def discussion_question_update_params
     params.require(:discussion_question).permit(:content, :status)
+  end
+
+  def store_discussion_question_draft
+    return if user_signed_in?
+
+    session[:discussion_question_draft] = params.dig(:discussion_question, :content)
+    store_location_for(:user, book_club_book_read_path(params[:book_club_id], params[:book_read_id]))
   end
 
   def authorize_discussion_question_permission

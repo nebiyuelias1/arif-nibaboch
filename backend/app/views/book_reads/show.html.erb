@@ -288,16 +288,14 @@
   <div class="bg-surface p-8 rounded-lg shadow-sm border border-border">
     <h2 class="title title-lg text-content font-bold">Discussion Questions</h2>
 
-    <% if user_signed_in? && (@book_club.owner == current_user || @book_read.can_post_discussion_question?(current_user)) %>
-      <div class="mb-6 flex flex-col">
-        <%= render partial: "discussion_questions/form",
-        locals: {
-          book_club: @book_club,
-          book_read: @book_read,
-          discussion_question: DiscussionQuestion.new,
-        } %>
-      </div>
-    <% end %>
+    <div class="mb-6 flex flex-col">
+      <%= render partial: "discussion_questions/form",
+      locals: {
+        book_club: @book_club,
+        book_read: @book_read,
+        discussion_question: @new_discussion_question,
+      } %>
+    </div>
 
     <%= turbo_stream_from @book_read, :discussion_questions %>
 

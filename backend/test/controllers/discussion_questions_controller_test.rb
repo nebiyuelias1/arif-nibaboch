@@ -83,4 +83,26 @@ class DiscussionQuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to book_club_book_read_path(@book_club, @book_read)
     assert_equal "Question cannot be blank.", flash[:alert]
   end
+
+  test "should redirect unauthenticated users to sign in and preserve draft" do
+    sign_out @user
+    content = "Can we talk about the ending?"
+
+    assert_no_difference("DiscussionQuestion.count") do
+      post book_club_book_read_discussion_questions_url(@book_club, @book_read), params: {
+        discussion_question: {
+          content: content
+        }
+      }
+    end
+
+    assert_redirected_to new_user_session_path
+    assert_equal book_club_book_read_path(@book_club, @book_read), session["user_return_to"]
+    assert_equal content, session[:discussion_question_draft]
+
+    sign_in @user
+    get book_club_book_read_path(@book_club, @book_read)
+    assert_response :success
+    assert_includes @response.body, content
+  end
 end

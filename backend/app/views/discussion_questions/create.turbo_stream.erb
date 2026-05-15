@@ -3,3 +3,11 @@
 <% end %>
 
 <%= turbo_stream.remove "no_discussion_questions" %>
+
+<%= turbo_stream.replace "new_discussion_question_form" do %>
+  <%= render partial: "discussion_questions/form", locals: { book_club: @book_club, book_read: @book_read, discussion_question: DiscussionQuestion.new } %>
+<% end %>
+
+<%= turbo_stream.append "toast_triggers" do %>
+  <div data-controller="flash-toast" data-flash-toast-message-value="<%= flash.now[:notice] %>" data-flash-toast-type-value="success"></div>
+<% end %>
