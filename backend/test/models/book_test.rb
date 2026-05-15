@@ -76,7 +76,7 @@ class BookTest < ActiveSupport::TestCase
     assert_empty result, "Deleted book should be removed from books_fts"
   end
 
- test "full-text search works on multiple columns" do
+  test "full-text search works on multiple columns" do
     book1 = Book.create!(
       title: "Ruby Programming",
       author: "Test Author",

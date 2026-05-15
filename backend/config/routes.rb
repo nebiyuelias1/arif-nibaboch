@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :users
 
       root to: "books#index"
+      
     end
   devise_for :users, controllers: {
     registrations: "users/registrations"
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
 
   get "/line_login/authorize", to: "line_login#authorize", as: :line_login_authorize
   get "/line_login/callback", to: "line_login#callback", as: :line_login_callback
+  get "dashboard", to: "dashboard#index"
 
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
