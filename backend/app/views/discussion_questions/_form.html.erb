@@ -20,7 +20,7 @@
       <%= form.text_area :content, rows: 3, required: true, class: "w-full rounded-lg border-border shadow-inner bg-surface text-content text-sm focus:ring-2 focus:ring-primary focus:border-primary block p-3.5 placeholder:text-content-muted resize-y #{'border-red-300 focus:border-red-500 focus:ring-red-500 bg-red-50' if discussion_question.errors.any?}", placeholder: "What did you think about the main character's decision in chapter 3?" %>
       
       <div class="flex justify-end">
-        <%= form.button class: "btn-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all transform active:scale-95" do %>
+        <%= form.button class: "btn-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all transform active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed", data: { turbo_submits_with: "Posting..."} do %>
           <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
           </svg>
