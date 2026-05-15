@@ -1,5 +1,7 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :ensure_admin!, only: [:edit, :update, :destroy]
 
   def index
     @tags = Tag.all.limit(10).order(:name)
@@ -86,5 +88,14 @@ class BooksController < ApplicationController
 
   def book_params
     params.require(:book).permit(:title, :author, :description, :published_at)
+  end
+end
+
+private
+
+  def ensure_admin!
+    unless current_user&.admin?
+      redirect_to books_path, alert: "Only admins can perform this action."
+    end
   end
 end
