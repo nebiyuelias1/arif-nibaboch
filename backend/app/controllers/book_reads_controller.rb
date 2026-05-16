@@ -20,7 +20,7 @@ class BookReadsController < ApplicationController
     else
       @discussion_questions = discussion_questions
         .revealed
-        .or(@book_read.discussion_questions.where(user: current_user))
+        .or(discussion_questions.where(user: current_user))
         .order(:position)
     end
 

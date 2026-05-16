@@ -24,6 +24,7 @@ export default class extends Controller {
         "border-primary",
       );
       btn.classList.add("bg-surface", "text-content", "border-border");
+      btn.setAttribute("aria-pressed", "false");
     });
 
     button.classList.add(
@@ -32,5 +33,6 @@ export default class extends Controller {
       "border-primary",
     );
     button.classList.remove("bg-surface", "text-content", "border-border");
+    btn.setAttribute("aria-pressed", "true");
   }
 }

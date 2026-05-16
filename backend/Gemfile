@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 # For csv processing
 gem "csv"
-# For chinese pinyin on tranlsations
+# For chinese pinyin tranlsations
 gem "chinese_pinyin"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.3"
