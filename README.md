@@ -1,6 +1,6 @@
 # Arif Nibaboch
 
-<img width="2816" height="1536" alt="Gemini_Generated_Image_fueswjfueswjfues (1)" src="https://github.com/user-attachments/assets/48e3dffb-e6b6-4a36-8eed-e3d471efa202" />
+<img width="2816" height="1536" alt="Gemini_Generated_Image" src="https://github.com/user-attachments/assets/48e3dffb-e6b6-4a36-8eed-e3d471efa202" />
 
 Arif Nibaboch is yet another book review app.
 
