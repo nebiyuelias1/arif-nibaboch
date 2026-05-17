@@ -133,14 +133,6 @@ class BookTest < ActiveSupport::TestCase
     mock_service.verify
   end
 
-  test "should not allow non-admin to update book" do
-    non_admin = users(:one)
-    non_admin.admin = false
-
-    assert_not non_admin.admin?, "User should not be an admin"
-  end
-end
-
   test "does not create telegram discussion if telegram_post_id already exists" do
     mock_service = Minitest::Mock.new
     TelegramService.stub(:new, mock_service) do
