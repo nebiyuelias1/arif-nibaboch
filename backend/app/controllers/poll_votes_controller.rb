@@ -1,4 +1,5 @@
 class PollVotesController < ApplicationController
+  prepend_before_action :store_poll_vote_return_to, only: :create
   before_action :authenticate_user!
   before_action :set_book_club
   before_action :set_book_read
@@ -51,5 +52,11 @@ class PollVotesController < ApplicationController
       format.html { redirect_to book_club_book_read_path(@book_club, @book_read), alert: @error_message }
       format.turbo_stream { render :create, status: :unprocessable_entity }
     end
+  end
+
+  def store_poll_vote_return_to
+    return if user_signed_in?
+
+    store_location_for(:user, "#{book_club_book_read_path(params[:book_club_id], params[:book_read_id])}#poll_voting")
   end
 end
