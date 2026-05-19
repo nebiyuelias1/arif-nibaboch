@@ -16,9 +16,7 @@
             viewBox="0 0 6 10"
           >
             <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
               stroke-width="2"
               d="m1 9 4-4-4-4"
             />
@@ -254,30 +252,42 @@
 
   <% if @book_read.poll.present? %>
     <div class="bg-surface p-8 rounded-lg shadow-sm border border-border mb-8">
-      <h2 class="title title-lg text-content font-bold mb-4">Community Poll</h2>
+      <h2 class="title title-lg text-content font-bold mb-4">Poll</h2>
       <p class="text-content-subtle mb-6"><%= @book_read.poll.text %></p>
 
-      <div class="space-y-3">
+      <div class="space-y-3" data-controller="poll-vote-form">
         <% @book_read.poll.poll_options.each do |option| %>
-          <div
+          <label
             class="
               flex items-center justify-between p-4 rounded-lg border border-border
               bg-background hover:bg-surface transition-all group
             "
           >
-            <div class="flex-1">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                class="mt-0.5"
+                data-poll-vote-form-target="option"
+                data-action="poll-vote-form#toggle"
+              />
               <span class="font-bold text-content"><%= option.content %></span>
             </div>
-            <button
-              class="
-                px-5 py-2 bg-surface border border-border rounded-md text-xs font-bold
-                text-content hover:border-primary hover:text-primary transition-colors shadow-sm
-              "
-            >
-              Vote
-            </button>
-          </div>
+          </label>
         <% end %>
+
+        <button
+          type="button"
+          data-poll-vote-form-target="submit"
+          disabled
+          class="
+            px-5 py-2 rounded-md text-xs font-bold transition-colors shadow-sm
+            text-primary-contrast bg-primary hover:bg-primary
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
+            disabled:opacity-50 disabled:cursor-not-allowed
+          "
+        >
+          Vote
+        </button>
       </div>
 
       <p class="mt-8 text-xs text-content-muted italic text-center">Voting ends on
