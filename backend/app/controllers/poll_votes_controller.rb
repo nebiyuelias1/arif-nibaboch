@@ -51,7 +51,7 @@ class PollVotesController < ApplicationController
 
   def set_poll
     @poll = @book_read.poll
-    raise ActiveRecord::RecordNotFound, "Poll not found for this book read" if @poll.nil
+    raise ActiveRecord::RecordNotFound, "Poll not found for this book read" if @poll.nil?
   end
 
   def respond_with_error
