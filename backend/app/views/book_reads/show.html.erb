@@ -287,7 +287,7 @@
 
       <% user_has_voted = user_signed_in? && @book_read.poll.poll_votes.exists?(user_id: current_user.id) %>
       <div id="poll_voting">
-        <% if user_has_voted %>
+        <% if user_has_voted || !poll_active  %>
           <%= render "polls/vote_results",
           poll: @book_read.poll,
           current_user: current_user %>

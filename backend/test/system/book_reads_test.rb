@@ -133,7 +133,10 @@ class BookReadsTest < ApplicationSystemTestCase
     poll = polls(:two)
     book_read = poll.book_read
     book_club = book_read.book_club
-    poll.update!(finalized_at: nil)
+    poll.poll_options.build(content: "Option A")
+    poll.poll_options.build(content: "Option B")
+    poll.save!
+    poll.update!(end_date: 1.days.ago, finalized_at: nil)
 
     login_as book_club.owner
     visit book_club_book_read_path(book_club, book_read)
@@ -164,6 +167,10 @@ class BookReadsTest < ApplicationSystemTestCase
   private
 
   def login_as(user)
+    visit profile_path
+    if page.has_button?("Sign out")
+      click_on "Sign out"
+    end
     visit new_user_session_path
     fill_in "Email", with: user.email
     fill_in "Password", with: "password123"
