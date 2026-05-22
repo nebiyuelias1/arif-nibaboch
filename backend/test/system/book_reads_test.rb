@@ -129,6 +129,18 @@ class BookReadsTest < ApplicationSystemTestCase
     assert find("input[name='selection_type'][value='poll']", visible: false).checked?
   end
 
+  test "shows finalize poll button when poll expired and not finalized" do
+    poll = polls(:two)
+    book_read = poll.book_read
+    book_club = book_read.book_club
+    poll.update!(finalized_at: nil)
+
+    login_as book_club.owner
+    visit book_club_book_read_path(book_club, book_read)
+
+    assert_selector "button", text: "Finalize Poll"
+  end
+
   test "showing errors when creating a poll without options" do
     visit new_book_club_book_read_path(@book_club)
 

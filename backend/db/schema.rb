@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_14_200746) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_22_151001) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -158,6 +158,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_14_200746) do
     t.datetime "end_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "finalized_at"
     t.index ["book_read_id"], name: "index_polls_on_book_read_id"
   end
 

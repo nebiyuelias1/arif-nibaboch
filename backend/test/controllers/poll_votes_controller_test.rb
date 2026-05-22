@@ -48,4 +48,20 @@ class PollVotesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
   end
+
+  test "rejects votes for expired poll via html" do
+    expired_poll = Poll.find(polls(:two).id)
+    book_read = expired_poll.book_read
+    book_club = book_read.book_club
+    expired_option = PollOption.create!(poll: expired_poll, content: "Late option")
+
+    assert_no_difference("PollVote.count") do
+      post book_club_book_read_poll_votes_url(book_club, book_read), params: {
+        poll_option_ids: [ expired_option.id ]
+      }
+    end
+
+    assert_redirected_to book_club_book_read_url(book_club, book_read)
+    assert_equal "Poll has ended", flash[:alert]
+  end
 end
