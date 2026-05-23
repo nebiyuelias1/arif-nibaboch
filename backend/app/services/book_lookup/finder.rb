@@ -13,6 +13,14 @@ module BookLookup
           author: @author,
           max_candidates: @max_candidates
         )
+        # TODO: Add open library provider
+        # by scoring results and picking the
+        # correct one, merging, confidence, etc.
+        # BookLookup::Providers::OpenLibrary.new(
+        #   title: @title,
+        #   author: @author,
+        #   max_candidates: @max_candidates
+        # )
       ]
 
       providers.each do |provider|
