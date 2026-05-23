@@ -15,6 +15,14 @@ class BookLookupTest < ActiveSupport::TestCase
     assert_equal "Frank Herbert", result[:author]
   end
 
+
+  test "handles by in book title" do
+    result = BookLookup::Parser.parse("Living by the River By Florence Chuang")
+
+    assert_equal "Living by the River", result[:title]
+    assert_equal "Florence Chuang", result[:author]
+  end
+
   test "returns nil author when delimiter missing" do
     result = BookLookup::Parser.parse("Dune")
 

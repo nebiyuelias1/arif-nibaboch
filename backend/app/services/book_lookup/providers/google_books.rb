@@ -23,7 +23,12 @@ module BookLookup
           http.request(Net::HTTP::Get.new(uri))
         end
 
-        return [] unless response.is_a?(Net::HTTPSuccess)
+        unless response.is_a?(Net::HTTPSuccess)
+          Rails.logger.warn(
+            "GoogleBooks lookup failed: status=#{response.code} body=#{response.body.to_s[0, 500]}"
+          )
+          return []
+        end
 
         data = JSON.parse(response.body)
         items = data.fetch("items", [])
