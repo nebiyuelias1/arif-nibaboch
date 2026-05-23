@@ -250,33 +250,44 @@
     </div>
   </div>
 
-  <% if @book_read.poll.present? && @book_read.poll.active? %>
+  <% if @book_read.poll.present? && !@book_read.poll.finalized_at.present? %>
+    <% poll_active = @book_read.poll.active? %>
     <div class="bg-surface p-8 rounded-lg shadow-sm border border-border mb-8">
       <div class="flex items-center justify-between mb-4">
         <h2 class="title title-lg text-content font-bold">Poll</h2>
-        <% share_url = "#{request.base_url}#{book_club_book_read_path(@book_club, @book_read)}#poll_voting" %>
-        <button
-          type="button"
-          aria-label="Share poll"
-          data-controller="share"
-          data-action="share#share"
-          data-share-url-value="<%= share_url %>"
-          data-share-title-value="<%= @book_read.poll.text %>"
-          class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-border bg-background text-content hover:bg-surface transition-colors"
-        >
-          <span class="sr-only" data-share-target="label">Share poll</span>
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
-            <path d="M16 6l-4-4-4 4" />
-            <path d="M12 2v14" />
-          </svg>
-        </button>
+        <div class="flex items-center gap-3">
+          <% if !poll_active && user_signed_in? && @book_read.host == current_user %>
+            <button
+              type="button"
+              class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full border border-border bg-background text-content hover:bg-surface transition-colors"
+            >
+              Finalize Poll
+            </button>
+          <% end %>
+          <% share_url = "#{request.base_url}#{book_club_book_read_path(@book_club, @book_read)}#poll_voting" %>
+          <button
+            type="button"
+            aria-label="Share poll"
+            data-controller="share"
+            data-action="share#share"
+            data-share-url-value="<%= share_url %>"
+            data-share-title-value="<%= @book_read.poll.text %>"
+            class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-border bg-background text-content hover:bg-surface transition-colors"
+          >
+            <span class="sr-only" data-share-target="label">Share poll</span>
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
+              <path d="M16 6l-4-4-4 4" />
+              <path d="M12 2v14" />
+            </svg>
+          </button>
+        </div>
       </div>
       <p class="text-content-subtle mb-6"><%= @book_read.poll.text %></p>
 
       <% user_has_voted = user_signed_in? && @book_read.poll.poll_votes.exists?(user_id: current_user.id) %>
       <div id="poll_voting">
-        <% if user_has_voted %>
+        <% if user_has_voted || !poll_active  %>
           <%= render "polls/vote_results",
           poll: @book_read.poll,
           current_user: current_user %>
