@@ -12,6 +12,7 @@ class BookLookupJob < ApplicationJob
 
     if record
       record.update(attributes.compact_blank)
+      record
     else
       puts "#attribes: #{attributes}"
       Book.create!(attributes)

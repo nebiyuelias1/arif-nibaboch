@@ -11,7 +11,14 @@ class Poll < ApplicationRecord
   validate :must_have_at_least_two_options
 
   def active?
-    end_date.nil? || end_date > Time.current
+    return false if finalized_at.present?
+    end_date.nil? || end_date.future?
+  end
+
+  def winning_options
+    options_with_counts = poll_options.left_joins(:poll_votes).group("poll_options.id").select("poll_options.*, COUNT(poll_votes.id) AS votes_count")
+    max_votes = options_with_counts.map { |o| o.votes_count }.max
+    options_with_counts.select { |o| o.votes_count == max_votes }
   end
 
   private

@@ -1,8 +1,8 @@
 class BookReadsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_book_club
-  before_action :set_book_read, only: [ :show, :edit, :update ]
-  before_action -> { authorize_club_owner!(@book_club) }, only: [ :new, :create, :edit, :update ]
+  before_action :set_book_read, only: [ :show, :edit, :update, :finalize, :select_book ]
+  before_action -> { authorize_club_owner!(@book_club) }, only: [ :new, :create, :edit, :update, :finalize, :select_book ]
 
   def index
     @tab = params[:tab] || "upcoming"
@@ -64,6 +64,28 @@ class BookReadsController < ApplicationController
       redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read was successfully updated."
     else
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def finalize
+    @poll = @book_read.poll
+    redirect_to book_club_book_read_path(@book_club, @book_read), alert: "No poll to finalize." unless @poll
+
+    @winning_options = @poll.winning_options
+    @suggested_option = @winning_options.sample
+  end
+
+  def select_book
+    @poll = @book_read.poll
+    poll_option = @poll.poll_options.find(params[:poll_option_id])
+
+    if @book_read.update(book: poll_option.book)
+      @poll.update(finalized_at: Time.current)
+      redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book finalized successfully."
+    else
+      @winning_options = @poll.winning_options
+      @suggested_option = poll_option
+      render :finalize, status: :unprocessable_entity
     end
   end
 

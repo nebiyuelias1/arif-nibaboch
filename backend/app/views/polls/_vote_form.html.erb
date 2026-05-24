@@ -3,20 +3,40 @@
   data: { controller: "poll-vote-form" },
   id: "poll_vote_form",
   class: "space-y-3" do %>
-  <% poll.poll_options.includes(:poll_votes).each do |option| %>
+  <% poll.poll_options.includes(:poll_votes, :book).each do |option| %>
     <label
       class="
         flex items-center justify-between p-4 rounded-lg border border-border
-        bg-background hover:bg-surface transition-all group
+        bg-background hover:bg-surface transition-all group cursor-pointer
       "
     >
-      <div class="flex items-start gap-3">
+      <div class="flex items-center gap-4 flex-1">
         <%= check_box_tag "poll_option_ids[]",
         option.id,
         false,
-        class: "mt-0.5",
+        class: "w-4 h-4 text-primary focus:ring-primary border-border rounded",
         data: { poll_vote_form_target: "option", action: "poll-vote-form#toggle" } %>
-        <span class="font-bold text-content"><%= option.content %></span>
+        
+        <% if option.book.present? %>
+          <div class="flex items-center gap-3">
+            <% if option.book.cover_image.present? %>
+              <%= image_tag option.book.cover_image, class: "w-10 h-14 object-cover rounded shadow-sm shrink-0" %>
+            <% else %>
+              <div class="w-10 h-14 bg-background border border-border rounded flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6 text-content-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+            <% end %>
+            <div class="flex flex-col">
+              <span class="font-bold text-content leading-tight"><%= option.book.title %></span>
+              <span class="text-xs text-content-subtle"><%= option.book.author %></span>
+              <%= link_to "View details", book_path(option.book), class: "text-[10px] text-primary hover:underline mt-1", onclick: "event.stopPropagation();" %>
+            </div>
+          </div>
+        <% else %>
+          <span class="font-bold text-content"><%= option.content %></span>
+        <% end %>
       </div>
     </label>
   <% end %>

@@ -1,0 +1,43 @@
+<div class="max-w-2xl mx-auto mt-8">
+  <div class="bg-surface p-8 rounded-lg shadow-sm border border-border mb-8">
+    <h1 class="title title-lg text-content font-bold mb-4">Finalize Poll</h1>
+    <p class="text-content-subtle mb-6">Select the book that will be read for this session. The winner(s) based on votes are highlighted below.</p>
+
+    <%= form_with url: select_book_book_club_book_read_path(@book_club, @book_read), method: :patch, class: "space-y-4" do |f| %>
+      <div class="space-y-3">
+        <% @poll.poll_options.includes(:poll_votes).each do |option| %>
+          <% is_winner = @winning_options.include?(option) %>
+          <% is_suggested = @suggested_option == option %>
+          <label class="relative flex items-center justify-between p-4 rounded-lg border <%= is_winner ? 'border-primary bg-primary/5' : 'border-border bg-background' %> hover:bg-surface transition-all group cursor-pointer">
+            <div class="flex items-center gap-4">
+              <%= radio_button_tag :poll_option_id, option.id, is_suggested, class: "w-4 h-4 text-primary focus:ring-primary border-border" %>
+              <div>
+                <span class="block font-bold text-content"><%= option.content %></span>
+                <div class="flex gap-2">
+                  <% if is_winner %>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-primary/10 text-primary border border-primary/20 mt-1">
+                      Winner
+                    </span>
+                  <% end %>
+                  <% if is_suggested && @winning_options.size > 1 %>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-accent/10 text-accent border border-accent/20 mt-1">
+                      Suggested Tie-breaker
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <span class="text-xs font-semibold text-content-muted">
+              <%= pluralize(option.poll_votes.size, "vote") %>
+            </span>
+          </label>
+        <% end %>
+      </div>
+
+      <div class="mt-8 flex gap-4">
+        <%= f.submit "Finalize", class: "px-6 py-3 rounded-md text-sm font-bold transition-colors shadow-sm text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
+        <%= link_to "Cancel", book_club_book_read_path(@book_club, @book_read), class: "px-6 py-3 rounded-md text-sm font-bold transition-colors border border-border text-content bg-surface hover:bg-background" %>
+      </div>
+    <% end %>
+  </div>
+</div>

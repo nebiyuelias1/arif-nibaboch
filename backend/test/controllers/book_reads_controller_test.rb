@@ -138,4 +138,34 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
     @book_read.reload
     assert_equal original_time.to_i, @book_read.meetup_time.to_i
   end
+
+  test "should get finalize for owner" do
+    @book_read = book_reads(:one)
+    sign_in @user
+    get finalize_book_club_book_read_url(@book_club, @book_read)
+    assert_response :success
+    assert_select "form"
+  end
+
+  test "should select book and finalize poll" do
+    @book_read = book_reads(:one)
+    @poll = polls(:one)
+    @option = poll_options(:one)
+    sign_in @user
+
+    assert_nil @poll.finalized_at
+
+    patch select_book_book_club_book_read_url(@book_club, @book_read), params: {
+      poll_option_id: @option.id
+    }
+
+    assert_redirected_to book_club_book_read_url(@book_club, @book_read)
+    assert_equal "Book finalized successfully.", flash[:notice]
+
+    @book_read.reload
+    @poll.reload
+
+    assert_equal @option.book_id, @book_read.book_id
+    assert_not_nil @poll.finalized_at
+  end
 end

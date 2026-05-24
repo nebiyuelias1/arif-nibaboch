@@ -250,61 +250,92 @@
     </div>
   </div>
 
-  <% if @book_read.poll.present? && !@book_read.poll.finalized_at.present? %>
-    <% poll_active = @book_read.poll.active? %>
+  <% if @book_read.poll.present? %>
+    <% poll = @book_read.poll %>
+    <% finalized = poll.finalized_at.present? %>
+    <% poll_active = poll.active? %>
+    
     <div class="bg-surface p-8 rounded-lg shadow-sm border border-border mb-8">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="title title-lg text-content font-bold">Poll</h2>
         <div class="flex items-center gap-3">
-          <% if !poll_active && user_signed_in? && @book_read.host == current_user %>
+          <h2 class="title title-lg text-content font-bold">Poll</h2>
+          <% if finalized %>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+              <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
+                <circle cx="4" cy="4" r="3" />
+              </svg>
+              Finalized - Book Selected
+            </span>
+          <% end %>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <% is_authorized_to_finalize = user_signed_in? && (@book_read.host == current_user || @book_club.owner == current_user || @book_club.book_club_members.exists?(user: current_user, role: :admin)) %>
+          <% if !finalized && is_authorized_to_finalize %>
+            <%= link_to "Finalize Poll",
+            finalize_book_club_book_read_path(@book_club, @book_read),
+            class:
+              "inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full border border-border bg-background text-content hover:bg-surface transition-colors" %>
+          <% end %>
+          
+          <% unless finalized %>
+            <% share_url = "#{request.base_url}#{book_club_book_read_path(@book_club, @book_read)}#poll_voting" %>
             <button
               type="button"
-              class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full border border-border bg-background text-content hover:bg-surface transition-colors"
+              aria-label="Share poll"
+              data-controller="share"
+              data-action="share#share"
+              data-share-url-value="<%= share_url %>"
+              data-share-title-value="<%= poll.text %>"
+              class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-border bg-background text-content hover:bg-surface transition-colors"
             >
-              Finalize Poll
+              <span class="sr-only" data-share-target="label">Share poll</span>
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
+                <path d="M16 6l-4-4-4 4" />
+                <path d="M12 2v14" />
+              </svg>
             </button>
           <% end %>
-          <% share_url = "#{request.base_url}#{book_club_book_read_path(@book_club, @book_read)}#poll_voting" %>
-          <button
-            type="button"
-            aria-label="Share poll"
-            data-controller="share"
-            data-action="share#share"
-            data-share-url-value="<%= share_url %>"
-            data-share-title-value="<%= @book_read.poll.text %>"
-            class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-border bg-background text-content hover:bg-surface transition-colors"
-          >
-            <span class="sr-only" data-share-target="label">Share poll</span>
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
-              <path d="M16 6l-4-4-4 4" />
-              <path d="M12 2v14" />
-            </svg>
-          </button>
         </div>
       </div>
-      <p class="text-content-subtle mb-6"><%= @book_read.poll.text %></p>
 
-      <% user_has_voted = user_signed_in? && @book_read.poll.poll_votes.exists?(user_id: current_user.id) %>
-      <div id="poll_voting">
-        <% if user_has_voted || !poll_active  %>
-          <%= render "polls/vote_results",
-          poll: @book_read.poll,
-          current_user: current_user %>
-        <% else %>
-          <%= render "polls/vote_form",
-          poll: @book_read.poll,
-          book_club: @book_club,
-          book_read: @book_read %>
-        <% end %>
-      </div>
-
-      <p class="mt-8 text-xs text-content-muted italic text-center">Voting ends on
-        <%= @book_read.poll.end_date&.strftime("%B %d, %Y at %I:%M %p") %></p>
+      <% if finalized %>
+        <details class="group">
+          <summary class="flex items-center justify-between cursor-pointer list-none text-content-subtle hover:text-content transition-colors">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+              <span class="text-sm font-medium">This book was chosen by poll. Click to view results.</span>
+            </div>
+          </summary>
+          <div class="mt-6 pt-6 border-t border-border">
+            <p class="text-content-subtle mb-6"><%= poll.text %></p>
+            <%= render "polls/vote_results", poll: poll, current_user: current_user %>
+            <p class="mt-8 text-xs text-content-muted italic text-center">Voting concluded on <%= poll.finalized_at&.strftime("%B %d, %Y at %I:%M %p") %></p>
+          </div>
+        </details>
+      <% else %>
+        <p class="text-content-subtle mb-6"><%= poll.text %></p>
+        <% user_has_voted = user_signed_in? && poll.poll_votes.exists?(user_id: current_user.id) %>
+        <div id="poll_voting">
+          <% if user_has_voted || !poll_active %>
+            <%= render "polls/vote_results", poll: poll, current_user: current_user %>
+          <% else %>
+            <%= render "polls/vote_form", poll: poll, book_club: @book_club, book_read: @book_read %>
+          <% end %>
+        </div>
+        <p class="mt-8 text-xs text-content-muted italic text-center">
+          <%= poll_active ? "Voting ends on" : "Voting ended on" %>
+          <%= poll.end_date&.strftime("%B %d, %Y at %I:%M %p") %>
+        </p>
+      <% end %>
     </div>
-  <% else %>
-    <!-- Discussion Questions Section -->
-    <div class="bg-surface p-8 rounded-lg shadow-sm border border-border">
+  <% end %>
+
+  <!-- Discussion Questions Section -->
+  <div class="bg-surface p-8 rounded-lg shadow-sm border border-border">
       <h2 class="title title-lg text-content font-bold">Discussion Questions</h2>
 
       <div class="mb-6 flex flex-col">
@@ -352,5 +383,4 @@
         <p class="mt-1 text-sm text-content-subtle">Check back later for questions to discuss!</p>
       </div>
     </div>
-  <% end %>
 </div>
