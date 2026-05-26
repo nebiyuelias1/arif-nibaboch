@@ -53,6 +53,7 @@ class BookReadsController < ApplicationController
     end
 
     if @book_read.save
+      @rsvp = BookReadRsvp.rsvp!(book_read: @book_read, user: current_user, status: :going)
       redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read scheduled successfully."
     else
       render :new, status: :unprocessable_entity
