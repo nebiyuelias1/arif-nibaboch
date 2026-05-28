@@ -48,6 +48,7 @@ jobs:
       LOGTAIL_INGESTING_HOST: ${{ secrets.LOGTAIL_INGESTING_HOST }}
       DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
       GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
 
     permissions:
       contents: read
