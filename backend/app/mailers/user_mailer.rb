@@ -9,7 +9,7 @@ class UserMailer < ApplicationMailer
     cal = Icalendar::Calendar.new
     cal.event do |e|
       e.dtstart     = Icalendar::Values::DateTime.new(@book_read.meetup_time.utc)
-      e.dtend       = Icalendar::Values::DateTime.new((@book_read.meetup_time + 2.hour).utc)
+      e.dtend       = Icalendar::Values::DateTime.new((@book_read.meetup_time + 2.hours).utc)
       e.summary     = "Book Read: #{@book_read.book&.title || 'Discussion'}"
       e.description = "RSVP for #{@book_read.book_club.name}"
       e.location    = @book_read.meetup_location

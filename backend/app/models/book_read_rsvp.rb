@@ -9,7 +9,7 @@ class BookReadRsvp < ApplicationRecord
 
   validate :capacity_available_for_going, if: :going?
 
-  after_commit :send_rsvp_email, on: [ :create, :update ], if: -> { going? && (previous_changes.key?(:status) || previous_changes.key?(:id)) }
+  after_commit :send_rsvp_email, on: [ :create, :update ], if: -> { going? && (saved_change_to_status? || id_previously_changed?) }
 
   def self.rsvp!(book_read:, user:, status: :going)
     book_read.with_lock do
