@@ -9,6 +9,8 @@ class BookReadRsvp < ApplicationRecord
 
   validate :capacity_available_for_going, if: :going?
 
+  after_commit :send_rsvp_email, on: [ :create, :update ], if: -> { going? && (previous_changes.key?(:status) || previous_changes.key?(:id)) }
+
   def self.rsvp!(book_read:, user:, status: :going)
     book_read.with_lock do
       rsvp = book_read.book_read_rsvps.find_or_initialize_by(user: user)
@@ -26,6 +28,10 @@ class BookReadRsvp < ApplicationRecord
   end
 
   private
+
+  def send_rsvp_email
+    UserMailer.with(rsvp: self).rsvp_confirmation.deliver_later
+  end
 
   def capacity_available_for_going
     return if book_read.max_capacity.blank?

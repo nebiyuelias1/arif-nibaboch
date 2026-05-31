@@ -1,0 +1,12 @@
+<h1>RSVP Confirmation</h1>
+<p>Hi <%= @user.name %>,</p>
+<p>You have successfully RSVP'd for the upcoming book read session:</p>
+
+<ul>
+  <li><strong>Book:</strong> <%= @book_read.book&.title || "Discussion" %></li>
+  <li><strong>Time:</strong> <%= @book_read.meetup_time.strftime("%A, %B %d at %I:%M %p") %></li>
+  <li><strong>Location:</strong> <%= @book_read.meetup_location %></li>
+  <li><strong>Club:</strong> <%= @book_read.book_club.name %></li>
+</ul>
+
+<p>A calendar invite is attached to this email. We look forward to seeing you there!</p>

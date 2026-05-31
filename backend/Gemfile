@@ -69,8 +69,6 @@ group :development do
   gem "web-console"
 
   gem "ruby-lsp"
-
-  gem "letter_opener"
 end
 
 group :test do
@@ -90,3 +88,5 @@ gem "logtail-rails", "~> 0.2.12"
 gem "administrate", "~> 1.0"
 
 gem "mission_control-jobs", "~> 1.1"
+
+gem "icalendar", "~> 2.12"
