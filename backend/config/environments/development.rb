@@ -33,9 +33,8 @@ Rails.application.configure do
 
   # For testing actual email delivery on dev
   # config.action_mailer.delivery_method = :resend
-
-  # For local dev we don't want to actually send email
-  config.action_mailer.delivery_method = :letter_opener
+  #
+  config.action_mailer.delivery_method = :test
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
