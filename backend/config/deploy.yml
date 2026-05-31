@@ -44,6 +44,7 @@ env:
     - LOGTAIL_INGESTING_HOST
     - DEEPL_AUTH_KEY
     - GOOGLE_BOOKS_API_KEY
+    - RESEND_API_KEY
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.

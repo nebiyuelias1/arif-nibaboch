@@ -1,6 +1,8 @@
 require "test_helper"
 
 class BookReadRsvpTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
+
   def setup
     @book_read = book_reads(:one)
     @user = users(:one)
@@ -43,5 +45,27 @@ class BookReadRsvpTest < ActiveSupport::TestCase
 
     rsvp = BookReadRsvp.new(book_read: @book_read, user: users(:three), status: :waitlisted)
     assert rsvp.valid?
+  end
+
+  test "sends confirmation email after create if status is going" do
+    assert_enqueued_emails 1 do
+      BookReadRsvp.create!(book_read: @book_read, user: @user, status: :going)
+    end
+  end
+
+  test "sends confirmation email after update if status changed to going" do
+    rsvp = BookReadRsvp.create!(book_read: @book_read, user: @user, status: :cancelled)
+
+    assert_enqueued_emails 1 do
+      rsvp.update!(status: :going)
+    end
+  end
+
+  test "does not send confirmation email if status changed to cancelled" do
+    rsvp = BookReadRsvp.create!(book_read: @book_read, user: @user, status: :going)
+
+    assert_enqueued_emails 0 do
+      rsvp.update!(status: :cancelled)
+    end
   end
 end
