@@ -2,7 +2,7 @@ name: Deploy
 on:
   push:
     branches: [main]
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   test:
@@ -49,8 +49,8 @@ jobs:
       DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
       GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-      APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
-      APP_PROTOCOL: ${{ secrets.APP_PROTOCOL }}
+      APP_DOMAIN: ${{ vars.APP_DOMAIN }}
+      APP_PROTOCOL: ${{ vars.APP_PROTOCOL }}
 
     permissions:
       contents: read
@@ -63,7 +63,6 @@ jobs:
 
       - name: Install Kamal
         run: gem install kamal
-
 
       - name: Release Kamal lock
         run: kamal lock release || true
