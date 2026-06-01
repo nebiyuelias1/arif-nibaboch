@@ -47,6 +47,7 @@ env:
     - RESEND_API_KEY
     - APP_DOMAIN
     - APP_PROTOCOL
+    - APP_NAME
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.

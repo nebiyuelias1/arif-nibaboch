@@ -1,5 +1,31 @@
-<p>Welcome <%= @email %>!</p>
+<div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; line-height: 1.6; color: #333;">
+  <h2 style="color: #2563eb;">Welcome to <%= Rails.configuration.x.app_name %>!</h2>
 
-<p>You can confirm your account email through the link below:</p>
+  <p>Hi <%= @email %>,</p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+  <p>We're excited to have you join our community of book lovers. By confirming your email, you'll get full access to:</p>
+
+  <ul style="padding-left: 20px;">
+    <li><strong>Review & Rate:</strong> Share your thoughts on your favorite books.</li>
+    <li><strong>Book Clubs:</strong> Join or start book clubs and participate in discussions.</li>
+    <li><strong>Track Your Reading:</strong> Keep a "Want to Read" list and track your progress.</li>
+    <li><strong>Contribute:</strong> Help us grow by submitting new book records to our database.</li>
+  </ul>
+
+  <p>Please click the button below to confirm your account and get started:</p>
+
+  <p style="text-align: center; margin: 30px 0;">
+    <%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), 
+        style: "background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;" %>
+  </p>
+
+  <p style="font-size: 0.9em; color: #666;">
+    If you didn't create an account on <%= Rails.configuration.x.app_name %>, please ignore this email.
+  </p>
+
+  <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+  <p style="font-size: 0.8em; color: #999; text-align: center;">
+    &copy; <%= Time.current.year %> <%= Rails.configuration.x.app_name %>. All rights reserved.
+  </p>
+</div>
