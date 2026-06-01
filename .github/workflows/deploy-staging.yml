@@ -49,6 +49,8 @@ jobs:
       DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
       GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
+      APP_PROTOCOL: ${{ secrets.APP_PROTOCOL }}
 
     permissions:
       contents: read

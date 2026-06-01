@@ -45,6 +45,8 @@ env:
     - DEEPL_AUTH_KEY
     - GOOGLE_BOOKS_API_KEY
     - RESEND_API_KEY
+    - APP_DOMAIN
+    - APP_PROTOCOL
 
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.

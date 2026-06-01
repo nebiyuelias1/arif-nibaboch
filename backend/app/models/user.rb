@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :confirmable
 
   has_many :ratings, dependent: :destroy
   has_many :reviews, dependent: :destroy
@@ -20,6 +20,7 @@ class User < ApplicationRecord
       u.password = Devise.friendly_token[0, 20]
       # TODO: Find ways of getting email address
       u.email = "#{auth["id"]}@telegram.com"
+      u.skip_confirmation!
     end
     user.name = [ auth["first_name"], auth["last_name"] ].join(" ").strip
     user.username = auth["username"]
@@ -33,6 +34,7 @@ class User < ApplicationRecord
     user = where(line_id: auth["userId"]).first_or_initialize do |u|
       u.password = Devise.friendly_token[0, 20]
       u.email = "#{auth["userId"]}@line.com"
+      u.skip_confirmation!
     end
     user.name = auth["displayName"]
     user.username = auth["displayName"]

@@ -24,5 +24,11 @@ module BackendWithContainer
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Custom application configuration (config.x)
+    # This centralizes the domain and protocol so they can be managed via environment
+    # variables. Used by Action Mailer for generating absolute URLs in emails.
+    config.x.domain = ENV.fetch("APP_DOMAIN", "localhost:3000")
+    config.x.protocol = ENV.fetch("APP_PROTOCOL", "http")
   end
 end
