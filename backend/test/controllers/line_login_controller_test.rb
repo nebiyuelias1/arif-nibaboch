@@ -61,7 +61,8 @@ class LineLoginControllerTest < ActionDispatch::IntegrationTest
       line_id: line_user_id,
       name: "Existing LINE User",
       email: "#{line_user_id.downcase}@line.com",
-      password: Devise.friendly_token[0, 20]
+      password: Devise.friendly_token[0, 20],
+      confirmed_at: Time.current
     )
 
     get line_login_authorize_url

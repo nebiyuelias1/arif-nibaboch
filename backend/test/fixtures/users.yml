@@ -6,6 +6,7 @@ one:
   name: "Test User One"
   username: "testuser1"
   admin: true
+  confirmed_at: <%= Time.current.to_fs(:db) %>
 
 two:
   email: user2@example.com
@@ -13,6 +14,7 @@ two:
   name: "Test User Two"
   username: "testuser2"
   admin: false
+  confirmed_at: <%= Time.current.to_fs(:db) %>
 
 three:
   email: user3@example.com
@@ -20,3 +22,4 @@ three:
   name: "Test User Three"
   username: "testuser3"
   admin: false
+  confirmed_at: <%= Time.current.to_fs(:db) %>
