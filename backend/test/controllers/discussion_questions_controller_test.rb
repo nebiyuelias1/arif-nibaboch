@@ -107,4 +107,53 @@ class DiscussionQuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes @response.body, content
   end
+
+  test "should delete a discussion question" do
+    question = discussion_questions(:one)
+    assert_difference("DiscussionQuestion.count", -1) do
+      delete book_club_book_read_discussion_question_path(@book_club, @book_read, question)
+    end
+
+    assert_redirected_to book_club_book_read_path(@book_club, @book_read)
+    assert_equal "Question deleted successfully.", flash[:notice]
+  end
+
+  test "should delete a discussion question via turbo stream" do
+    question = discussion_questions(:one)
+    assert_difference("DiscussionQuestion.count", -1) do
+      delete book_club_book_read_discussion_question_path(@book_club, @book_read, question), as: :turbo_stream
+    end
+
+    assert_response :success
+    assert_match /turbo-stream action="remove" target="discussion_question_#{question.id}"/, @response.body
+  end
+
+  test "should not delete discussion question if not author or admin" do
+    sign_out @user
+    other_user = users(:two) # not author of question :one
+    sign_in other_user
+
+    question = discussion_questions(:one)
+    assert_no_difference("DiscussionQuestion.count") do
+      delete book_club_book_read_discussion_question_path(@book_club, @book_read, question)
+    end
+
+    assert_redirected_to book_club_book_read_path(@book_club, @book_read)
+    assert_equal "You are not authorized to perform this action.", flash[:alert]
+  end
+
+  test "author can delete their own discussion question" do
+    # Sign in as user two, who authored question two
+    sign_out @user
+    author = users(:two)
+    sign_in author
+    question = discussion_questions(:two)
+
+    assert_difference("DiscussionQuestion.count", -1) do
+      delete book_club_book_read_discussion_question_path(book_clubs(:two), book_reads(:two), question)
+    end
+
+    assert_redirected_to book_club_book_read_path(book_clubs(:two), book_reads(:two))
+    assert_equal "Question deleted successfully.", flash[:notice]
+  end
 end

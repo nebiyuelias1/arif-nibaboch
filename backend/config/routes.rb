@@ -56,8 +56,9 @@ Rails.application.routes.draw do
     resources :members, controller: "book_club_members", only: [ :update, :destroy ]
     resources :book_reads do
       resource :rsvp, controller: "book_read_rsvps", only: [ :create, :update ]
-      resources :discussion_questions, only: [ :create, :update ]
+      resources :discussion_questions, only: [ :create, :update, :destroy ]
       resources :poll_votes, only: [ :create ]
+
       member do
         get :finalize
         patch :select_book

@@ -2,12 +2,14 @@
 
 one:
   book_read: one
+  user: one
   status: 1
   content: MyText
   position: 1
 
 two:
   book_read: two
+  user: two
   status: 1
   content: MyText
   position: 1
