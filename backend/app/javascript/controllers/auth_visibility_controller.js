@@ -16,9 +16,6 @@ export default class extends Controller {
 
     const isAuthor = currentUserId === this.authorIdValue;
     const isClubOwner = currentUserId === this.clubOwnerIdValue;
-    const isClubAdmin = this.clubAdminIdsValue.includes(
-      parseInt(currentUserId),
-    );
 
     if (isAuthor || isClubOwner || isClubAdmin) {
       this.menuTarget.classList.remove("hidden");
