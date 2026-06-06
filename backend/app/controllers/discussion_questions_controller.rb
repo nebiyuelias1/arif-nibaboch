@@ -23,11 +23,13 @@ class DiscussionQuestionsController < ApplicationController
   end
 
   def update
-    update_params = if @book_club.owner == current_user || @book_club.book_club_members.exists?(user: current_user, role: :admin)
+    is_owner_or_admin = @book_club.owner == current_user || @book_club.book_club_members.exists?(user: current_user, role: :admin)
+    
+    update_params = if is_owner_or_admin
                       discussion_question_update_params
-    else
-                      discussion_question_params
-    end
+                    else
+                      discussion_question_params.merge(status: :draft)
+                    end
 
     if @discussion_question.update(update_params)
       respond_to do |format|
@@ -36,9 +38,16 @@ class DiscussionQuestionsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@discussion_question, partial: "discussion_questions/discussion_question", locals: { discussion_question: @discussion_question }), status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@discussion_question, partial: "discussion_questions/discussion_question", locals: { discussion_question: @discussion_question, edit_mode: true }), status: :unprocessable_entity }
         format.html { redirect_to book_club_book_read_path(@book_club, @book_read), alert: "Failed to update question." }
       end
+    end
+  end
+
+  def edit
+    respond_to do |format|
+      format.turbo_stream
+      format.html
     end
   end
 

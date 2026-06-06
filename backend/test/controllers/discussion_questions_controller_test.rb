@@ -185,6 +185,28 @@ class DiscussionQuestionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "draft", question.status # Status should NOT change
   end
 
+  test "editing a question as author reverts status to draft if not owner or admin" do
+    sign_out @user
+    author = users(:two)
+    sign_in author
+
+    # Create an approved question manually (since author can't approve via controller)
+    question = @book_read.discussion_questions.create!(user: author, content: "Original content", status: "approved")
+    assert_equal "approved", question.status
+
+    patch book_club_book_read_discussion_question_path(@book_club, @book_read, question), params: {
+      discussion_question: {
+        content: "Edited content"
+      }
+    }
+
+    assert_redirected_to book_club_book_read_path(@book_club, @book_read)
+    question.reload
+    assert_equal "Edited content", question.content
+    assert_equal "draft", question.status
+    assert question.edited?
+  end
+
   test "club owner can update status of any discussion question" do
     # @user is the owner of @book_club
     author = users(:two)

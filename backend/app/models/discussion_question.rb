@@ -11,9 +11,12 @@ class DiscussionQuestion < ApplicationRecord
   validates :content, presence: true
   validates :position, uniqueness: { scope: :book_read_id }
 
+  before_save :set_edited_flag, if: :will_save_change_to_content?
   before_create :set_position
   after_commit :translate_content, on: [ :create, :update ]
-  after_update_commit :broadcast_reveal, if: -> { saved_change_to_status? && revealed? }
+  after_create_commit :broadcast_create
+  after_update_commit :broadcast_update
+  after_destroy_commit :broadcast_destroy
 
   def content_for_language(lang_code)
     lang_code = lang_code.to_s.upcase
@@ -32,6 +35,10 @@ class DiscussionQuestion < ApplicationRecord
 
   private
 
+  def set_edited_flag
+    self.edited = true unless new_record?
+  end
+
   def translate_content
     if saved_change_to_content?
       TARGET_LANGUAGES.each do |lang_code|
@@ -40,9 +47,17 @@ class DiscussionQuestion < ApplicationRecord
     end
   end
 
-  def broadcast_reveal
+  def broadcast_create
     broadcast_append_to [ book_read, :discussion_questions ], target: "discussion_questions_list"
     broadcast_remove_to [ book_read, :discussion_questions ], target: "no_discussion_questions"
+  end
+
+  def broadcast_update
+    broadcast_replace_to [ book_read, :discussion_questions ]
+  end
+
+  def broadcast_destroy
+    broadcast_remove_to [ book_read, :discussion_questions ]
   end
 
   def set_position
