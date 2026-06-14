@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: "Arif Nibaboch <noreply@#{Rails.configuration.x.mail_from_domain}" # this domain must be verified with Resend
+  default from: "Arif Nibaboch <noreply@#{Rails.configuration.x.mail_from_domain}>" # this domain must be verified with Resend
 
   def rsvp_confirmation
     @rsvp = params[:rsvp]
