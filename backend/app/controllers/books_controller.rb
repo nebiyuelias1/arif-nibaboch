@@ -99,7 +99,6 @@ class BooksController < ApplicationController
   private
 
   def map_lookup_result_to_book(result)
-    puts "The result is: #{result}"
     Book.new(
       title: result.title,
       author: result.author.presence || "Unknown Author",
@@ -110,7 +109,8 @@ class BooksController < ApplicationController
       description: result.description,
       page_count: result.page_count,
       language: result.language,
-      source: result.source
+      source: result.source,
+      source_url: result.source_url
     )
   end
 

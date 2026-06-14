@@ -1,6 +1,6 @@
 <div class="flex items-center p-3 hover:bg-background transition-colors border-b border-border last:border-b-0">
   <% if book.cover_image.present? %>
-    <%= image_tag book.cover_image, class: "w-12 h-16 object-cover rounded-md mr-4" %>
+    <%= image_tag book.cover_image, alt: "Cover of #{book.title}", class: "w-12 h-16 object-cover rounded-md mr-4" %>
   <% else %>
     <div class="w-12 h-16 bg-background rounded-md mr-4 flex items-center justify-center text-content-muted text-xs text-center p-1">No Image</div>
   <% end %>
