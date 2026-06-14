@@ -16,8 +16,16 @@ class Book < ApplicationRecord
 
   scope :full_text_search, ->(query) do
     joins("join books_fts idx on books.id = idx.rowid")
-      .where("books_fts match ?", "#{query}*")
+      .where("books_fts match ?", sanitize_fts_query(query))
       .order(:rank)
+  end
+
+  def self.sanitize_fts_query(query)
+    return "" if query.blank?
+    # Escape existing double quotes and wrap the whole thing in double quotes
+    # to handle special characters like apostrophes.
+    # We add a * at the end for prefix matching as before.
+    "\"#{query.gsub('"', '""')}\"*"
   end
 
   def self.rebuild_search_index

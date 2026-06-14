@@ -42,12 +42,12 @@ module BookLookup
       private
 
       def query_params
-        parts = []
-        parts << "intitle:#{@title}" if @title.present?
-        parts << "inauthor:#{@author}" if @author.present?
+        q = [ @title, @author ].compact.uniq.join(" ")
 
         params = {
-          q: parts.join("+"),
+          q: q,
+          orderBy: "relevance",
+          printType: "books",
           maxResults: @max_candidates
         }
         params[:key] = @api_key if @api_key.present?
@@ -56,16 +56,22 @@ module BookLookup
 
       def build_result(item)
         volume = item.fetch("volumeInfo", {})
+        images = volume.fetch("imageLinks", {})
+
+        # Try to get the largest available image
+        image_url = images["extraLarge"] || images["large"] || images["medium"] ||
+                    images["small"] || images["thumbnail"] || images["smallThumbnail"]
 
         BookLookup::Result.new(
           title: volume["title"],
           author: Array(volume["authors"]).join(", "),
           description: volume["description"],
-          cover_image: normalize_image_url(volume.dig("imageLinks", "thumbnail")),
+          cover_image: normalize_image_url(image_url),
           isbn: extract_isbn(volume["industryIdentifiers"]),
           publisher: volume["publisher"],
           published_at: parse_published_at(volume["publishedDate"]),
           page_count: volume["pageCount"],
+          language: volume["language"],
           categories: volume["categories"],
           source: "google_books",
           source_url: volume["infoLink"],
@@ -100,7 +106,17 @@ module BookLookup
       def normalize_image_url(url)
         return nil if url.blank?
 
-        url.start_with?("http://") ? url.sub("http://", "https://") : url
+        # Ensure HTTPS
+        url = url.sub("http://", "https://")
+
+        # Increase zoom level for better resolution
+        # zoom=1 is thumbnail, zoom=2 or zoom=3 are higher quality
+        url = url.sub("zoom=1", "zoom=2")
+
+        # Remove 'edge=curl' which can add artificial shadow/curling to the image
+        url = url.gsub("&edge=curl", "")
+
+        url
       end
     end
   end

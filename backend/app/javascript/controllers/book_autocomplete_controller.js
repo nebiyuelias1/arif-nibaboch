@@ -79,7 +79,11 @@ export default class extends Controller {
         `;
 
         item.addEventListener("click", () => {
-          this.selectBook(book.id, book.title);
+          if (book.persisted) {
+            this.selectBook(book.id, book.title);
+          } else {
+            this.saveAndSelectBook(book);
+          }
         });
 
         this.resultsTarget.appendChild(item);
@@ -87,6 +91,36 @@ export default class extends Controller {
     }
 
     this.showResults();
+  }
+
+  async saveAndSelectBook(bookData) {
+    this.inputTarget.value = `Saving "${bookData.title}"...`;
+    this.hideResults();
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    try {
+      const response = await fetch("/books", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ book: bookData.attributes }),
+      });
+
+      if (response.ok) {
+        const savedBook = await response.json();
+        this.selectBook(savedBook.id, savedBook.title);
+      } else {
+        console.error("Failed to save book");
+        this.inputTarget.value = "";
+      }
+    } catch (error) {
+      console.error("Error saving book:", error);
+      this.inputTarget.value = "";
+    }
   }
 
   selectBook(id, title) {

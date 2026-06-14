@@ -27,7 +27,7 @@ module BookLookup
         results = provider.search
         next if results.blank?
 
-        return results.first
+        return results.first(@max_candidates)
       end
 
       nil

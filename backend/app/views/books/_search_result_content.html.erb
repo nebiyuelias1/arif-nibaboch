@@ -1,0 +1,23 @@
+<div class="flex items-center p-3 hover:bg-background transition-colors border-b border-border last:border-b-0">
+  <% if book.cover_image.present? %>
+    <%= image_tag book.cover_image, alt: "Cover of #{book.title}", class: "w-12 h-16 object-cover rounded-md mr-4" %>
+  <% else %>
+    <div class="w-12 h-16 bg-background rounded-md mr-4 flex items-center justify-center text-content-muted text-xs text-center p-1">No Image</div>
+  <% end %>
+  <div class="flex-1">
+    <p class="font-semibold text-lg text-content"><%= book.title %></p>
+    <div class="flex items-center gap-2">
+      <p class="text-sm text-content-subtle">by <%= book.author %></p>
+      <% if book.source.present? && book.source != "local" %>
+        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase bg-surface-variant text-content-subtle border border-border">
+          <%= book.source.humanize %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+  <% if book.average_rating.present? && book.average_rating > 0 %>
+    <div class="flex items-center text-sm text-content ml-4">
+      <span class="mr-1">⭐</span> <%= number_to_human(book.average_rating, precision: 1) %>
+    </div>
+  <% end %>
+</div>

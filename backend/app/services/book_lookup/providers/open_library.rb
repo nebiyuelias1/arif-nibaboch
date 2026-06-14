@@ -36,12 +36,17 @@ module BookLookup
       private
 
       def query_params
-        params = {
-          title: @title,
-          limit: @max_candidates
+        query_string = if @title.present? && @author.present?
+          "title:#{@title} author:#{@author}"
+        else
+          @title.presence || @author.presence
+        end
+
+        {
+          q: query_string,
+          limit: @max_candidates,
+          fields: "title,author_name,cover_i,isbn,publisher,first_publish_year,number_of_pages_median,subject,key,first_sentence,language"
         }
-        params[:author] = @author if @author.present?
-        params
       end
 
       def build_result(doc)
@@ -54,12 +59,17 @@ module BookLookup
           publisher: Array(doc["publisher"]).first,
           published_at: parse_published_at(doc["first_publish_year"]),
           page_count: doc["number_of_pages_median"],
+          language: parse_language(doc["language"]),
           categories: doc["subject"],
           source: "open_library",
           source_url: open_library_url(doc["key"]),
           confidence: nil,
           candidates: nil
         )
+      end
+
+      def parse_language(languages)
+        Array(languages).first
       end
 
       def extract_description(doc)

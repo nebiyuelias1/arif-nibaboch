@@ -8,6 +8,7 @@ module BookLookup
     :publisher,
     :published_at,
     :page_count,
+    :language,
     :categories,
     :source,
     :source_url,
