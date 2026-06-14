@@ -1,59 +1,51 @@
-<h2 class="mt-0 text-content text-2xl font-extrabold">RSVP Confirmed!</h2>
-<p class="text-content-subtle leading-relaxed text-base">Hi <%= @user.name %>,</p>
-<p class="text-content-subtle leading-relaxed text-base">
-  You're all set! You have successfully RSVP'd for the upcoming reading session in <strong><%= @book_read.book_club.name %></strong>.
-</p>
+<h2 style="margin-top: 0; font-weight: 800; font-size: 24px;">RSVP Confirmed!</h2>
+<p>Hi <%= @user.name %>,</p>
+<p>You're all set! You have successfully RSVP'd for the upcoming reading session in <strong><%= @book_read.book_club.name %></strong>.</p>
 
-<div class="book-card p-6 mt-6 bg-surface border border-border rounded-radius-card">
+<div class="book-card">
   <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr>
-      <td width="100" valign="top" class="pr-6">
+      <td width="100" valign="top" style="padding-right: 24px;">
         <% if @book_read.book&.cover_image.present? %>
-          <img src="<%= @book_read.book.cover_image %>" class="w-[100px] h-[150px] object-cover rounded-lg shadow-sm">
+          <img src="<%= @book_read.book.cover_image %>" style="width: 100px; height: 150px; object-fit: cover; border-radius: 8px;">
         <% else %>
-          <div class="w-[100px] h-[150px] bg-background border border-border rounded-lg flex items-center justify-center text-center p-2">
-            <span class="text-content-muted text-[10px] font-bold uppercase tracking-wider">No Cover</span>
+          <div style="width: 100px; height: 150px; background-color: #f7f3ee; border-radius: 8px; border: 1px solid #e4ded6; display: table;">
+            <div style="display: table-cell; vertical-align: middle; text-align: center; color: #6b7280; font-size: 11px; font-weight: 600; padding: 10px;">No Cover</div>
           </div>
         <% end %>
       </td>
       <td valign="top">
-        <div class="flex flex-col">
-          <h3 class="text-xl font-extrabold text-content m-0 leading-tight">
-            <%= @book_read.book&.title || "Reading Session" %>
-          </h3>
-          <p class="text-sm text-content-subtle mt-1 mb-4">
-            by <%= @book_read.book&.author || "Various Authors" %>
-          </p>
-          <p class="text-sm text-content-muted leading-relaxed m-0">
-            <%= truncate(@book_read.book&.description, length: 140) %>
-          </p>
-        </div>
+        <h3 class="book-title"><%= @book_read.book&.title || "Reading Session" %></h3>
+        <p class="book-author">by <%= @book_read.book&.author || "Various Authors" %></p>
+        <p style="font-size: 14px; color: #6b7280; line-height: 1.5; margin: 0;">
+          <%= truncate(@book_read.book&.description, length: 140) %>
+        </p>
       </td>
     </tr>
   </table>
 </div>
 
-<div class="my-8 space-y-3">
-  <div class="flex text-base">
-    <span class="w-[100px] text-content-muted font-bold text-[11px] uppercase tracking-widest pt-1">When</span>
-    <span class="text-content font-semibold"><%= @book_read.meetup_time.in_time_zone(@time_zone).strftime("%A, %B %d at %I:%M %p %Z") %></span>
+<div style="margin: 32px 0;">
+  <div style="margin-bottom: 14px;">
+    <span class="details-label">When</span>
+    <span class="details-value"><%= @book_read.meetup_time.in_time_zone(@time_zone).strftime("%A, %B %d at %I:%M %p %Z") %></span>
   </div>
-  <div class="flex text-base">
-    <span class="w-[100px] text-content-muted font-bold text-[11px] uppercase tracking-widest pt-1">Where</span>
-    <span class="text-content font-semibold"><%= @book_read.meetup_location %></span>
+  <div style="margin-bottom: 14px;">
+    <span class="details-label">Where</span>
+    <span class="details-value"><%= @book_read.meetup_location %></span>
   </div>
-  <div class="flex text-base">
-    <span class="w-[100px] text-content-muted font-bold text-[11px] uppercase tracking-widest pt-1">Host</span>
-    <span class="text-content font-semibold"><%= @book_read.host.name %></span>
+  <div style="margin-bottom: 14px;">
+    <span class="details-label">Host</span>
+    <span class="details-value"><%= @book_read.host.name %></span>
   </div>
 </div>
 
-<div class="text-center mt-10">
+<div style="text-align: center; margin-top: 40px;">
   <%= link_to "View Session Details", 
       book_club_book_read_url(@book_read.book_club, @book_read), 
-      class: "inline-block bg-primary text-primary-contrast px-8 py-4 rounded-xl text-base font-bold no-underline shadow-sm" %>
+      class: "btn-primary" %>
 </div>
 
-<p class="mt-10 text-xs text-content-muted text-center italic">
+<p style="margin-top: 40px; font-size: 13px; color: #6b7280; text-align: center; font-style: italic;">
   A calendar invite has been attached to this email.
 </p>
