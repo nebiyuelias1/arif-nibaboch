@@ -161,7 +161,7 @@ class BookReadsTest < ApplicationSystemTestCase
 
     click_on "Schedule Read"
 
-    assert_text "Poll must have at least two options"
+    assert_text "must have at least two options"
   end
 
   private

@@ -25,7 +25,7 @@ class Poll < ApplicationRecord
 
   def must_have_at_least_two_options
     if poll_options.reject(&:marked_for_destruction?).length < 2
-      errors.add(:base, "Poll must have at least two options")
+      errors.add(:base, "must have at least two options")
     end
   end
 end
