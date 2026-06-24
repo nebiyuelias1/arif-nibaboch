@@ -11,12 +11,12 @@
       </div>
       
       <div class="flex flex-wrap justify-center gap-x-8 gap-y-2">
-        <%= link_to "Library", books_path, class: "text-sm text-primary hover:text-accent" %>
+        <%= link_to t("library_footer"), books_path, class: "text-sm text-primary hover:text-accent" %>
         <% if user_signed_in? %>
           <%= link_to "Profile", profile_path, class: "text-sm text-primary hover:text-accent" %>
         <% end %>
-        <a href="#" class="text-sm text-primary hover:text-accent">Privacy</a>
-        <a href="#" class="text-sm text-primary hover:text-accent">Terms</a>
+        <a href="#" class="text-sm text-primary hover:text-accent"><%= t("privacy_footer") %></a>
+        <a href="#" class="text-sm text-primary hover:text-accent"><%= t("terms_footer") %></a>
       </div>
 
       <p class="text-sm text-primary">
