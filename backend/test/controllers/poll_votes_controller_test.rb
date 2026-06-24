@@ -61,7 +61,7 @@ class PollVotesControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to book_club_book_read_url(book_club, book_read, lang: I18n.locale)
+    assert_redirected_to book_club_book_read_url(book_club, book_read)
     assert_equal "Poll has ended", flash[:alert]
   end
 end
