@@ -19,9 +19,6 @@
           </div>
         <% else %>
           <div class="hidden sm:flex items-center gap-3">
-            <%= link_to "EN", url_for(locale: :en) %>
-            <%= link_to "AM", url_for(locale: :am) %>
-            <%= link_to "中文", url_for(locale: :zh) %>
             <%= link_to t("sign_in"), new_user_session_path, data: { turbo: false }, class: "btn-secondary text-primary" %>
             <%= link_to t("sign_up"), new_user_registration_path, data: { turbo: false }, class: "btn-primary" %>
           </div>
