@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_06_082704) do
+ActiveRecord::Schema[8.0].define(version: 2026_06_20_011201) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -121,9 +121,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_06_082704) do
 
   create_table "discussion_questions", force: :cascade do |t|
     t.integer "book_read_id", null: false
-    t.integer "status", default: 0
+    t.integer "status", default: 0, null: false
     t.text "content", null: false
-    t.integer "position", default: 0
+    t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
