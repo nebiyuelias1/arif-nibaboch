@@ -13,7 +13,7 @@
       <div class="flex flex-wrap justify-center gap-x-8 gap-y-2">
         <%= link_to t("library_footer"), books_path, class: "text-sm text-primary hover:text-accent" %>
         <% if user_signed_in? %>
-          <%= link_to "Profile", profile_path, class: "text-sm text-primary hover:text-accent" %>
+          <%= link_to t("profile_menu"), profile_path, class: "text-sm text-primary hover:text-accent" %>
         <% end %>
         <a href="#" class="text-sm text-primary hover:text-accent"><%= t("privacy_footer") %></a>
         <a href="#" class="text-sm text-primary hover:text-accent"><%= t("terms_footer") %></a>

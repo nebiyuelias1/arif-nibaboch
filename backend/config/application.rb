@@ -34,7 +34,7 @@ module BackendWithContainer
     # The domain used for the 'from' address in emails. Default to the domain without port.
     config.x.mail_from_domain = ENV["APP_MAIL_FROM_DOMAIN"].presence || config.x.domain.split(":").first
     
-    config.i18n.available_locales = [:en, :am, :zh]
+    config.i18n.available_locales = [:en, :am, :"zh-CN", :"zh-TW"]
     config.i18n.default_locale = :en
     config.i18n.fallbacks = true
   end

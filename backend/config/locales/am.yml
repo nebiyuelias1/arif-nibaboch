@@ -12,4 +12,6 @@ am:
   library_footer: "ቤተ መፃህፍት"
   privacy_footer: "የግላዊነት ፖሊሲ"
   terms_footer: "ውሎች"
+  welcome_message: "እንኳን ደህና መጡ፣ %{user}"
+  no_books_found: "ምንም መጽሐፍ አልተገኘም"
   

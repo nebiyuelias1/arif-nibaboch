@@ -41,4 +41,6 @@ en:
   library_footer: "Library"
   privacy_footer: "Privacy"
   terms_footer: "Terms"
+  welcome_message: "Welcome, %{user}"
+  no_books_found: "No books found"
 
