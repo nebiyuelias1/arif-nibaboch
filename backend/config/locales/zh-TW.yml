@@ -14,3 +14,9 @@ zh-TW:
   terms_footer: "條款"
   welcome_message: "歡迎，%{user}"
   no_books_found: "未找到書籍"
+
+  # Book read show
+  share_flyer: "分享傳單"
+  back_to_club: "返回俱樂部"
+  copy_link: "複製連結"
+  close: "關閉"

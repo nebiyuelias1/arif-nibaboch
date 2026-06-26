@@ -14,3 +14,9 @@ zh-CN:
   terms_footer: "条款"
   welcome_message: "欢迎，%{user}"
   no_books_found: "未找到书籍"
+
+  # Book read show
+  share_flyer: "分享传单"
+  back_to_club: "返回俱乐部"
+  copy_link: "复制链接"
+  close: "关闭"

@@ -1,0 +1,21 @@
+<% id = local_assigns.fetch(:id) %>
+<% title = local_assigns.fetch(:title, nil) %>
+<% box_class = local_assigns.fetch(:box_class, "bg-surface border border-border shadow-xl rounded-2xl max-w-md p-6 relative") %>
+<% modal_class = local_assigns.fetch(:modal_class, "modal modal-bottom sm:modal-middle") %>
+
+<dialog id="<%= id %>" class="<%= modal_class %>">
+  <div class="modal-box <%= box_class %>">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-content-muted hover:text-content" aria-label="Close dialog">✕</button>
+    </form>
+    
+    <% if title.present? %>
+      <h3 class="text-lg font-bold text-content mb-4"><%= title %></h3>
+    <% end %>
+
+    <%= yield %>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

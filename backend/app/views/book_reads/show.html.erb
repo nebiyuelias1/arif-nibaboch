@@ -90,74 +90,10 @@
         <% end %>
       </div>
 
-      <dialog
-        id="rsvp_dialog"
-        class="
-          p-0 rounded-2xl shadow-2xl backdrop:bg-black/50 w-full max-w-2xl max-h-[80vh]
-          open:flex flex-col m-auto
-        "
-      >
-        <div
-          class="
-            flex justify-between items-center p-6 border-b border-border bg-surface sticky
-            top-0 z-10
-          "
-        >
-          <h3 class="title title-sm text-content font-semibold">RSVPs (<%= @rsvp_records.size %>)</h3>
-          <button
-            onclick="document.getElementById('rsvp_dialog').close()"
-            class="
-              text-content-muted hover:text-content focus:outline-none transition-colors
-              rounded-full p-1 hover:bg-background
-            "
-          >
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
+      <%= render "book_reads/rsvp_dialog", book_read: @book_read, rsvp_records: @rsvp_records %>
 
-        <div class="overflow-y-auto p-0 bg-surface">
-          <% entries = [] %>
-          <% entries << { user: @book_read.host, status: "Host", variant: "blue" } %>
-          <% @rsvp_records.each do |rsvp| %>
-            <% next if rsvp.user_id == @book_read.host_id %>
-            <% variant =
-              case rsvp.status
-              when "going"
-                "green"
-              when "waitlisted"
-                "yellow"
-              else
-                "gray"
-              end %>
-            <% entries << { user: rsvp.user, status: rsvp.status.titleize, variant: variant } %>
-          <% end %>
+      <%= render "book_reads/share_flyer_dialog", book_club: @book_club, book_read: @book_read %>
 
-          <% body_content = capture do %>
-            <% entries.each_with_index do |entry, row_idx| %>
-              <%= render "book_read_rsvps/rsvp_row",
-              user: entry[:user],
-              status: entry[:status],
-              variant: entry[:variant],
-              is_last: row_idx == entries.size - 1 %>
-            <% end %>
-          <% end %>
-
-          <%= render "shared/table/table",
-          columns: %w[Person Status],
-          body_content: body_content,
-          hoverable: true,
-          sticky_header: true,
-          bordered: false,
-          container: false %>
-        </div>
-      </dialog>
 
       <div class="w-full md:w-2/3 flex flex-col">
         <div class="flex justify-between items-start mb-2">
@@ -235,10 +171,17 @@
             class:
               "inline-flex items-center px-4 py-2 border border-border shadow-sm text-sm font-medium rounded-md text-content bg-surface hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors" %>
           <% end %>
-          <%= link_to "Back to Club",
+          <%= link_to t("back_to_club"),
           book_club_path(@book_club),
           class:
             "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors" %>
+          <button
+            type="button"
+            onclick="document.getElementById('share_flyer_dialog').showModal()"
+            class="inline-flex items-center px-4 py-2 border border-border shadow-sm text-sm font-medium rounded-md text-content bg-surface hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
+          >
+            <%= t("share_flyer") %>
+          </button>
           <% if user_signed_in? && @book_club.owner == current_user %>
             <%= link_to "Edit Session",
             edit_book_club_book_read_path(@book_club, @book_read),

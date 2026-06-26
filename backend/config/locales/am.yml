@@ -14,4 +14,9 @@ am:
   terms_footer: "ውሎች"
   welcome_message: "እንኳን ደህና መጡ፣ %{user}"
   no_books_found: "ምንም መጽሐፍ አልተገኘም"
-  
+
+  # Book read show
+  share_flyer: "ፍላየር ያጋሩ"
+  back_to_club: "ወደ ክለቡ ይመለሱ"
+  copy_link: "ሊንኩን ቅዳ"
+  close: "ዝጋ"
