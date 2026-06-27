@@ -1,0 +1,78 @@
+# ==========================================
+# Root .gitignore for arif-nibaboch Monorepo
+# ==========================================
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and Editors
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.ruby-lsp/
+
+# Build and Temp Directories
+build/
+dist/
+tmp/
+log/
+.sass-cache/
+.eslintcache
+
+# Node / NPM / Yarn
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Ruby / Rails (backend)
+.bundle/
+vendor/bundle/
+.env*
+!/log/.keep
+!/tmp/.keep
+
+# Android (android/ & mobileApp/android/)
+.gradle/
+local.properties
+.cxx/
+.externalNativeBuild/
+captures/
+*.apk
+*.aar
+*.ap_
+*.keystore
+*.jks
+*.hprof
+
+# iOS (ios/ & mobileApp/ios/)
+.sans-ios-temp/
+*.xcworkspace
+*.xcodeproj
+# By default, CocoaPods workspace and Pods/ are generated locally
+Pods/
+DerivedData/
+build-ios/
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+
+# Expo / React Native Specifics (mobileApp)
+.expo/
+web-build/
+*.jsbundle
