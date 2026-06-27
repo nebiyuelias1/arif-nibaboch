@@ -1,2 +1,10 @@
 <%= render layout: "shared/dialog", locals: { id: "share_flyer_dialog", title: t("share_flyer") } do %>
+  <div data-controller="share-flyer" data-share-flyer-title-value="<%= book_read.book.title %>" data-share-flyer-cover-url-value="<%= cover_book_path(book_read.book) %>">
+    <canvas data-share-flyer-target="canvas" width="400" height="400"></canvas>
+
+    <button data-action="click->share-flyer#download"
+            class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md">
+      Download Flyer
+    </button>
+  </div>
 <% end %>

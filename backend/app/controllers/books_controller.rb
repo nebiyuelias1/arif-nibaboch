@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: %i[ show ]
+  before_action :set_book, only: %i[ show cover ]
 
   def index
     @tags = Tag.all.limit(10).order(:name)
@@ -79,6 +79,26 @@ class BooksController < ApplicationController
           }
         }
       end
+    end
+  end
+
+  def cover
+    if @book.cover_image.present?
+      begin
+        data, content_type = Rails.cache.fetch("book_cover_#{@book.id}", expires_in: 24.hours) do
+          require "open-uri"
+          URI.open(@book.cover_image, open_timeout: 5, read_timeout: 5) do |f|
+            [ f.read, f.content_type || "image/jpeg" ]
+          end
+        end
+
+        send_data data, type: content_type, disposition: "inline"
+      rescue => e
+        Rails.logger.error "Failed to proxy book cover: #{e.message}"
+        head :not_found
+      end
+    else
+      head :not_found
     end
   end
 

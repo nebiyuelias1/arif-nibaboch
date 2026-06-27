@@ -49,6 +49,9 @@ Rails.application.routes.draw do
     resources :reviews, only: [ :create ] do
       resource :like, only: [ :create ], controller: "review_likes"
     end
+    member do
+      get :cover
+    end
   end
 
   resources :book_clubs do
