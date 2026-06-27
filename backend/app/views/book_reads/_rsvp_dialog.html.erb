@@ -4,7 +4,7 @@
     title: "RSVPs (#{rsvp_records.size})",
     box_class: "bg-surface border border-border shadow-xl rounded-2xl max-w-2xl p-6 relative"
   } do %>
-  <div class="overflow-y-auto p-0 bg-surface">
+  <div class="p-0 bg-surface">
     <% entries = [] %>
     <% entries << { user: book_read.host, status: "Host", variant: "blue" } %>
     <% rsvp_records.each do |rsvp| %>

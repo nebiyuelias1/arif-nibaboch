@@ -4,18 +4,22 @@
 <% modal_class = local_assigns.fetch(:modal_class, "modal modal-bottom sm:modal-middle") %>
 
 <dialog id="<%= id %>" class="<%= modal_class %>">
-  <div class="modal-box <%= box_class %>">
+  <div class="modal-box flex flex-col max-h-[85vh] <%= box_class %>">
     <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-content-muted hover:text-content" aria-label="Close dialog">✕</button>
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-content-muted hover:text-content" aria-label="<%= t("close_dialog") %>">✕</button>
     </form>
     
     <% if title.present? %>
-      <h3 class="text-lg font-bold text-content mb-4"><%= title %></h3>
+      <div class="shrink-0 pr-10 mb-4">
+        <h3 class="text-lg font-bold text-content"><%= title %></h3>
+      </div>
     <% end %>
 
-    <%= yield %>
+    <div class="flex-1 overflow-y-auto min-h-0">
+      <%= yield %>
+    </div>
   </div>
   <form method="dialog" class="modal-backdrop">
-    <button>close</button>
+    <button><%= t("close") %></button>
   </form>
 </dialog>
