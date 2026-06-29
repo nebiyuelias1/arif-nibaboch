@@ -85,7 +85,8 @@ class BooksController < ApplicationController
   def cover
     if @book.cover_image.present?
       begin
-        data, content_type = Rails.cache.fetch("book_cover_#{@book.id}", expires_in: 24.hours) do
+        cache_key = [ "book_cover", @book.id, Digest::SHA1.hexdigest(@book.cover_image) ]
+        data, content_type = Rails.cache.fetch(cache_key, expires_in: 24.hours) do
           require "open-uri"
           URI.open(@book.cover_image, open_timeout: 5, read_timeout: 5) do |f|
             [ f.read, f.content_type || "image/jpeg" ]
