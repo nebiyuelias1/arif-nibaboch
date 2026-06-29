@@ -1,0 +1,42 @@
+<%= render layout: "shared/dialog",
+  locals: {
+    id: "rsvp_dialog",
+    title: "RSVPs (#{rsvp_records.size})",
+    box_class: "bg-surface border border-border shadow-xl rounded-2xl max-w-2xl p-6 relative"
+  } do %>
+  <div class="p-0 bg-surface">
+    <% entries = [] %>
+    <% entries << { user: book_read.host, status: "Host", variant: "blue" } %>
+    <% rsvp_records.each do |rsvp| %>
+      <% next if rsvp.user_id == book_read.host_id %>
+      <% variant =
+        case rsvp.status
+        when "going"
+          "green"
+        when "waitlisted"
+          "yellow"
+        else
+          "gray"
+        end %>
+      <% entries << { user: rsvp.user, status: rsvp.status.titleize, variant: variant } %>
+    <% end %>
+
+    <% body_content = capture do %>
+      <% entries.each_with_index do |entry, row_idx| %>
+        <%= render "book_read_rsvps/rsvp_row",
+        user: entry[:user],
+        status: entry[:status],
+        variant: entry[:variant],
+        is_last: row_idx == entries.size - 1 %>
+      <% end %>
+    <% end %>
+
+    <%= render "shared/table/table",
+    columns: %w[Person Status],
+    body_content: body_content,
+    hoverable: true,
+    sticky_header: true,
+    bordered: false,
+    container: false %>
+  </div>
+<% end %>
