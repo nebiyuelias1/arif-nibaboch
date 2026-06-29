@@ -1,16 +1,77 @@
-<%= render layout: "shared/dialog", locals: { id: "share_flyer_dialog", title: t("share_flyer"), box_class: "bg-surface border border-border shadow-xl rounded-2xl max-w-md p-6 relative" } do %>
-  <div data-controller="share-flyer"
-       data-share-flyer-club-name-value="<%= book_club.name %>"
-       data-share-flyer-title-value="<%= book_read.book&.title || book_read.poll&.text || "Discussion Session" %>"
-       data-share-flyer-author-value="<%= book_read.book&.author %>"
-       data-share-flyer-time-value="<%= book_read.meetup_time&.strftime("%b %d, %Y - %H:%M") || "TBD" %>"
-       data-share-flyer-location-value="<%= book_read.meetup_location.presence || "TBD" %>"
-       data-share-flyer-host-value="<%= book_read.host.to_s %>"
-       data-share-flyer-cover-url-value="<%= book_read.book&.cover_image.present? ? cover_book_path(book_read.book) : "" %>"
-       data-share-flyer-rsvp-url-value="<%= book_club_book_read_url(book_club, book_read) %>"
-       data-share-flyer-book-read-id-value="<%= book_read.id %>"
-       class="flex flex-col gap-6 items-center">
-    
+<% flyer_footer = capture do %>
+  <!-- Actions Panel -->
+  <div class="w-full flex gap-3">
+    <button type="button" 
+            data-action="click->share-flyer#download" 
+            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-border shadow-sm text-sm font-medium rounded-xl text-content bg-surface hover:bg-background transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-content-subtle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+      </svg>
+      <%= t("download") %>
+    </button>
+
+    <!-- Split Share Button Dropdown -->
+    <div class="flex-1 join">
+      <button type="button" 
+              data-action="click->share-flyer#share" 
+              class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-l-xl text-primary-contrast bg-primary hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary join-item">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
+        </svg>
+        <%= t("share_flyer") %>
+      </button>
+
+      <div class="dropdown dropdown-top dropdown-end join-item">
+        <button tabindex="0" role="button" class="h-full inline-flex items-center justify-center px-3 py-2.5 border-l border-primary-contrast/15 shadow-sm text-sm font-medium rounded-r-xl text-primary-contrast bg-primary hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary join-item" aria-haspopup="true">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        <ul tabindex="0" class="dropdown-content menu bg-surface border border-border rounded-xl z-[50] w-48 p-1.5 shadow-xl mb-2">
+          <li>
+            <button type="button" 
+                    data-action="click->share-flyer#shareLink" 
+                    class="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-content hover:bg-background rounded-lg transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-content-subtle">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
+              </svg>
+              <%= t("share_link") %>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render layout: "shared/dialog", locals: {
+      id: "share_flyer_dialog",
+      title: t("share_flyer"),
+      box_class: "bg-surface border border-border shadow-xl rounded-2xl max-w-md p-6 relative",
+      box_attributes: {
+        data: {
+          controller: "share-flyer",
+          share_flyer_club_name_value: book_club.name,
+          share_flyer_title_value: book_read.book&.title || book_read.poll&.text || "Discussion Session",
+          share_flyer_author_value: book_read.book&.author,
+          share_flyer_time_value: book_read.meetup_time&.strftime("%b %d, %Y - %H:%M") || "TBD",
+          share_flyer_location_value: book_read.meetup_location.presence || "TBD",
+          share_flyer_host_value: book_read.host.to_s,
+          share_flyer_cover_url_value: book_read.book&.cover_image.present? ? cover_book_path(book_read.book) : "",
+          share_flyer_rsvp_url_value: book_club_book_read_url(book_club, book_read),
+          share_flyer_book_read_id_value: book_read.id,
+          share_flyer_download_success_msg_value: t("flyer_download_success"),
+          share_flyer_download_error_msg_value: t("flyer_download_error"),
+          share_flyer_link_shared_msg_value: t("link_shared_success"),
+          share_flyer_link_copied_msg_value: t("link_copied_success"),
+          share_flyer_link_error_msg_value: t("link_share_error"),
+          share_flyer_share_title_value: t("share_flyer_title"),
+          share_flyer_share_text_value: t("share_flyer_text", club: book_club.name, title: book_read.book&.title || book_read.poll&.text || "Discussion Session")
+        }
+      },
+      footer: flyer_footer
+    } do %>
+  <div class="flex flex-col gap-6 items-center">
     <!-- Visual Preview of the Flyer (Instagram Story aspect-[9/16] layout to match the high-res 1080x1920 canvas) -->
     <div class="w-full max-w-sm aspect-[9/16] p-6 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white rounded-2xl shadow-2xl flex flex-col gap-4 relative overflow-hidden select-none border border-white/5">
       <!-- Decorative background blur blobs -->
@@ -96,26 +157,5 @@
 
     <!-- Hidden Canvas used for programmatic drawing in background -->
     <canvas data-share-flyer-target="canvas" class="hidden"></canvas>
-
-    <!-- Actions Panel -->
-    <div class="w-full flex gap-3 mt-2">
-      <button type="button" 
-              data-action="click->share-flyer#download" 
-              class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-border shadow-sm text-sm font-medium rounded-xl text-content bg-surface hover:bg-background transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-content-subtle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-        </svg>
-        <%= t("download") %>
-      </button>
-
-      <button type="button" 
-              data-action="click->share-flyer#share" 
-              class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-transparent shadow-sm text-sm font-medium rounded-xl text-primary-contrast bg-primary hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 10.742l5.053 2.526m0-5.109l-5.053 2.526M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <%= t("share") %>
-      </button>
-    </div>
   </div>
 <% end %>

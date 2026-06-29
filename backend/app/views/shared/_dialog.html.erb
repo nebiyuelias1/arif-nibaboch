@@ -2,9 +2,10 @@
 <% title = local_assigns.fetch(:title, nil) %>
 <% box_class = local_assigns.fetch(:box_class, "bg-surface border border-border shadow-xl rounded-2xl max-w-md p-6 relative") %>
 <% modal_class = local_assigns.fetch(:modal_class, "modal modal-bottom sm:modal-middle") %>
+<% box_attributes = local_assigns.fetch(:box_attributes, {}) %>
 
 <dialog id="<%= id %>" class="<%= modal_class %>">
-  <div class="modal-box flex flex-col max-h-[85vh] <%= box_class %>">
+  <div class="modal-box flex flex-col max-h-[85vh] <%= box_class %>" <%= tag.attributes(box_attributes) %>>
     <form method="dialog">
       <button class="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-content-muted hover:text-content" aria-label="<%= t("close_dialog") %>">✕</button>
     </form>
@@ -18,6 +19,12 @@
     <div class="flex-1 overflow-y-auto min-h-0">
       <%= yield %>
     </div>
+
+    <% if local_assigns[:footer].present? %>
+      <div class="shrink-0 pt-4 border-t border-border mt-4">
+        <%= footer %>
+      </div>
+    <% end %>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button><%= t("close") %></button>

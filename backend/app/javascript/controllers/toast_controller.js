@@ -43,6 +43,30 @@ export default class extends Controller {
     window.addEventListener("toast-show", this.boundHandleToastShow);
     window.addEventListener("set-toasts-layout", this.boundHandleLayoutChange);
     document.addEventListener("turbo:before-cache", this.boundBeforeCache);
+
+    // Promote to top layer using Popover API if supported, so toasts render above modal dialogs
+    if (this.element.showPopover && !this.element.matches(":popover-open")) {
+      this.element.setAttribute("popover", "manual");
+      Object.assign(this.element.style, {
+        background: "transparent",
+        border: "none",
+        padding: "0",
+        margin: "0",
+        overflow: "visible",
+        inset: "0",
+        width: "100vw",
+        height: "0",
+        pointerEvents: "none",
+      });
+      if (this.hasContainerTarget) {
+        this.containerTarget.style.pointerEvents = "auto";
+      }
+      try {
+        this.element.showPopover();
+      } catch (e) {
+        console.warn("Failed to show toast popover:", e);
+      }
+    }
   }
 
   updatePositionClasses() {
@@ -108,6 +132,17 @@ export default class extends Controller {
       this.positionValue = event.detail.position;
       window.currentToastPosition = event.detail.position; // Store globally
       this.updatePositionClasses();
+    }
+
+    // Re-promote the popover to the top of the browser's Top Layer stack.
+    // This ensures it renders above any newly opened <dialog> elements.
+    if (this.element.showPopover && this.element.matches(":popover-open")) {
+      try {
+        this.element.hidePopover();
+        this.element.showPopover();
+      } catch (e) {
+        console.warn("Failed to re-promote toast popover:", e);
+      }
     }
 
     const toast = {

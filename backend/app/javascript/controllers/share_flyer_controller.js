@@ -10,7 +10,14 @@ export default class extends Controller {
     host: String,
     coverUrl: String,
     rsvpUrl: String,
-    bookReadId: String
+    bookReadId: String,
+    downloadSuccessMsg: String,
+    downloadErrorMsg: String,
+    linkSharedMsg: String,
+    linkCopiedMsg: String,
+    linkErrorMsg: String,
+    shareTitle: String,
+    shareText: String,
   };
 
   async download() {
@@ -18,16 +25,16 @@ export default class extends Controller {
     try {
       const canvas = await this.drawFlyerCanvas();
       const dataUrl = canvas.toDataURL("image/png");
-      
+
       const link = document.createElement("a");
       link.download = `meetup-story-flyer-${this.bookReadIdValue}.png`;
       link.href = dataUrl;
       link.click();
-      
-      this.notify("Flyer downloaded successfully!");
+
+      this.notify(this.downloadSuccessMsgValue || "Flyer downloaded successfully!");
     } catch (error) {
       console.error("Failed to download flyer:", error);
-      this.notify("Failed to generate flyer.", "error");
+      this.notify(this.downloadErrorMsgValue || "Failed to generate flyer.", "error");
     } finally {
       this.setLoading(false);
     }
@@ -37,8 +44,10 @@ export default class extends Controller {
     this.setLoading(true);
     try {
       const canvas = await this.drawFlyerCanvas();
-      const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-      
+      const blob = await new Promise((resolve) =>
+        canvas.toBlob(resolve, "image/png"),
+      );
+
       if (!blob) {
         this.download();
         return;
@@ -50,8 +59,8 @@ export default class extends Controller {
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
-          title: "Book Club Meetup Flyer",
-          text: `Join us at ${this.clubNameValue} for a discussion on "${this.titleValue}"!`,
+          title: this.shareTitleValue || "Book Club Meetup Flyer",
+          text: this.shareTextValue || `Join us at ${this.clubNameValue} for a discussion on "${this.titleValue}"!`,
         });
       } else {
         this.download();
@@ -65,9 +74,31 @@ export default class extends Controller {
     }
   }
 
+  async shareLink() {
+    const shareData = {
+      title: this.titleValue,
+      url: this.rsvpUrlValue,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        this.notify(this.linkSharedMsgValue || "Link shared successfully!");
+        return;
+      }
+
+      await navigator.clipboard.writeText(this.rsvpUrlValue);
+      this.notify(this.linkCopiedMsgValue || "Link copied to clipboard!");
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+      console.error("Failed to share link:", error);
+      this.notify(this.linkErrorMsgValue || "Failed to share link.", "error");
+    }
+  }
+
   async drawFlyerCanvas() {
     const canvas = document.createElement("canvas");
-    canvas.width = 1080;  // Instagram Story standard width
+    canvas.width = 1080; // Instagram Story standard width
     canvas.height = 1920; // Instagram Story standard height
     const ctx = canvas.getContext("2d");
 
@@ -91,7 +122,14 @@ export default class extends Controller {
     ctx.fillStyle = glow1;
     ctx.fillRect(0, 0, W, H);
 
-    const glow2 = ctx.createRadialGradient(W / 2, H - 400, 100, W / 2, H - 400, 600);
+    const glow2 = ctx.createRadialGradient(
+      W / 2,
+      H - 400,
+      100,
+      W / 2,
+      H - 400,
+      600,
+    );
     glow2.addColorStop(0, "rgba(168, 85, 247, 0.24)"); // Purple
     glow2.addColorStop(1, "rgba(168, 85, 247, 0)");
     ctx.fillStyle = glow2;
@@ -113,13 +151,21 @@ export default class extends Controller {
     };
 
     // Helper: Wrap text helper (with alignment support)
-    const wrapText = (text, x, y, maxWidth, lineHeight, maxLines = 10, align = "left") => {
+    const wrapText = (
+      text,
+      x,
+      y,
+      maxWidth,
+      lineHeight,
+      maxLines = 10,
+      align = "left",
+    ) => {
       const words = text.split(/\s+/);
       let line = "";
       let currentY = y;
       let linesCount = 0;
       ctx.textAlign = align;
-      
+
       for (let n = 0; n < words.length; n++) {
         let testLine = line + words[n] + " ";
         let metrics = ctx.measureText(testLine);
@@ -152,7 +198,7 @@ export default class extends Controller {
     // 2. Header Block
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
-    
+
     // Subtitle & Club Name (Enlarged and positioned higher)
     ctx.fillStyle = "#a5b4fc";
     ctx.font = "bold 30px sans-serif";
@@ -174,7 +220,9 @@ export default class extends Controller {
     ctx.textBaseline = "top";
 
     // 3. Load Images concurrently
-    const coverPromise = this.coverUrlValue ? this.loadImage(this.coverUrlValue) : Promise.resolve(null);
+    const coverPromise = this.coverUrlValue
+      ? this.loadImage(this.coverUrlValue)
+      : Promise.resolve(null);
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(this.rsvpUrlValue)}`;
     const qrPromise = this.loadImage(qrUrl);
 
@@ -193,7 +241,7 @@ export default class extends Controller {
       ctx.shadowBlur = 45;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 22;
-      
+
       drawRoundedRect(coverX, coverY, coverWidth, coverHeight, 32);
       ctx.fillStyle = "#020617";
       ctx.fill();
@@ -236,12 +284,20 @@ export default class extends Controller {
 
     // 5. Draw Book Details (Center-aligned, positioned closely below cover y: 1045)
     let currentY = 1045;
-    const bodyWidth = W - (padding * 2); // 920
+    const bodyWidth = W - padding * 2; // 920
 
     // Title (Centered, maximum font size)
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 64px sans-serif";
-    const titleLastY = wrapText(this.titleValue, W / 2, currentY, bodyWidth, 76, 3, "center");
+    const titleLastY = wrapText(
+      this.titleValue,
+      W / 2,
+      currentY,
+      bodyWidth,
+      76,
+      3,
+      "center",
+    );
     currentY = titleLastY + 60;
 
     // Author (Centered, maximum font size)
@@ -257,14 +313,14 @@ export default class extends Controller {
 
     // 6. Draw Meetup Info Box (Positioned tightly at y: 1250 with massive fonts)
     const boxY = 1250;
-    const boxW = W - (padding * 2); // 920
+    const boxW = W - padding * 2; // 920
     const boxH = 340;
     const boxX = padding;
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.03)";
     drawRoundedRect(boxX, boxY, boxW, boxH, 24);
     ctx.fill();
-    
+
     // Card border
     ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
     ctx.lineWidth = 2;
@@ -303,7 +359,15 @@ export default class extends Controller {
 
     ctx.fillStyle = "#94a3b8";
     ctx.font = "26px sans-serif";
-    wrapText(this.rsvpUrlValue, padding, footerY + 80, W - padding - 220, 32, 2, "left");
+    wrapText(
+      this.rsvpUrlValue,
+      padding,
+      footerY + 80,
+      W - padding - 220,
+      32,
+      2,
+      "left",
+    );
 
     // Right Footer QR Code (160x160)
     if (qrImg) {
@@ -337,7 +401,7 @@ export default class extends Controller {
 
   setLoading(isLoading) {
     const buttons = this.element.querySelectorAll("button");
-    buttons.forEach(btn => {
+    buttons.forEach((btn) => {
       if (isLoading) {
         btn.setAttribute("disabled", "true");
         btn.style.opacity = "0.7";
