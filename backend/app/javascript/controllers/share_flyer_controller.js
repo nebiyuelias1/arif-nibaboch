@@ -58,7 +58,7 @@ export default class extends Controller {
       );
 
       if (!blob) {
-        this.download();
+        await this.download();
         return;
       }
 
@@ -72,12 +72,12 @@ export default class extends Controller {
           text: this.shareTextValue || `Join us at ${this.clubNameValue} for a discussion on "${this.titleValue}"!`,
         });
       } else {
-        this.download();
+        await this.download();
       }
     } catch (error) {
       if (error?.name === "AbortError") return;
       console.error("Failed to share flyer:", error);
-      this.download();
+      await this.download();
     } finally {
       this.setLoading(false);
     }
@@ -176,24 +176,65 @@ export default class extends Controller {
       ctx.textAlign = align;
 
       for (let n = 0; n < words.length; n++) {
-        let testLine = line + words[n] + " ";
+        const word = words[n];
+        let testLine = line + word + " ";
         let metrics = ctx.measureText(testLine);
-        let testWidth = metrics.width;
-        if (testWidth > maxWidth && n > 0) {
-          linesCount++;
-          if (linesCount === maxLines) {
-            ctx.fillText(line.trim() + "...", x, currentY);
-            return currentY;
+        
+        if (metrics.width > maxWidth) {
+          // If the word itself is wider than maxWidth, we need to split it by character
+          const wordMetrics = ctx.measureText(word);
+          if (wordMetrics.width > maxWidth) {
+            // Write the current line if there is one
+            if (line.trim().length > 0) {
+              linesCount++;
+              if (linesCount === maxLines) {
+                ctx.fillText(line.trim() + "...", x, currentY);
+                return currentY;
+              }
+              ctx.fillText(line.trim(), x, currentY);
+              currentY += lineHeight;
+              line = "";
+            }
+            
+            // Split the long word by characters
+            let chars = word.split("");
+            for (let c = 0; c < chars.length; c++) {
+              let testCharLine = line + chars[c];
+              let charMetrics = ctx.measureText(testCharLine);
+              if (charMetrics.width > maxWidth) {
+                linesCount++;
+                if (linesCount === maxLines) {
+                  ctx.fillText(line.trim() + "...", x, currentY);
+                  return currentY;
+                }
+                ctx.fillText(line.trim(), x, currentY);
+                currentY += lineHeight;
+                line = chars[c];
+              } else {
+                line = testCharLine;
+              }
+            }
+            line += " "; // Add space after the character-split word
+          } else {
+            // Normal word wrap
+            if (line.trim().length > 0) {
+              linesCount++;
+              if (linesCount === maxLines) {
+                ctx.fillText(line.trim() + "...", x, currentY);
+                return currentY;
+              }
+              ctx.fillText(line.trim(), x, currentY);
+              currentY += lineHeight;
+            }
+            line = word + " ";
           }
-          ctx.fillText(line, x, currentY);
-          line = words[n] + " ";
-          currentY += lineHeight;
         } else {
           line = testLine;
         }
       }
-      if (linesCount < maxLines) {
-        ctx.fillText(line, x, currentY);
+
+      if (line.trim().length > 0 && linesCount < maxLines) {
+        ctx.fillText(line.trim(), x, currentY);
       }
       return currentY;
     };
@@ -404,14 +445,28 @@ export default class extends Controller {
     return canvas;
   }
 
-  loadImage(src) {
+  loadImage(src, timeoutMs = 10000) {
     return new Promise((resolve) => {
       const img = new Image();
+      let settled = false;
+      
+      const finish = (value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeout);
+        resolve(value);
+      };
+
+      const timeout = setTimeout(() => {
+        console.warn(`Timed out loading image: ${src}`);
+        finish(null);
+      }, timeoutMs);
+
       img.crossOrigin = "anonymous";
-      img.onload = () => resolve(img);
+      img.onload = () => finish(img);
       img.onerror = (e) => {
         console.warn(`Failed to load image: ${src}`, e);
-        resolve(null);
+        finish(null);
       };
       img.src = src;
     });
