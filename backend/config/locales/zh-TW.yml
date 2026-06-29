@@ -32,3 +32,20 @@ zh-TW:
   link_share_error: "分享連結失敗。"
   share_flyer_title: "讀書會聚會傳單"
   share_flyer_text: "加入我們在 %{club} 討論 “%{title}”！"
+  book_club_meetup: "讀書會聚會"
+  active_poll: "進行中的投票"
+  voting_in_progress: "投票進行中"
+  by_author: "作者：%{author}"
+  meetup_details: "活動詳情"
+  time_label: "時間"
+  location_label: "地點"
+  host_label: "主持人"
+  hosted_by: "由 %{host} 主持"
+  hosted_by_html: "由 %{host} 主持"
+  scan_to_rsvp: "掃碼報名"
+  tbd: "待定"
+  discussion_session: "討論會"
+
+  time:
+    formats:
+      flyer: "%Y年%m月%d日 %H:%M"

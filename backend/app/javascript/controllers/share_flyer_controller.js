@@ -18,6 +18,15 @@ export default class extends Controller {
     linkErrorMsg: String,
     shareTitle: String,
     shareText: String,
+    labelBookClubMeetup: String,
+    labelActivePoll: String,
+    labelVotingInProgress: String,
+    labelByAuthor: String,
+    labelMeetupDetails: String,
+    labelTime: String,
+    labelLocation: String,
+    labelHostedBy: String,
+    labelScanToRsvp: String,
   };
 
   async download() {
@@ -202,7 +211,7 @@ export default class extends Controller {
     // Subtitle & Club Name (Enlarged and positioned higher)
     ctx.fillStyle = "#a5b4fc";
     ctx.font = "bold 30px sans-serif";
-    ctx.fillText("BOOK CLUB MEETUP", padding, 70);
+    ctx.fillText(this.labelBookClubMeetupValue || "BOOK CLUB MEETUP", padding, 70);
 
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 58px sans-serif";
@@ -276,10 +285,10 @@ export default class extends Controller {
 
       ctx.font = "bold 32px sans-serif";
       ctx.fillStyle = "#a5b4fc";
-      ctx.fillText("ACTIVE POLL", W / 2, coverY + 410);
+      ctx.fillText(this.labelActivePollValue || "ACTIVE POLL", W / 2, coverY + 410);
       ctx.font = "24px sans-serif";
       ctx.fillStyle = "#64748b";
-      ctx.fillText("Voting in Progress", W / 2, coverY + 468);
+      ctx.fillText(this.labelVotingInProgressValue || "Voting in Progress", W / 2, coverY + 468);
     }
 
     // 5. Draw Book Details (Center-aligned, positioned closely below cover y: 1045)
@@ -305,7 +314,10 @@ export default class extends Controller {
       ctx.fillStyle = "#c7d2fe"; // Indigo-200
       ctx.font = "italic 42px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText(`by ${this.authorValue}`, W / 2, currentY);
+      const byText = this.labelByAuthorValue
+        ? this.labelByAuthorValue.replace("%{author}", this.authorValue)
+        : `by ${this.authorValue}`;
+      ctx.fillText(byText, W / 2, currentY);
       currentY += 80;
     } else {
       currentY += 20;
@@ -331,17 +343,23 @@ export default class extends Controller {
     ctx.textAlign = "left";
     ctx.fillStyle = "#a5b4fc";
     ctx.font = "bold 26px sans-serif";
-    ctx.fillText("MEETUP DETAILS", boxX + 40, boxY + 36);
+    ctx.fillText(this.labelMeetupDetailsValue || "MEETUP DETAILS", boxX + 40, boxY + 36);
 
     // Box Rows (Maximum font size: 42px, highly readable)
+    const timeLabel = this.labelTimeValue || "Time";
+    const locationLabel = this.labelLocationValue || "Location";
+    const hostedByText = this.labelHostedByValue
+      ? this.labelHostedByValue.replace("%{host}", this.hostValue)
+      : `Host:  ${this.hostValue}`;
+
     ctx.fillStyle = "#f1f5f9";
     ctx.font = "bold 42px sans-serif";
-    ctx.fillText(`📅  Time:  ${this.timeValue}`, boxX + 40, boxY + 100);
-    ctx.fillText(`📍  Location:  ${this.locationValue}`, boxX + 40, boxY + 175);
+    ctx.fillText(`📅  ${timeLabel}:  ${this.timeValue}`, boxX + 40, boxY + 100);
+    ctx.fillText(`📍  ${locationLabel}:  ${this.locationValue}`, boxX + 40, boxY + 175);
 
     ctx.fillStyle = "#cbd5e1";
     ctx.font = "40px sans-serif";
-    ctx.fillText(`👤  Host:  ${this.hostValue}`, boxX + 40, boxY + 250);
+    ctx.fillText(`👤  ${hostedByText}`, boxX + 40, boxY + 250);
 
     // 7. Footer Block (Positioned higher, y: 1650)
     const footerY = 1650;
@@ -355,7 +373,7 @@ export default class extends Controller {
     // Left Footer Text (Scaled up)
     ctx.fillStyle = "#a5b4fc";
     ctx.font = "bold 32px sans-serif";
-    ctx.fillText("SCAN TO RSVP", padding, footerY + 35);
+    ctx.fillText(this.labelScanToRsvpValue || "SCAN TO RSVP", padding, footerY + 35);
 
     ctx.fillStyle = "#94a3b8";
     ctx.font = "26px sans-serif";

@@ -32,3 +32,20 @@ am:
   link_share_error: "ሊንክ ማጋራት አልተቻለም።"
   share_flyer_title: "የመጽሐፍ ክለብ ስብሰባ ፍላየር"
   share_flyer_text: "በ \"%{title}\" ላይ ለመወያየት %{club} ጋር ይቀላቀሉን!"
+  book_club_meetup: "የመጽሐፍ ክለብ ስብሰባ"
+  active_poll: "ገባሪ የድምፅ አሰጣጥ"
+  voting_in_progress: "ድምፅ መስጠት በመካሄድ ላይ"
+  by_author: "በ %{author}"
+  meetup_details: "የስብሰባ ዝርዝሮች"
+  time_label: "ሰዓት"
+  location_label: "ቦታ"
+  host_label: "አስተናጋጅ"
+  hosted_by: "በ %{host} የተዘጋጀ"
+  hosted_by_html: "በ %{host} የተዘጋጀ"
+  scan_to_rsvp: "ለመመዝገብ ስካን ያድርጉ"
+  tbd: "ሊወሰን የሚገባው"
+  discussion_session: "የውይይት ክፍለ ጊዜ"
+
+  time:
+    formats:
+      flyer: "%b %d, %Y - %H:%M"

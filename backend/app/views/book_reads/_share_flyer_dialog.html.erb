@@ -52,10 +52,10 @@
         data: {
           controller: "share-flyer",
           share_flyer_club_name_value: book_club.name,
-          share_flyer_title_value: book_read.book&.title || book_read.poll&.text || "Discussion Session",
+          share_flyer_title_value: book_read.book&.title || book_read.poll&.text || t("discussion_session"),
           share_flyer_author_value: book_read.book&.author,
-          share_flyer_time_value: book_read.meetup_time&.strftime("%b %d, %Y - %H:%M") || "TBD",
-          share_flyer_location_value: book_read.meetup_location.presence || "TBD",
+          share_flyer_time_value: book_read.meetup_time ? l(book_read.meetup_time, format: :flyer) : t("tbd"),
+          share_flyer_location_value: book_read.meetup_location.presence || t("tbd"),
           share_flyer_host_value: book_read.host.to_s,
           share_flyer_cover_url_value: book_read.book&.cover_image.present? ? cover_book_path(book_read.book) : "",
           share_flyer_rsvp_url_value: book_club_book_read_url(book_club, book_read),
@@ -66,7 +66,17 @@
           share_flyer_link_copied_msg_value: t("link_copied_success"),
           share_flyer_link_error_msg_value: t("link_share_error"),
           share_flyer_share_title_value: t("share_flyer_title"),
-          share_flyer_share_text_value: t("share_flyer_text", club: book_club.name, title: book_read.book&.title || book_read.poll&.text || "Discussion Session")
+          share_flyer_share_text_value: t("share_flyer_text", club: book_club.name, title: book_read.book&.title || book_read.poll&.text || t("discussion_session")),
+          # Localized labels for the high-res canvas drawing
+          share_flyer_label_book_club_meetup_value: t("book_club_meetup"),
+          share_flyer_label_active_poll_value: t("active_poll"),
+          share_flyer_label_voting_in_progress_value: t("voting_in_progress"),
+          share_flyer_label_by_author_value: t("by_author"),
+          share_flyer_label_meetup_details_value: t("meetup_details"),
+          share_flyer_label_time_value: t("time_label"),
+          share_flyer_label_location_value: t("location_label"),
+          share_flyer_label_hosted_by_value: t("hosted_by"),
+          share_flyer_label_scan_to_rsvp_value: t("scan_to_rsvp")
         }
       },
       footer: flyer_footer
@@ -81,7 +91,7 @@
       <!-- Header: Club info -->
       <div class="flex justify-between items-center border-b border-white/10 pb-3 shrink-0">
         <div class="min-w-0">
-          <p class="text-[10px] uppercase tracking-widest text-indigo-300 font-bold">Book Club Meetup</p>
+          <p class="text-[10px] uppercase tracking-widest text-indigo-300 font-bold"><%= t("book_club_meetup") %></p>
           <h4 class="text-base font-extrabold tracking-tight text-white truncate"><%= book_club.name %></h4>
         </div>
       </div>
@@ -97,7 +107,7 @@
           <% else %>
             <div class="w-full h-full rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center text-center p-4 text-slate-400 gap-2 shadow-inner">
               <span class="text-3xl">📝</span>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-300">Active Poll</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-300"><%= t("active_poll") %></span>
             </div>
           <% end %>
         </div>
@@ -105,23 +115,25 @@
         <!-- Details (Centered & Enlarged) -->
         <div class="w-full flex flex-col gap-1.5 text-center shrink-0">
           <h3 class="font-extrabold text-xl leading-tight text-white line-clamp-2 px-2">
-            <%= book_read.book&.title || book_read.poll&.text || "Discussion Session" %>
+            <%= book_read.book&.title || book_read.poll&.text || t("discussion_session") %>
           </h3>
           <% if book_read.book.present? %>
-            <p class="text-sm text-indigo-200 italic font-medium truncate">by <%= book_read.book.author %></p>
+            <p class="text-sm text-indigo-200 italic font-medium truncate"><%= t("by_author", author: book_read.book.author) %></p>
           <% end %>
         </div>
       </div>
 
       <!-- Meetup Info Box (Enlarged and positioned above footer) -->
       <div class="bg-white/5 rounded-xl p-4 border border-white/5 flex flex-col gap-2.5 text-[13px] leading-tight select-none shrink-0">
-        <p class="text-[10px] font-bold uppercase tracking-wider text-indigo-300 mb-0.5">Meetup Details</p>
+        <p class="text-[10px] font-bold uppercase tracking-wider text-indigo-300 mb-0.5"><%= t("meetup_details") %></p>
         <!-- Time -->
         <div class="flex items-center gap-2.5 text-slate-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <span class="font-bold truncate"><%= book_read.meetup_time&.strftime("%b %d, %Y - %H:%M") || "TBD" %></span>
+          <span class="font-bold truncate">
+            <%= t("time_label") %>: <%= book_read.meetup_time ? l(book_read.meetup_time, format: :flyer) : t("tbd") %>
+          </span>
         </div>
         <!-- Location -->
         <div class="flex items-center gap-2.5 text-slate-200">
@@ -129,21 +141,23 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          <span class="font-bold truncate"><%= book_read.meetup_location.presence || "TBD" %></span>
+          <span class="font-bold truncate">
+            <%= t("location_label") %>: <%= book_read.meetup_location.presence || t("tbd") %>
+          </span>
         </div>
         <!-- Host -->
         <div class="flex items-center gap-2.5 text-slate-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
-          <span class="truncate text-slate-300 font-medium">Hosted by <span class="font-bold text-white"><%= book_read.host.to_s %></span></span>
+          <span class="truncate text-slate-300 font-medium"><%= t("hosted_by_html", host: tag.span(book_read.host.to_s, class: "font-bold text-white")) %></span>
         </div>
       </div>
 
       <!-- Footer: RSVP QR Code -->
       <div class="flex justify-between items-center border-t border-white/10 pt-3 shrink-0 gap-4 mt-auto">
         <div class="flex-1 min-w-0">
-          <p class="text-[10px] font-bold uppercase tracking-wider text-indigo-300">Scan to RSVP</p>
+          <p class="text-[10px] font-bold uppercase tracking-wider text-indigo-300"><%= t("scan_to_rsvp") %></p>
           <p class="text-[9px] text-slate-400 mt-0.5 truncate"><%= book_club_book_read_url(book_club, book_read) %></p>
         </div>
         <!-- QR Code -->

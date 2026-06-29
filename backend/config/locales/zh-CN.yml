@@ -32,3 +32,20 @@ zh-CN:
   link_share_error: "分享链接失败。"
   share_flyer_title: "读书会聚会传单"
   share_flyer_text: "加入我们在 %{club} 讨论 “%{title}”！"
+  book_club_meetup: "读书会聚会"
+  active_poll: "进行中的投票"
+  voting_in_progress: "投票进行中"
+  by_author: "作者：%{author}"
+  meetup_details: "活动详情"
+  time_label: "时间"
+  location_label: "地点"
+  host_label: "主持人"
+  hosted_by: "由 %{host} 主持"
+  hosted_by_html: "由 %{host} 主持"
+  scan_to_rsvp: "扫码报名"
+  tbd: "待定"
+  discussion_session: "讨论会"
+
+  time:
+    formats:
+      flyer: "%Y年%m月%d日 %H:%M"
