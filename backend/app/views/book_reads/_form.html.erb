@@ -1,7 +1,7 @@
 <%= form_with(model: [book_club, book_read], class: "space-y-6", data: { controller: "book-read-form" }) do |form| %>
   <% if @book_read.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-700 p-4 rounded-lg mb-6 border border-red-100">
-      <h2 class="font-bold text-sm"><%= pluralize(@book_read.errors.count, "error") %> prohibited this book read from being saved:</h2>
+      <h2 class="font-bold text-sm"><%= t("book_reads.form.errors", count: @book_read.errors.count) %></h2>
       <ul class="list-disc pl-5 mt-2 text-xs">
         <% @book_read.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -12,21 +12,21 @@
 
   <%# Selection Toggle %>
   <div class="space-y-3">
-    <label class="block text-sm font-semibold text-content ml-1">What are we reading?</label>
+    <label class="block text-sm font-semibold text-content ml-1"><%= t("book_reads.form.what_reading") %></label>
     <% current_selection = params[:selection_type] || (@book_read.poll.present? ? 'poll' : 'book') %>
     <div class="flex p-1 bg-background rounded-lg border border-border w-fit">
 
        <label data-book-read-form-target="selectionBtn" 
             data-action="click->book-read-form#toggle"
             class="relative flex items-center px-4 py-2 rounded-md cursor-pointer transition-all bg-transparent">
-         <span class="text-sm font-bold text-content">Specific Book</span>
+         <span class="text-sm font-bold text-content"><%= t("book_reads.form.specific_book") %></span>
         <%= radio_button_tag :selection_type, "book", current_selection == "book", class: "hidden" %>
       </label>
 
        <label data-book-read-form-target="selectionBtn" 
             data-action="click->book-read-form#toggle"
             class="relative flex items-center px-4 py-2 rounded-md cursor-pointer transition-all bg-transparent">
-         <span class="text-sm font-bold text-content">Poll</span>
+         <span class="text-sm font-bold text-content"><%= t("book_reads.form.poll") %></span>
         <%= radio_button_tag :selection_type, "poll", current_selection == "poll", class: "hidden" %>
       </label>
     </div>
@@ -37,14 +37,14 @@
     <%# Book Selection Section %>
     <div id="book_selection_field" data-book-read-form-target="bookSection" class="p-4 rounded-lg border border-border bg-surface shadow-sm">
       <div data-controller="book-autocomplete" data-book-autocomplete-url-value="<%= books_search_path(format: :json) %>" class="relative">
-        <label for="book_search_input" class="block text-sm font-medium text-content-subtle mb-2">Search for a book</label>
+        <label for="book_search_input" class="block text-sm font-medium text-content-subtle mb-2"><%= t("book_reads.form.search_book") %></label>
         
         <div class="relative group">
           <input id="book_search_input" 
                  type="text" 
                  data-book-autocomplete-target="input" 
                  data-action="keyup->book-autocomplete#performSearch click->book-autocomplete#performSearch focus->book-autocomplete#performSearch"
-                 placeholder="Type title..." 
+                 placeholder="<%= t('book_reads.form.type_title') %>" 
                  value="<%= @book_read.book&.title %>"
                  autocomplete="off"
                  class="block w-full rounded-md border-border bg-background py-2 px-3 text-sm text-content placeholder:text-content-muted focus:bg-surface focus:border-primary transition-all outline-none">
@@ -62,14 +62,14 @@
     <div id="poll_fields" data-book-read-form-target="pollSection" class="hidden p-4 rounded-lg border border-border bg-surface shadow-sm space-y-4">
       <%= form.fields_for :poll, (@book_read.poll || Poll.new) do |poll_form| %>
         <div class="space-y-1">
-          <%= poll_form.label :text, "Poll Question", class: "block text-sm font-medium text-content-subtle" %>
+          <%= poll_form.label :text, t("book_reads.form.poll_question"), class: "block text-sm font-medium text-content-subtle" %>
           <%= poll_form.text_field :text, 
               class: "block w-full rounded-md border-border bg-background py-2 px-3 text-sm text-content placeholder:text-content-muted focus:bg-surface focus:border-primary transition-all outline-none", 
-              placeholder: "e.g., Which book should we read next?" %>
+              placeholder: t("book_reads.form.poll_question_placeholder") %>
         </div>
         
         <div class="pt-2 border-t border-border">
-          <label class="block text-sm font-medium text-content-subtle mb-3">Poll Options (Books)</label>
+          <label class="block text-sm font-medium text-content-subtle mb-3"><%= t("book_reads.form.poll_options") %></label>
           
           <div data-controller="dynamic-nested-fields" id="poll_options">
             <template data-dynamic-nested-fields-target="template">
@@ -95,13 +95,13 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 mr-1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
-              Add Another Option
+              <%= t("book_reads.form.add_option") %>
             </button>
           </div>
         </div>
 
         <div class="space-y-1">
-          <%= poll_form.label :end_date, "Voting Ends On", class: "block text-sm font-medium text-content-subtle" %>
+          <%= poll_form.label :end_date, t("book_reads.form.voting_ends_on"), class: "block text-sm font-medium text-content-subtle" %>
           <%= poll_form.datetime_field :end_date, 
               class: "block w-full rounded-md border-border bg-background py-2 px-3 text-sm text-content focus:bg-surface focus:border-primary transition-all outline-none" %>
         </div>
@@ -115,7 +115,7 @@
       <%= form.label :max_capacity, class: "block text-sm font-medium text-content-subtle" %>
       <%= form.number_field :max_capacity,
           min: 2,
-          placeholder: "e.g., 12",
+          placeholder: t("book_reads.form.capacity_placeholder"),
           class: "block w-full rounded-md border-border bg-background py-2 px-3 text-sm text-content focus:bg-surface focus:border-primary transition-all outline-none" %>
     </div>
 
@@ -128,13 +128,13 @@
     <div class="space-y-1">
       <%= form.label :meetup_location, class: "block text-sm font-medium text-content-subtle" %>
       <%= form.text_field :meetup_location, 
-          placeholder: "e.g., Starbucks",
+          placeholder: t("book_reads.form.location_placeholder"),
           class: "block w-full rounded-md border-border bg-background py-2 px-3 text-sm text-content focus:bg-surface focus:border-primary transition-all outline-none" %>
     </div>
   </div>
 
   <div class="flex items-center justify-end gap-3 pt-6 border-t border-border">
-    <%= link_to "Cancel", book_club_path(@book_club), class: "px-4 py-2 text-sm font-medium text-content-subtle" %>
-    <%= form.submit "Schedule Read", class: "px-6 py-2 bg-primary text-primary-contrast text-sm font-bold rounded-md hover:bg-primary cursor-pointer" %>
+    <%= link_to t("book_reads.form.cancel"), book_club_path(@book_club), class: "px-4 py-2 text-sm font-medium text-content-subtle" %>
+    <%= form.submit t("book_reads.form.schedule_read"), class: "px-6 py-2 bg-primary text-primary-contrast text-sm font-bold rounded-md hover:bg-primary cursor-pointer" %>
   </div>
 <% end %>

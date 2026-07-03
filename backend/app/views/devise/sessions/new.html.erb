@@ -1,8 +1,8 @@
 <div class="flex-1 min-h-screen flex items-center justify-center">
   <div class="w-full bg-surface shadow-md rounded-lg p-6 sm:p-8">
     <div class="text-center mb-5">
-      <h2 class="title title-lg text-content font-extrabold">Sign in to your account</h2>
-      <p class="mt-1 text-xs sm:text-sm text-content-subtle">Welcome back — enter your details to access your account.</p>
+      <h2 class="title title-lg text-content font-extrabold"><%= t("devise.sessions.new.title") %></h2>
+      <p class="mt-1 text-xs sm:text-sm text-content-subtle"><%= t("devise.sessions.new.subtitle") %></p>
     </div>
 
     <% if flash.any? %>
@@ -39,7 +39,7 @@
             <button type="button"
                     class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-content-muted hover:text-content transition-colors"
                     data-action="click->password#toggle"
-                    aria-label="Toggle password visibility">
+                    aria-label="<%= t('devise.sessions.new.toggle_password_visibility') %>">
               <span data-password-target="toggleIcon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-4" width="18" height="18" viewBox="0 0 18 18"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" stroke="currentColor"><path d="M9 11.75C10.5188 11.75 11.75 10.5188 11.75 9C11.75 7.48122 10.5188 6.25 9 6.25C7.48122 6.25 6.25 7.48122 6.25 9C6.25 10.5188 7.48122 11.75 9 11.75Z"></path> <path d="M15.9557 7.88669C16.3481 8.57939 16.3481 9.42049 15.9557 10.1132C15.0087 11.7849 12.7944 14.4999 9 14.4999C5.2056 14.4999 2.9912 11.7849 2.0443 10.1132C1.6519 9.42049 1.6519 8.57939 2.0443 7.88669C2.9913 6.21499 5.2056 3.5 9 3.5C12.7944 3.5 15.0088 6.21499 15.9557 7.88669Z"></path></g></svg>
               </span>
@@ -51,17 +51,17 @@
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <label class="flex items-center text-sm text-content">
               <%= f.check_box :remember_me, class: "h-4 w-4 text-primary focus:ring-primary border-border rounded" %>
-              <span class="ml-2 text-sm">Remember me</span>
+              <span class="ml-2 text-sm"><%= t("devise.sessions.new.remember_me") %></span>
             </label>
 
             <div class="text-sm">
-              <%= link_to "Forgot your password?", new_password_path(resource_name), class: "font-medium text-primary hover:text-accent" %>
+              <%= link_to t("devise.sessions.new.forgot_password"), new_password_path(resource_name), class: "font-medium text-primary hover:text-accent" %>
             </div>
           </div>
         <% end %>
 
         <div>
-          <%= f.submit "Log in", class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
+          <%= f.submit t("devise.sessions.new.log_in"), class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
         </div>
       </div>
     <% end %>
@@ -74,7 +74,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
           <path d="M19.952 12.417c0-4.28-4.29-7.763-9.567-7.763-5.276 0-9.567 3.483-9.567 7.763 0 3.838 3.403 7.052 8 7.652.311.067.736.205.844.472.097.242.063.622.031.867l-.136.819c-.042.242-.193.946.828.516 1.022-.43 5.512-3.245 7.52-5.553h-.001c1.387-1.521 2.048-3.065 2.048-4.773z"/>
         </svg>
-        Log in with LINE
+        <%= t("devise.sessions.new.log_in_with_line") %>
       <% end %>
     </div>
 

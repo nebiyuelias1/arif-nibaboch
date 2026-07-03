@@ -1,7 +1,7 @@
 <div class="max-w-2xl mx-auto mt-8">
   <div class="bg-surface p-8 rounded-lg shadow-sm border border-border mb-8">
-    <h1 class="title title-lg text-content font-bold mb-4">Finalize Poll</h1>
-    <p class="text-content-subtle mb-6">Select the book that will be read for this session. The winner(s) based on votes are highlighted below.</p>
+    <h1 class="title title-lg text-content font-bold mb-4"><%= t("book_reads.finalize.title") %></h1>
+    <p class="text-content-subtle mb-6"><%= t("book_reads.finalize.description") %></p>
 
     <%= form_with url: select_book_book_club_book_read_path(@book_club, @book_read), method: :patch, class: "space-y-4" do |f| %>
       <div class="space-y-3">
@@ -16,27 +16,27 @@
                 <div class="flex gap-2">
                   <% if is_winner %>
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-primary/10 text-primary border border-primary/20 mt-1">
-                      Winner
+                      <%= t("book_reads.finalize.winner") %>
                     </span>
                   <% end %>
                   <% if is_suggested && @winning_options.size > 1 %>
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-accent/10 text-accent border border-accent/20 mt-1">
-                      Suggested Tie-breaker
+                      <%= t("book_reads.finalize.suggested_tiebreaker") %>
                     </span>
                   <% end %>
                 </div>
               </div>
             </div>
             <span class="text-xs font-semibold text-content-muted">
-              <%= pluralize(option.poll_votes.size, "vote") %>
+              <%= t("book_reads.finalize.vote_count", count: option.poll_votes.size) %>
             </span>
           </label>
         <% end %>
       </div>
 
       <div class="mt-8 flex gap-4">
-        <%= f.submit "Finalize", class: "px-6 py-3 rounded-md text-sm font-bold transition-colors shadow-sm text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
-        <%= link_to "Cancel", book_club_book_read_path(@book_club, @book_read), class: "px-6 py-3 rounded-md text-sm font-bold transition-colors border border-border text-content bg-surface hover:bg-background" %>
+        <%= f.submit t("book_reads.finalize.finalize"), class: "px-6 py-3 rounded-md text-sm font-bold transition-colors shadow-sm text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
+        <%= link_to t("book_reads.finalize.cancel"), book_club_book_read_path(@book_club, @book_read), class: "px-6 py-3 rounded-md text-sm font-bold transition-colors border border-border text-content bg-surface hover:bg-background" %>
       </div>
     <% end %>
   </div>

@@ -1,9 +1,9 @@
 <div class="max-w-2xl mx-auto bg-surface rounded-lg shadow p-6">
-	<h1 class="title title-lg text-content font-bold mb-4">New Book</h1>
+	<h1 class="title title-lg text-content font-bold mb-4"><%= t("books.new.title") %></h1>
 
 	<%= render 'form', book: @book %>
 
 	<div class="mt-4">
-		<%= link_to 'Back', books_path, class: 'text-sm text-primary hover:underline' %>
+		<%= link_to t("books.new.back"), books_path, class: 'text-sm text-primary hover:underline' %>
 	</div>
 </div>

@@ -1,31 +1,31 @@
 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; line-height: 1.6; color: #333;">
-  <h2 style="color: #2563eb;">Welcome to <%= app_name %>!</h2>
+  <h2 style="color: #2563eb;"><%= t("mailers.devise.confirmation.welcome", app: app_name) %></h2>
 
-  <p>Hi <%= @email %>,</p>
+  <p><%= t("mailers.devise.greeting", email: @email) %></p>
 
-  <p>We're excited to have you join our community of book lovers. By confirming your email, you'll get full access to:</p>
+  <p><%= t("mailers.devise.confirmation.intro") %></p>
 
   <ul style="padding-left: 20px;">
-    <li><strong>Review & Rate:</strong> Share your thoughts on your favorite books.</li>
-    <li><strong>Book Clubs:</strong> Join or start book clubs and participate in discussions.</li>
-    <li><strong>Track Your Reading:</strong> Keep a "Want to Read" list and track your progress.</li>
-    <li><strong>Contribute:</strong> Help us grow by submitting new book records to our database.</li>
+    <li><strong><%= t("mailers.devise.confirmation.feature_review_title") %></strong> <%= t("mailers.devise.confirmation.feature_review_body") %></li>
+    <li><strong><%= t("mailers.devise.confirmation.feature_clubs_title") %></strong> <%= t("mailers.devise.confirmation.feature_clubs_body") %></li>
+    <li><strong><%= t("mailers.devise.confirmation.feature_track_title") %></strong> <%= t("mailers.devise.confirmation.feature_track_body") %></li>
+    <li><strong><%= t("mailers.devise.confirmation.feature_contribute_title") %></strong> <%= t("mailers.devise.confirmation.feature_contribute_body") %></li>
   </ul>
 
-  <p>Please click the button below to confirm your account and get started:</p>
+  <p><%= t("mailers.devise.confirmation.cta_intro") %></p>
 
   <p style="text-align: center; margin: 30px 0;">
-    <%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), 
+    <%= link_to t("mailers.devise.confirmation.confirm_my_account"), confirmation_url(@resource, confirmation_token: @token), 
         style: "background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;" %>
   </p>
 
   <p style="font-size: 0.9em; color: #666;">
-    If you didn't create an account on <%= app_name %>, please ignore this email.
+    <%= t("mailers.devise.confirmation.ignore", app: app_name) %>
   </p>
 
   <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
 
   <p style="font-size: 0.8em; color: #999; text-align: center;">
-    &copy; <%= Time.current.year %> <%= app_name %>. All rights reserved.
+    <%= t("mailers.devise.footer", year: Time.current.year, app: app_name) %>
   </p>
 </div>

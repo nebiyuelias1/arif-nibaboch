@@ -1,7 +1,7 @@
 <%= form_with(model: @club, local: true, class: "space-y-6") do |form| %> 
   <% if @club.errors.any? %>
     <div class="bg-red-50 text-red-700 p-4 rounded-md">
-      <h2 class="font-bold mb-2"><%= pluralize(@club.errors.count, "error") %> prohibited this club from being saved:</h2>
+      <h2 class="font-bold mb-2"><%= t("book_clubs.form.errors", count: @club.errors.count) %></h2>
       <ul class="list-disc pl-5">
         <% @club.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -12,12 +12,12 @@
 
   <div>
     <%= form.label :name, class: "block text-sm font-medium text-content mb-1" %>
-    <%= form.text_field :name, class: "w-full border-border bg-surface text-content rounded-md shadow-sm placeholder:text-content-muted focus:border-primary focus:ring-primary", placeholder: "e.g., Sci-Fi Enthusiasts", required: true %>
+    <%= form.text_field :name, class: "w-full border-border bg-surface text-content rounded-md shadow-sm placeholder:text-content-muted focus:border-primary focus:ring-primary", placeholder: t("book_clubs.form.name_placeholder"), required: true %>
   </div>
 
   <div>
     <%= form.label :description, class: "block text-sm font-medium text-content mb-1" %>
-    <%= form.text_area :description, rows: 4, class: "w-full border-border bg-surface text-content rounded-md shadow-sm placeholder:text-content-muted focus:border-primary focus:ring-primary", placeholder: "What is this club about?" %>
+    <%= form.text_area :description, rows: 4, class: "w-full border-border bg-surface text-content rounded-md shadow-sm placeholder:text-content-muted focus:border-primary focus:ring-primary", placeholder: t("book_clubs.form.description_placeholder") %>
   </div>
 
   <div>
@@ -27,11 +27,11 @@
 
   <div class="flex items-center">
     <%= form.check_box :is_private, class: "h-4 w-4 text-primary focus:ring-primary border-border rounded" %>
-    <%= form.label :is_private, "Make this club private (only invited members can join)", class: "ml-2 block text-sm text-content" %>
+    <%= form.label :is_private, t("book_clubs.form.is_private"), class: "ml-2 block text-sm text-content" %>
   </div>
 
   <div class="flex items-center justify-end space-x-4 pt-4">
-    <%= link_to 'Cancel', book_clubs_path, class: "text-content-subtle hover:text-content font-medium text-sm" %>
-    <%= form.submit @club.persisted? ? "Update Club" : "Create Club", class: "bg-primary text-primary-contrast px-4 py-2 rounded-md hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-medium" %>
+    <%= link_to t("book_clubs.form.cancel"), book_clubs_path, class: "text-content-subtle hover:text-content font-medium text-sm" %>
+    <%= form.submit @club.persisted? ? t("book_clubs.form.update") : t("book_clubs.form.create"), class: "bg-primary text-primary-contrast px-4 py-2 rounded-md hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-medium" %>
   </div>
 <% end %>

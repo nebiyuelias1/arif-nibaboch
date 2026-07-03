@@ -6,19 +6,19 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
       <% end %>
-      <h1 class="title title-lg text-content font-bold"><%= @book_club.name %> Reads</h1>
+      <h1 class="title title-lg text-content font-bold"><%= t("book_reads.index.reads_for", club: @book_club.name) %></h1>
     </div>
     
     <% if user_signed_in? && @book_club.owner == current_user %>
-      <%= link_to "Start a New Read", new_book_club_book_read_path(@book_club), class: "bg-primary text-primary-contrast hover:bg-primary px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm" %>
+      <%= link_to t("book_reads.index.start_new_read"), new_book_club_book_read_path(@book_club), class: "bg-primary text-primary-contrast hover:bg-primary px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm" %>
     <% end %>
   </div>
 
   <div class="border-b border-border mb-6">
     <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-      <%= link_to "Active & Upcoming", book_club_book_reads_path(@book_club, tab: 'upcoming'), 
+        <%= link_to t("book_reads.index.active_upcoming"), book_club_book_reads_path(@book_club, tab: 'upcoming'), 
           class: "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm #{ @tab == 'upcoming' ? 'border-primary text-primary' : 'border-transparent text-content-subtle hover:text-content hover:border-border' }" %>
-      <%= link_to "Past Reads", book_club_book_reads_path(@book_club, tab: 'past'), 
+        <%= link_to t("book_reads.index.past_reads"), book_club_book_reads_path(@book_club, tab: 'past'), 
           class: "whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm #{ @tab == 'past' ? 'border-primary text-primary' : 'border-transparent text-content-subtle hover:text-content hover:border-border' }" %>
     </nav>
   </div>
@@ -31,7 +31,7 @@
     </div>
   <% else %>
     <div class="text-center py-12 bg-surface rounded-lg border border-dashed border-border">
-      <p class="text-content-subtle">No <%= @tab == 'past' ? 'past' : 'active or upcoming' %> reads found.</p>
+      <p class="text-content-subtle"><%= @tab == 'past' ? t("book_reads.index.no_past_reads") : t("book_reads.index.no_active_reads") %></p>
     </div>
   <% end %>
 </div>

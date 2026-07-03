@@ -4,12 +4,12 @@
       <% next_status = rsvp&.going? || rsvp&.waitlisted? ? "cancelled" : "going" %>
       <%= form.hidden_field :status, value: next_status %>
       <%= form.submit(
-        (next_status == "going") ? "RSVP" : "Cancel RSVP",
+        (next_status == "going") ? t("book_reads.rsvp.rsvp") : t("book_reads.rsvp.cancel_rsvp"),
         class: "px-4 py-2 text-sm font-bold rounded-md cursor-pointer #{next_status == "going" ? "bg-primary text-primary-contrast hover:bg-primary" : "bg-background text-content hover:bg-surface"}",
-        data: (next_status == "cancelled" ? { turbo_confirm: "Cancel your RSVP?" } : {})
+        data: (next_status == "cancelled" ? { turbo_confirm: t("book_reads.rsvp.cancel_confirm") } : {})
       ) %>
       <% if rsvp&.waitlisted? %>
-        <span class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">Currently waitlisted</span>
+        <span class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1"><%= t("book_reads.rsvp.waitlisted") %></span>
       <% end %>
     <% end %>
   </div>

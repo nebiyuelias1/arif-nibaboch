@@ -1,8 +1,8 @@
 <div id="book_read_rsvp_users" class="flex items-center gap-2">
   <% if rsvp_users.any? %>
     <%= render "shared/avatar_group", users: rsvp_users, limit: 5, size_classes: "w-6 h-6", text_size: "text-[9px]", container_classes: "" %>
-    <span class="text-xs text-content-subtle"><%= pluralize(rsvp_users.size, "person") %> going</span>
+    <span class="text-xs text-content-subtle"><%= t("book_read_rsvps.users.going", count: rsvp_users.size) %></span>
   <% else %>
-    <span class="text-xs text-content-muted">No RSVPs yet</span>
+    <span class="text-xs text-content-muted"><%= t("book_read_rsvps.users.none") %></span>
   <% end %>
 </div>
