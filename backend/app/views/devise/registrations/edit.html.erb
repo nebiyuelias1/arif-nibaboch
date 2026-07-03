@@ -4,15 +4,15 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform">
         <path fill-rule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clip-rule="evenodd" />
       </svg>
-      Back to Profile
+      <%= t("devise.registrations.edit.back_to_profile") %>
     <% end %>
   </div>
 
   <div class="bg-surface rounded-3xl shadow-sm border border-border overflow-hidden">
     <div class="p-6 sm:p-10">
       <div class="mb-8">
-        <h1 class="title title-lg text-content font-bold">Edit Settings</h1>
-        <p class="mt-2 text-content-subtle">Update your account information and security settings.</p>
+        <h1 class="title title-lg text-content font-bold"><%= t("devise.registrations.edit.title") %></h1>
+        <p class="mt-2 text-content-subtle"><%= t("devise.registrations.edit.subtitle") %></p>
       </div>
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "space-y-8" }) do |f| %>
@@ -20,7 +20,7 @@
 
         <%# Account Section %>
         <section class="space-y-6">
-          <h2 class="title title-sm text-content font-semibold border-b border-border pb-2">Account Information</h2>
+          <h2 class="title title-sm text-content font-semibold border-b border-border pb-2"><%= t("devise.registrations.edit.account_information") %></h2>
           
           <div class="grid grid-cols-1 gap-6">
             <div>
@@ -39,7 +39,7 @@
                   </div>
                   <div class="ml-3">
                     <p class="text-sm text-yellow-700">
-                      Currently waiting confirmation for: <span class="font-bold"><%= resource.unconfirmed_email %></span>
+                      <%= t("devise.registrations.edit.pending_confirmation", email: resource.unconfirmed_email) %>
                     </p>
                   </div>
                 </div>
@@ -51,22 +51,22 @@
         <%# Password Section %>
         <section class="space-y-6">
           <div class="flex items-center justify-between border-b border-border pb-2">
-            <h2 class="title title-sm text-content font-semibold">Security</h2>
-            <span class="text-xs text-content-muted font-normal italic">Leave blank if you don't want to change it</span>
+            <h2 class="title title-sm text-content font-semibold"><%= t("devise.registrations.edit.security") %></h2>
+            <span class="text-xs text-content-muted font-normal italic"><%= t("devise.registrations.edit.leave_blank_hint") %></span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <%= f.label :password, "New Password", class: "block text-sm font-medium text-content mb-1" %>
+              <%= f.label :password, t("devise.registrations.edit.new_password"), class: "block text-sm font-medium text-content mb-1" %>
               <%= f.password_field :password, autocomplete: "new-password", 
                   class: "block w-full px-4 py-3 rounded-xl border-border bg-surface text-content placeholder:text-content-muted focus:border-primary focus:ring-primary sm:text-sm transition-colors" %>
               <% if @minimum_password_length %>
-                <p class="mt-2 text-xs text-content-muted"><%= @minimum_password_length %> characters minimum</p>
+                <p class="mt-2 text-xs text-content-muted"><%= t("devise.shared.characters_minimum", count: @minimum_password_length) %></p>
               <% end %>
             </div>
 
             <div>
-              <%= f.label :password_confirmation, "Confirm New Password", class: "block text-sm font-medium text-content mb-1" %>
+              <%= f.label :password_confirmation, t("devise.registrations.edit.confirm_new_password"), class: "block text-sm font-medium text-content mb-1" %>
               <%= f.password_field :password_confirmation, autocomplete: "new-password", 
                   class: "block w-full px-4 py-3 rounded-xl border-border bg-surface text-content placeholder:text-content-muted focus:border-primary focus:ring-primary sm:text-sm transition-colors" %>
             </div>
@@ -76,8 +76,8 @@
         <%# Confirmation Section %>
         <section class="space-y-6 bg-background rounded-2xl p-6 border border-border">
           <div>
-            <h2 class="title title-sm text-content font-semibold mb-1">Confirm Changes</h2>
-            <p class="text-sm text-content-subtle">We need your current password to save these changes.</p>
+            <h2 class="title title-sm text-content font-semibold mb-1"><%= t("devise.registrations.edit.confirm_changes") %></h2>
+            <p class="text-sm text-content-subtle"><%= t("devise.registrations.edit.confirm_changes_description") %></p>
           </div>
 
           <div>
@@ -88,22 +88,22 @@
         </section>
 
         <div class="pt-4">
-          <%= f.submit "Save Changes", class: "w-full flex justify-center py-4 px-4 border border-transparent rounded-2xl shadow-sm text-lg font-bold text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all cursor-pointer" %>
+          <%= f.submit t("devise.registrations.edit.save_changes"), class: "w-full flex justify-center py-4 px-4 border border-transparent rounded-2xl shadow-sm text-lg font-bold text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all cursor-pointer" %>
         </div>
       <% end %>
 
       <%# Danger Zone %>
       <div class="mt-16 pt-8 border-t border-border">
-        <h3 class="title title-sm text-red-600 font-bold mb-2">Danger Zone</h3>
-        <p class="text-sm text-content-subtle mb-6">Once you delete your account, there is no going back. Please be certain.</p>
+        <h3 class="title title-sm text-red-600 font-bold mb-2"><%= t("devise.registrations.edit.danger_zone") %></h3>
+        <p class="text-sm text-content-subtle mb-6"><%= t("devise.registrations.edit.danger_zone_description") %></p>
         
         <div class="flex items-center justify-between p-6 rounded-2xl border border-red-100 bg-red-50/30">
           <div class="max-w-md">
-            <h4 class="title title-sm text-content font-bold">Delete Account</h4>
-            <p class="text-xs text-content-subtle mt-1">Permanently remove your account and all your data from Arif Nibaboch.</p>
+            <h4 class="title title-sm text-content font-bold"><%= t("devise.registrations.edit.delete_account") %></h4>
+            <p class="text-xs text-content-subtle mt-1"><%= t("devise.registrations.edit.delete_account_description") %></p>
           </div>
-          <%= button_to "Delete", registration_path(resource_name), 
-              data: { confirm: "Are you sure you want to delete your account? This action cannot be undone.", turbo_confirm: "Are you sure you want to delete your account? This action cannot be undone." }, 
+          <%= button_to t("devise.registrations.edit.delete"), registration_path(resource_name), 
+              data: { confirm: t("devise.registrations.edit.delete_confirm"), turbo_confirm: t("devise.registrations.edit.delete_confirm") }, 
               method: :delete, 
               class: "inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm font-medium rounded-xl text-red-700 bg-surface hover:bg-red-50 transition-colors" %>
         </div>

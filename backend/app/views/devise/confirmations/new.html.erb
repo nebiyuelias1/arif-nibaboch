@@ -1,8 +1,8 @@
 <div class="min-h-screen bg-background flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md w-full bg-surface shadow-md rounded-lg p-6 sm:p-8 mx-2">
     <div class="text-center mb-5">
-      <h2 class="title title-lg text-content font-extrabold">Resend confirmation instructions</h2>
-      <p class="mt-1 text-xs sm:text-sm text-content-subtle">Enter your email to get a new confirmation link.</p>
+      <h2 class="title title-lg text-content font-extrabold"><%= t("devise.confirmations.new.title") %></h2>
+      <p class="mt-1 text-xs sm:text-sm text-content-subtle"><%= t("devise.confirmations.new.subtitle") %></p>
     </div>
 
     <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
@@ -17,7 +17,7 @@
         </div>
 
         <div>
-          <%= f.submit "Resend confirmation instructions", class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
+          <%= f.submit t("devise.confirmations.new.submit"), class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
         </div>
       </div>
     <% end %>

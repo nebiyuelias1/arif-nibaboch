@@ -1,4 +1,4 @@
 <div class="max-w-2xl mx-auto mt-8 bg-surface p-8 rounded-lg shadow">
-  <h1 class="title title-lg text-content font-bold mb-6">Edit Book Club for <%= @club.name %></h1>
+  <h1 class="title title-lg text-content font-bold mb-6"><%= t("book_clubs.edit.title", club: @club.name) %></h1>
   <%= render partial: "form" %>
 </div>

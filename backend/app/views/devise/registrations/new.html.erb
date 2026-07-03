@@ -1,8 +1,8 @@
 <div class="flex-1 min-h-screen flex items-center justify-center">
   <div class="w-full bg-surface shadow-md rounded-lg p-6 sm:p-8">
     <div class="text-center mb-5">
-      <h2 class="title title-lg text-content font-extrabold">Create your account</h2>
-      <p class="mt-1 text-xs sm:text-sm text-content-subtle">Start your free account — join us today.</p>
+      <h2 class="title title-lg text-content font-extrabold"><%= t("devise.registrations.new.title") %></h2>
+      <p class="mt-1 text-xs sm:text-sm text-content-subtle"><%= t("devise.registrations.new.subtitle") %></p>
     </div>
 
     <% if flash.any? %>
@@ -35,7 +35,7 @@
           <div class="flex items-baseline justify-between">
             <%= f.label :password, class: "block text-sm sm:text-base font-medium text-content" %>
             <% if @minimum_password_length %>
-              <span class="text-xs text-content-muted">(<%= @minimum_password_length %> characters minimum)</span>
+              <span class="text-xs text-content-muted"><%= t("devise.shared.characters_minimum", count: @minimum_password_length) %></span>
             <% end %>
           </div>
           <div class="mt-1">
@@ -51,7 +51,7 @@
         </div>
 
         <div>
-        <%= f.submit "Sign up", class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
+        <%= f.submit t("sign_up"), class: "w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
         </div>
       </div>
     <% end %>

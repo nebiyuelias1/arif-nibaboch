@@ -2,7 +2,7 @@
   <nav class="flex mb-6" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
       <li class="inline-flex items-center">
-        <%= link_to "Book Clubs",
+        <%= link_to t("book_reads.show.book_clubs"),
         book_clubs_path,
         class: "text-sm font-medium text-content-subtle hover:text-accent" %>
       </li>
@@ -43,7 +43,7 @@
               d="m1 9 4-4-4-4"
             />
           </svg>
-          <span class="text-sm font-medium text-content-subtle"><%= @book_read.book&.title || "Voting in Progress" %></span>
+          <span class="text-sm font-medium text-content-subtle"><%= @book_read.book&.title || t("book_reads.show.voting_in_progress") %></span>
         </div>
       </li>
     </ol>
@@ -76,7 +76,7 @@
                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-            <span class="text-primary text-sm font-bold uppercase tracking-wider">Active Poll</span>
+            <span class="text-primary text-sm font-bold uppercase tracking-wider"><%= t("active_poll") %></span>
           </div>
         <% else %>
           <div
@@ -85,7 +85,7 @@
               shadow-inner border border-border
             "
           >
-            <span class="text-content-muted text-sm font-medium">No cover available</span>
+            <span class="text-content-muted text-sm font-medium"><%= t("book_reads.show.no_cover") %></span>
           </div>
         <% end %>
       </div>
@@ -98,12 +98,12 @@
       <div class="w-full md:w-2/3 flex flex-col">
         <div class="flex justify-between items-start mb-2">
           <h1 class="title title-lg text-content font-bold leading-tight">
-            <%= @book_read.book&.title || @book_read.poll&.text || "New Reading Session" %>
+            <%= @book_read.book&.title || @book_read.poll&.text || t("book_reads.show.new_reading_session") %>
           </h1>
         </div>
 
         <% if @book_read.book.present? %>
-          <p class="text-xl text-content-subtle mb-3">By
+          <p class="text-xl text-content-subtle mb-3"><%= t("book_reads.show.by") %>
             <%= @book_read.book.author %></p>
         <% end %>
         <button
@@ -123,7 +123,7 @@
               user: @book_read.host,
               classes:
                 "w-6 h-6 ring-2 ring-surface bg-primary text-primary-contrast text-[9px] font-semibold" %>
-              <span>Hosted by:
+              <span><%= t("book_reads.show.hosted_by_label") %>
                 <span class="font-semibold"><%= @book_read.host.to_s %></span></span>
             </div>
             <%= render "book_read_rsvps/rsvp_users", rsvp_users: @rsvp_users %>
@@ -131,18 +131,18 @@
         </button>
 
         <div class="bg-background rounded-xl p-6 mb-8 border border-border">
-          <h3 class="text-xs font-semibold text-primary uppercase tracking-wider mb-4">Meetup Details</h3>
+          <h3 class="text-xs font-semibold text-primary uppercase tracking-wider mb-4"><%= t("meetup_details") %></h3>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div>
-              <p class="text-sm text-content-muted mb-1">When</p>
-              <p class="font-semibold text-content"><%= @book_read.meetup_time&.strftime("%B %d, %Y at %H:%M") || "Not set" %></p>
+              <p class="text-sm text-content-muted mb-1"><%= t("book_reads.show.when") %></p>
+              <p class="font-semibold text-content"><%= @book_read.meetup_time&.strftime("%B %d, %Y at %H:%M") || t("book_reads.show.not_set") %></p>
             </div>
             <div>
-              <p class="text-sm text-content-muted mb-1">Where</p>
-              <p class="font-semibold text-content"><%= @book_read.meetup_location.presence || "Not set" %></p>
+              <p class="text-sm text-content-muted mb-1"><%= t("book_reads.show.where") %></p>
+              <p class="font-semibold text-content"><%= @book_read.meetup_location.presence || t("book_reads.show.not_set") %></p>
             </div>
             <div>
-              <p class="text-sm text-content-muted mb-1">Max capacity</p>
+              <p class="text-sm text-content-muted mb-1"><%= t("book_reads.show.max_capacity") %></p>
               <%= render "book_read_rsvps/capacity_count",
               book_read: @book_read,
               rsvp_users: @rsvp_users %>
@@ -159,7 +159,7 @@
 
         <% if @book_read.book&.description.present? %>
           <div class="mb-8">
-            <h3 class="title title-sm text-content font-bold mb-3">About the Book</h3>
+            <h3 class="title title-sm text-content font-bold mb-3"><%= t("book_reads.show.about_book") %></h3>
             <p class="text-content-subtle leading-relaxed whitespace-pre-line"><%= @book_read.book.description %></p>
           </div>
         <% end %>
@@ -178,7 +178,7 @@
 
           <div class="dropdown dropdown-top sm:dropdown-bottom sm:dropdown-end">
             <button tabindex="0" role="button" class="inline-flex items-center px-4 py-2.5 border border-border shadow-sm text-sm font-medium rounded-xl text-content bg-surface hover:bg-background focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors gap-2">
-              <span>More Actions</span>
+              <span><%= t("book_reads.show.more_actions") %></span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 text-content-subtle">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
               </svg>
@@ -199,7 +199,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-content-subtle">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                     </svg>
-                    View Book Details
+                    <%= t("book_reads.show.view_book_details") %>
                   <% end %>
                 </li>
               <% end %>
@@ -210,7 +210,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-content-subtle">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
-                    Edit Session
+                    <%= t("book_reads.show.edit_session") %>
                   <% end %>
                 </li>
               <% end %>
@@ -229,13 +229,13 @@
     <div class="bg-surface p-8 rounded-lg shadow-sm border border-border mb-8">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-3">
-          <h2 class="title title-lg text-content font-bold">Poll</h2>
+          <h2 class="title title-lg text-content font-bold"><%= t("book_reads.show.poll") %></h2>
           <% if finalized %>
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
               <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
                 <circle cx="4" cy="4" r="3" />
               </svg>
-              Finalized - Book Selected
+              <%= t("book_reads.show.finalized_book_selected") %>
             </span>
           <% end %>
         </div>
@@ -243,7 +243,7 @@
         <div class="flex items-center gap-3">
           <% is_authorized_to_finalize = user_signed_in? && @book_club.owner == current_user %>
           <% if !finalized && !poll_active && is_authorized_to_finalize %>
-            <%= link_to "Finalize Poll",
+            <%= link_to t("book_reads.show.finalize_poll"),
             finalize_book_club_book_read_path(@book_club, @book_read),
             class:
               "inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full border border-border bg-background text-content hover:bg-surface transition-colors" %>
@@ -253,14 +253,14 @@
             <% share_url = "#{request.base_url}#{book_club_book_read_path(@book_club, @book_read)}#poll_voting" %>
             <button
               type="button"
-              aria-label="Share poll"
+              aria-label="<%= t('book_reads.show.share_poll') %>"
               data-controller="share"
               data-action="share#share"
               data-share-url-value="<%= share_url %>"
               data-share-title-value="<%= poll.text %>"
               class="inline-flex items-center justify-center h-9 w-9 rounded-full border border-border bg-background text-content hover:bg-surface transition-colors"
             >
-              <span class="sr-only" data-share-target="label">Share poll</span>
+              <span class="sr-only" data-share-target="label"><%= t("book_reads.show.share_poll") %></span>
               <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
                 <path d="M16 6l-4-4-4 4" />
@@ -278,13 +278,13 @@
               <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
-              <span class="text-sm font-medium">This book was chosen by poll. Click to view results.</span>
+              <span class="text-sm font-medium"><%= t("book_reads.show.chosen_by_poll") %></span>
             </div>
           </summary>
           <div class="mt-6 pt-6 border-t border-border">
             <p class="text-content-subtle mb-6"><%= poll.text %></p>
             <%= render "polls/vote_results", poll: poll, current_user: current_user %>
-            <p class="mt-8 text-xs text-content-muted italic text-center">Voting concluded on <%= poll.finalized_at&.strftime("%B %d, %Y at %I:%M %p") %></p>
+            <p class="mt-8 text-xs text-content-muted italic text-center"><%= t("book_reads.show.voting_concluded_on", date: poll.finalized_at&.strftime("%B %d, %Y at %I:%M %p")) %></p>
           </div>
         </details>
       <% else %>
@@ -298,7 +298,7 @@
           <% end %>
         </div>
         <p class="mt-8 text-xs text-content-muted italic text-center">
-          <%= poll_active ? "Voting ends on" : "Voting ended on" %>
+          <%= poll_active ? t("book_reads.show.voting_ends_on") : t("book_reads.show.voting_ended_on") %>
           <%= poll.end_date&.strftime("%B %d, %Y at %I:%M %p") %>
         </p>
       <% end %>
@@ -307,7 +307,7 @@
 
   <!-- Discussion Questions Section -->
   <div class="bg-surface p-8 rounded-lg shadow-sm border border-border">
-      <h2 class="title title-lg text-content font-bold">Discussion Questions</h2>
+      <h2 class="title title-lg text-content font-bold"><%= t("book_reads.show.discussion_questions") %></h2>
 
       <div class="mb-6 flex flex-col">
         <%= render partial: "discussion_questions/form",

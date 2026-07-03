@@ -4,7 +4,7 @@
     <%# Profile Header / Banner %>
     <div class="bg-linear-to-r from-primary to-accent h-32 sm:h-48 relative">
       <div class="absolute -bottom-12 sm:-bottom-16 left-6 sm:left-10">
-        <%= render "shared/avatar", user: current_user, classes: "w-24 h-24 sm:w-32 sm:h-32 border-4 border-surface bg-surface shadow-md text-4xl font-bold text-primary uppercase", title: "Profile", aria_label: "Profile" %>
+        <%= render "shared/avatar", user: current_user, classes: "w-24 h-24 sm:w-32 sm:h-32 border-4 border-surface bg-surface shadow-md text-4xl font-bold text-primary uppercase", title: t("users.show.profile"), aria_label: t("users.show.profile") %>
       </div>
     </div>
 
@@ -18,9 +18,9 @@
           <p class="text-content-subtle font-medium"><%= current_user.anonymized_email %></p>
           <div class="flex items-center gap-2 mt-2">
             <span class="inline-flex items-center rounded-full bg-background px-2.5 py-0.5 text-xs font-medium text-primary ring-1 ring-inset ring-primary/20">
-              Member
+              <%= t("users.show.member") %>
             </span>
-            <span class="text-xs text-content-muted">Joined <%= current_user.created_at.strftime("%B %Y") %></span>
+            <span class="text-xs text-content-muted"><%= t("users.show.joined", date: current_user.created_at.strftime("%B %Y")) %></span>
           </div>
         </div>
         
@@ -30,7 +30,7 @@
               <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
               <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
             </svg>
-            Edit Profile
+            <%= t("users.show.edit_profile") %>
           <% end %>
           
           <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false }, class: "inline-flex items-center justify-center px-4 py-2 border border-red-200 shadow-sm text-sm font-medium rounded-xl text-red-600 bg-red-50 hover:bg-red-100 hover:border-red-300 transition-colors" do %>
@@ -38,7 +38,7 @@
                <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" clip-rule="evenodd" />
                <path fill-rule="evenodd" d="M6 10a.75.75 0 01.75-.75h9.546l-1.048-.943a.75.75 0 111.004-1.114l2.5 2.25a.75.75 0 010 1.114l-2.5 2.25a.75.75 0 11-1.004-1.114l1.048-.943H6.75A.75.75 0 016 10z" clip-rule="evenodd" />
             </svg>
-            Sign out
+            <%= t("users.show.sign_out") %>
           <% end %>
         </div>
       </div>
@@ -49,23 +49,23 @@
           <span class="text-4xl font-extrabold text-primary mb-1">
              <%= current_user.try(:ratings)&.count || 0 %>
           </span>
-          <span class="text-sm font-medium text-content-subtle uppercase tracking-wide">Books Rated</span>
+          <span class="text-sm font-medium text-content-subtle uppercase tracking-wide"><%= t("users.show.books_rated") %></span>
         </div>
         
         <div class="bg-background rounded-2xl p-6 border border-border flex flex-col items-center justify-center text-center">
           <span class="text-4xl font-extrabold text-primary mb-1">0</span>
-          <span class="text-sm font-medium text-content-subtle uppercase tracking-wide">Reviews Written</span>
+          <span class="text-sm font-medium text-content-subtle uppercase tracking-wide"><%= t("users.show.reviews_written") %></span>
         </div>
 
          <div class="bg-background rounded-2xl p-6 border border-border flex flex-col items-center justify-center text-center">
           <span class="text-4xl font-extrabold text-primary mb-1">0</span>
-          <span class="text-sm font-medium text-content-subtle uppercase tracking-wide">Reading Lists</span>
+          <span class="text-sm font-medium text-content-subtle uppercase tracking-wide"><%= t("users.show.reading_lists") %></span>
         </div>
       </div>
 
       <%# Account Security Section %>
       <div class="border-t border-border pt-8">
-        <h3 class="title title-sm text-content font-bold mb-4">Account Security</h3>
+        <h3 class="title title-sm text-content font-bold mb-4"><%= t("users.show.account_security") %></h3>
         <div class="flex items-center justify-between p-4 rounded-xl border border-border bg-background/50">
            <div class="flex items-center gap-4">
               <div class="p-2 bg-surface rounded-lg border border-border shadow-sm text-content-subtle">
@@ -74,11 +74,11 @@
                 </svg>
               </div>
               <div>
-                  <p class="font-medium text-content">Password</p>
-                  <p class="text-sm text-content-subtle">Update your password regularly to keep your account secure.</p>
+                  <p class="font-medium text-content"><%= t("users.show.password") %></p>
+                  <p class="text-sm text-content-subtle"><%= t("users.show.password_description") %></p>
               </div>
            </div>
-           <%= link_to 'Update', edit_user_registration_path, class: "text-sm font-semibold text-primary hover:text-accent" %>
+              <%= link_to t("users.show.update"), edit_user_registration_path, class: "text-sm font-semibold text-primary hover:text-accent" %>
         </div>
       </div>
       

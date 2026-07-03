@@ -12,7 +12,7 @@
       <%= render "shared/avatar", user: user, classes: avatar_classes %>
     <% end %>
     <% if users.size > limit %>
-      <div class="rounded-full ring-2 ring-surface bg-background text-content-subtle <%= text_size %> font-semibold flex items-center justify-center relative z-10 <%= size_classes %>" title="<%= pluralize(users.size - limit, 'more member') %>">
+      <div class="rounded-full ring-2 ring-surface bg-background text-content-subtle <%= text_size %> font-semibold flex items-center justify-center relative z-10 <%= size_classes %>" title="<%= t('shared.avatar_group.more_members', count: users.size - limit) %>">
         +<%= users.size - limit %>
       </div>
     <% end %>

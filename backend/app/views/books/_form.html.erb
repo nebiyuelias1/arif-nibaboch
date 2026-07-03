@@ -1,7 +1,7 @@
 <%= form_with(model: book, local: true, class: 'space-y-4') do |form| %>
   <% if book.errors.any? %>
     <div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded">
-      <strong><%= pluralize(book.errors.count, "error") %> prevented this book from being saved:</strong>
+      <strong><%= t("books.form.errors", count: book.errors.count) %></strong>
       <ul class="mt-2 list-disc list-inside">
         <% book.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>

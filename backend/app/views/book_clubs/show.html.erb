@@ -19,27 +19,27 @@
           <h1 class="title title-lg text-content font-bold mb-2"><%= @club.name %></h1>
           <div class="flex items-center space-x-4 mb-6">
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= @club.is_private ? 'bg-red-100 text-red-800' : 'bg-background text-primary' %>">
-              <%= @club.is_private ? 'Private Club' : 'Public Club' %>
+              <%= @club.is_private ? t("book_clubs.show.private_club") : t("book_clubs.show.public_club") %>
             </span>
             <span class="text-sm text-content-subtle">
-              Created by <%= @club.owner ? (@club.owner.name.presence || @club.owner.username.presence || "Unknown User") : "Deleted User" %>
+              <%= t("book_clubs.show.created_by") %> <%= @club.owner ? (@club.owner.name.presence || @club.owner.username.presence || t("book_clubs.show.unknown_user")) : t("book_clubs.show.deleted_user") %>
             </span>
           </div>
           <button onclick="document.getElementById('members_dialog').showModal()" class="text-left mt-4 hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md block">
             <div class="flex items-center gap-2">
               <%= render "shared/avatar_group", users: @club.members, limit: 5, container_classes: "cursor-pointer" %>
-              <span class="text-sm text-content-subtle font-medium"><%= pluralize(@club.members.size, "member") %></span>
+              <span class="text-sm text-content-subtle font-medium"><%= t("book_clubs.show.member_count", count: @club.members.size) %></span>
             </div>
           </button>
         </div>
         
         <% if user_signed_in? && @club.owner == current_user %>
           <div class="flex space-x-3">
-            <%= button_to "Edit Club", edit_book_club_path(@club), method: :get, class: "bg-surface border border-border text-content hover:bg-background px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
+            <%= button_to t("book_clubs.show.edit_club"), edit_book_club_path(@club), method: :get, class: "bg-surface border border-border text-content hover:bg-background px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
           </div>
         <% else %>
           <button class="bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm font-medium transition-colors" data-action="click->book-club#toggle" data-book-club-target="button">
-            <%= @club.has_member?(current_user) ? 'Leave Club' : 'Join Club' %>
+            <%= @club.has_member?(current_user) ? t("book_clubs.show.leave_club") : t("book_clubs.show.join_club") %>
           </button>
         <% end %>
       </div>
@@ -48,15 +48,15 @@
         <% if @club.description.present? %>
           <%= simple_format(@club.description) %>
         <% else %>
-          <p class="italic text-content-muted">No description provided for this club yet.</p>
+          <p class="italic text-content-muted"><%= t("book_clubs.show.no_description") %></p>
         <% end %>
       </div>
     </div>
   </div>
 
   <div class="flex justify-between items-center mb-6 mt-12">
-    <h2 class="title title-sm text-content font-bold">Current Reading</h2>
-    <%= link_to "See all", book_club_book_reads_path(@club), class: "text-primary hover:text-accent text-sm font-medium" %>
+    <h2 class="title title-sm text-content font-bold"><%= t("book_clubs.show.current_reading") %></h2>
+    <%= link_to t("book_clubs.show.see_all"), book_club_book_reads_path(@club), class: "text-primary hover:text-accent text-sm font-medium" %>
   </div>
 
   <% if @current_read %>
@@ -66,10 +66,10 @@
       <svg class="mx-auto h-12 w-12 text-content-muted mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
-      <h3 class="text-lg font-medium text-content mb-1">No active reading session</h3>
-      <p class="text-content-subtle mb-4">The club admin hasn't selected a book to read yet.</p>
+      <h3 class="text-lg font-medium text-content mb-1"><%= t("book_clubs.show.no_active_reading") %></h3>
+      <p class="text-content-subtle mb-4"><%= t("book_clubs.show.no_active_reading_description") %></p>
       <% if user_signed_in? && @club.owner == current_user %>
-        <%= link_to "Start a New Read", new_book_club_book_read_path(@club), class: "inline-flex items-center justify-center bg-background text-primary hover:bg-background px-6 py-2.5 rounded-md text-sm font-medium transition-colors" %>
+        <%= link_to t("book_clubs.show.start_new_read"), new_book_club_book_read_path(@club), class: "inline-flex items-center justify-center bg-background text-primary hover:bg-background px-6 py-2.5 rounded-md text-sm font-medium transition-colors" %>
       <% end %>
     </div>
   <% end %>
@@ -77,7 +77,7 @@
 
 <dialog id="members_dialog" class="p-0 rounded-2xl shadow-2xl backdrop:bg-black/50 w-full max-w-2xl max-h-[80vh] open:flex flex-col m-auto">
   <div class="flex justify-between items-center p-6 border-b border-border bg-surface sticky top-0 z-10">
-    <h3 class="title title-sm text-content font-semibold">Club Members (<%= @club.members.size %>)</h3>
+    <h3 class="title title-sm text-content font-semibold"><%= t("book_clubs.show.club_members", count: @club.members.size) %></h3>
     <button onclick="document.getElementById('members_dialog').close()" class="text-content-muted hover:text-content focus:outline-none transition-colors rounded-full p-1 hover:bg-background">
       <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -93,8 +93,8 @@
       <% end %>
     <% end %>
 
-    <% columns = ["Member", "Role", "Joined"] %>
-    <% columns << "Actions" if current_user_is_admin %>
+    <% columns = [t("book_clubs.show.table_member"), t("book_clubs.show.table_role"), t("book_clubs.show.table_joined")] %>
+    <% columns << t("book_clubs.show.table_actions") if current_user_is_admin %>
 
     <%= render "shared/table/table", 
                columns: columns, 

@@ -1,6 +1,6 @@
 <div class="max-w-3xl mx-auto text-center py-24">
-  <h1 class="title title-lg text-content font-extrabold tracking-tight mb-4">Your Library</h1>
-  <p class="text-lg text-content-subtle mb-8">This is where your reading lists and saved books will appear.</p>
+  <h1 class="title title-lg text-content font-extrabold tracking-tight mb-4"><%= t("libraries.index.title") %></h1>
+  <p class="text-lg text-content-subtle mb-8"><%= t("libraries.index.description") %></p>
   
   <div class="inline-flex flex-col items-center justify-center p-12 bg-surface rounded-2xl shadow-sm border border-border w-full">
     <div class="w-16 h-16 bg-background text-primary rounded-full flex items-center justify-center mb-4">
@@ -8,11 +8,11 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
       </svg>
     </div>
-    <h3 class="text-xl font-semibold text-content">Coming Soon</h3>
-    <p class="mt-2 text-sm text-content-subtle max-w-sm">We are working on letting you organize your favorite books and reading history. Check back soon!</p>
+    <h3 class="text-xl font-semibold text-content"><%= t("libraries.index.coming_soon") %></h3>
+    <p class="mt-2 text-sm text-content-subtle max-w-sm"><%= t("libraries.index.coming_soon_description") %></p>
     
     <div class="mt-6">
-      <%= link_to "Discover Books", books_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
+      <%= link_to t("libraries.index.discover_books"), books_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-primary-contrast bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" %>
     </div>
   </div>
 </div>
