@@ -18,7 +18,8 @@ Rails.application.routes.draw do
       root to: "books#index"
     end
   devise_for :users, controllers: {
-    registrations: "users/registrations"
+    registrations: "users/registrations",
+    sessions: "users/sessions"
   }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -26,10 +27,9 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Social logins
   get "/telegram_mini_app/login", to: "telegram_mini_app_login#create", as: :telegram_mini_app_login
-
   get "/telegram_login/callback", to: "telegram_login#callback", as: :telegram_login_callback
-
   get "/line_login/authorize", to: "line_login#authorize", as: :line_login_authorize
   get "/line_login/callback", to: "line_login#callback", as: :line_login_callback
 
@@ -87,5 +87,10 @@ Rails.application.routes.draw do
   authenticate :user do
     resources :users, only: [ :index, :show ]
     get "profile", to: "users#show", as: :profile
+  end
+
+  resources :configurations, only: [] do
+    get :ios_v1, on: :collection
+    get :android_v1, on: :collection
   end
 end

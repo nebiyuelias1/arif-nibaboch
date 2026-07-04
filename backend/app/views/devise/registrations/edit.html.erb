@@ -100,7 +100,7 @@
         <div class="flex items-center justify-between p-6 rounded-2xl border border-red-100 bg-red-50/30">
           <div class="max-w-md">
             <h4 class="title title-sm text-content font-bold">Delete Account</h4>
-            <p class="text-xs text-content-subtle mt-1">Permanently remove your account and all your data from Arif Nibaboch.</p>
+            <p class="text-xs text-content-subtle mt-1">Permanently remove your account and all your data from <%= app_name %>.</p>
           </div>
           <%= button_to "Delete", registration_path(resource_name), 
               data: { confirm: "Are you sure you want to delete your account? This action cannot be undone.", turbo_confirm: "Are you sure you want to delete your account? This action cannot be undone." }, 
