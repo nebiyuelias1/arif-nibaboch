@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="silk">
+<html data-theme="silk" <%="data-hotwire-native" if hotwire_native_app? %>
   <head>
     <title><%= content_for(:title) || app_name %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -52,8 +52,9 @@
       </script>
     <% end %>
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "native", "data-turbo-track": "reload" if hotwire_native_app? %>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {

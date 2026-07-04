@@ -2,6 +2,18 @@
 
 @source not "./daisyui{,*}.mjs";
 
+@custom-variant hotwire-native {
+  html[data-hotwire-native] & {
+    @slot;
+  }
+}
+
+@custom-variant not-hotwire-native {
+  html:not([data-hotwire-native]) & {
+    @slot;
+  }
+}
+
 @plugin "./daisyui.mjs" {
   themes:
     light --default,
