@@ -1,5 +1,5 @@
 <%= turbo_stream.append "books_list" do %>
-  <%= render @page.records %>
+  <%= render partial: "shared/book_read_card", collection: @page.records, as: :book %>
 <% end %>
 
 <%= turbo_stream.replace "pagination_placeholder" do %>
