@@ -93,4 +93,7 @@ Rails.application.routes.draw do
     get :ios_v1, on: :collection
     get :android_v1, on: :collection
   end
+
+  get "privacy", to: "pages#privacy", as: :privacy
+  get "terms", to: "pages#terms", as: :terms
 end
