@@ -1,0 +1,53 @@
+<% content_for :title, "Privacy Policy - #{app_name}" %>
+
+<div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <div class="bg-surface shadow-md rounded-lg p-6 sm:p-10 text-content">
+    <h1 class="title title-lg font-extrabold text-content border-b border-primary pb-4 mb-6">
+      Privacy Policy
+    </h1>
+
+    <p class="text-sm text-content-subtle mb-6 leading-relaxed">
+      Last updated: <%= Time.current.strftime("%B %d, %Y") %>
+    </p>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">1. Information We Collect</h2>
+      <p class="text-sm text-content-subtle leading-relaxed mb-3">
+        When you use <strong><%= app_name %></strong>, we collect information to provide a better user experience. This includes:
+      </p>
+      <ul class="list-disc list-inside text-sm text-content-subtle space-y-2 pl-4">
+        <li><strong>Account Information:</strong> Profile details (e.g., name, email) when you register via email, LINE, or Telegram.</li>
+        <li><strong>Activity Details:</strong> Your book lists, reviews, ratings, poll votes, and discussion participation.</li>
+        <li><strong>Technical Data:</strong> Standard connection details and logs automatically processed during your sessions.</li>
+      </ul>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">2. How We Use Your Information</h2>
+      <p class="text-sm text-content-subtle leading-relaxed">
+        We use your data strictly to operate and improve the app. This includes maintaining your book clubs, managing reading updates, sending notifications, and protecting the security of our services. We do not sell your personal data to third parties.
+      </p>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">3. Data Storage and Hosting</h2>
+      <p class="text-sm text-content-subtle leading-relaxed">
+        <strong><%= app_name %></strong> is a self-hosted platform. All user data, databases, and assets are securely stored on our private infrastructure. We employ standard database encryption and security protocols to prevent unauthorized access.
+      </p>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">4. Cookies</h2>
+      <p class="text-sm text-content-subtle leading-relaxed">
+        We use cookies and similar session storage mechanisms to keep you logged in across browser sessions. You can disable cookies in your browser settings, but some features of the application may cease to function correctly.
+      </p>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">5. Contact Us</h2>
+      <p class="text-sm text-content-subtle leading-relaxed">
+        If you have any questions about this Privacy Policy or your personal data, please contact the administrator of your book club.
+      </p>
+    </section>
+  </div>
+</div>
