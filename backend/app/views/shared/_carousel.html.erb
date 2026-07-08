@@ -1,0 +1,29 @@
+<%#
+  Generic Carousel Layout Component
+  Required locals:
+    - title: String - Title of the carousel section
+  Optional locals:
+    - see_all_path: String - Path for the "See All" link
+%>
+<div class="mb-12">
+  <div class="flex items-baseline justify-between mb-4">
+    <div class="title title-sm font-bold text-content">
+      <%= title %>
+    </div>
+    <% if local_assigns[:see_all_path] %>
+      <%= link_to "See All", see_all_path, class: "btn btn-link text-accent hover:text-primary transition-colors" %>
+    <% end %>
+  </div>
+
+  <div class="relative group" data-controller="carousel">
+    <!-- Left Scroll Button -->
+    <button type="button" data-carousel-target="prevBtn" data-action="click->carousel#scrollPrev" class="btn btn-circle btn-sm absolute -left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex opacity-0 transition-opacity bg-surface/95 border border-primary/20 text-primary hover:bg-primary hover:text-white shadow-md">❮</button>
+
+    <div class="carousel carousel-center w-full gap-3.5 pt-0.5 pb-2 mb-[30px]" data-carousel-target="container" data-action="scroll->carousel#toggleButtons">
+      <%= yield %>
+    </div>
+
+    <!-- Right Scroll Button -->
+    <button type="button" data-carousel-target="nextBtn" data-action="click->carousel#scrollNext" class="btn btn-circle btn-sm absolute -right-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex opacity-0 transition-opacity bg-surface/95 border border-primary/20 text-primary hover:bg-primary hover:text-white shadow-md">❯</button>
+  </div>
+</div>
