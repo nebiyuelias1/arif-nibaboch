@@ -1,10 +1,11 @@
-<div class="card card-side bg-base-100 shadow-sm">
+<div class="card card-side bg-base-100 max-w-md shadow-sm">
   <%# Image Container %>
-  <div class="relative aspect-[2/3] w-full overflow-hidden bg-background">
+  <div class="w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl shadow-sm bg-neutral-100">
     <% if book.cover_image.present? %>
       <img src="<%= book.cover_image %>" alt="<%= book.title %>" class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
       <% else %>
-      <div class="flex h-full w-full flex-col items-center justify-center bg-background text-content-muted p-4 text-center">
+      <div class="flex aspect-[3/4] w-full flex-col items-center justify-center p-2 text-center text-gray-400">
+        <svg class="h-8 w-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <svg class="h-12 w-12 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
@@ -18,5 +19,21 @@
     <p>
      <%= book.author.presence || t("books.common.unknown_author") %>
     </p>
+    <div data-dc-tpl="88" class="mt-[9px] flex items-center gap-1.5 text-[12.5px] font-medium text-[#2A2520]">
+   <svg data-dc-tpl="89" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect data-dc-tpl="90" x="3" y="5" width="18" height="16" rx="3" stroke="#B6603C" stroke-width="1.7"></rect><path data-dc-tpl="91" d="M3 9h18M8 3v4M16 3v4" stroke="#B6603C" stroke-width="1.7" stroke-linecap="round"></path></svg>
+      <span>Thu, Oct 12 • 6:00 PM </span>
+    </div>
+    <div class="mt-4 flex items-center gap-2 w-full">
+      <%# RSVP Button %>
+      <button class="btn btn-warning">RSVP</button>
+      <%# Share Button %>
+      <button aria-label="Share event" class="flex h-[38px] w-[40px] shrink-0 items-center justify-center rounded-[11px] border border-[rgba(42,37,32,0.14)] bg-transparent text-[#6B6258] hover:bg-gray-50 transition-colors">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7" />
+        <path d="M12 15V4M8 7l4-3 4 3" stroke-linejoin="round" />
+      </svg>
+  </button>
+  </div>
   </div>
 </div>
+
