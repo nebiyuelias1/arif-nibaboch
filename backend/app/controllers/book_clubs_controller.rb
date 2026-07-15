@@ -6,7 +6,7 @@ class BookClubsController < ApplicationController
   def index
     if turbo_frame_request?
       set_book_clubs
-      is_my_clubs_filter_active = params[:filter] == "my" || params["filter"] != "all" && current_user
+      is_my_clubs_filter_active = params["filter"] != "all" && current_user.present?
       if is_my_clubs_filter_active
         @clubs = @clubs.where(id: @joined_club_ids).or(BookClub.where(owner_id: current_user.id))
       end
