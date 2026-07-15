@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "books#index"
+  root "home#index"
 
   get "/books/search", to: "books#search", as: :books_search
 
@@ -55,6 +55,10 @@ Rails.application.routes.draw do
   end
 
   resources :book_clubs do
+    collection do
+      get :discover
+    end
+
     resource :membership, controller: "book_club_members", only: [ :create, :destroy ]
     resources :members, controller: "book_club_members", only: [ :update, :destroy ]
     resources :book_reads do
@@ -69,7 +73,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get "library", to: "libraries#index", as: :library
+  get "library", to: "books#index", as: :library
 
   # Simple API namespace for small JSON endpoints
   namespace :api do

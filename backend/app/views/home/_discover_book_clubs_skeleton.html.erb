@@ -1,0 +1,5 @@
+<%= render layout: "shared/carousel", locals: { title: t("discover_book_clubs") } do %>
+  <% 5.times do %>
+    <%= render "shared/book_club_skeleton", card_class: "carousel-item flex-none w-80" %>
+  <% end %>
+<% end %>

@@ -10,7 +10,13 @@
 </div>
 
 <% if @page.records.any? %>
-  <div id="books_list" class="grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+  <div
+    id="books_list"
+    class="
+      grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+      xl:grid-cols-5 gap-6
+    "
+  >
     <%= render @page.records %>
   </div>
 
@@ -23,26 +29,27 @@
   </div>
 
 <% else %>
-  <div class="text-center py-24 bg-background rounded-2xl border-2 border-dashed border-border">
+  <div
+    class="
+      text-center py-24 bg-background rounded-2xl border-2 border-dashed border-border
+    "
+  >
     <div class="mx-auto h-24 w-24 text-content-muted">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-full h-full">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1"
+        stroke="currentColor"
+        class="w-full h-full"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+        />
       </svg>
     </div>
     <h3 class="mt-4 text-lg font-semibold text-content"><%= t("no_books_found") %></h3>
   </div>
 <% end %>
-
-<nav class="fixed bottom-0 left-0 z-50 w-full h-16 bg-surface border-t border-border sm:hidden pb-safe">
-  <div class="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
-    <% main_navigation_items.each do |item| %>
-      <% is_active = is_active_nav_item?(item) %>
-      <%= link_to item[:path], class: "inline-flex flex-col items-center justify-center px-5 hover:bg-background group" do %>
-        <svg class="w-6 h-6 mb-1 <%= is_active ? 'text-primary' : 'text-content-subtle group-hover:text-accent' %>" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <%= item[:icon].html_safe %>
-        </svg>
-        <span class="text-xs <%= is_active ? 'text-primary' : 'text-content-subtle group-hover:text-accent' %>"><%= item[:name] %></span>
-      <% end %>
-    <% end %>
-  </div>
-</nav>

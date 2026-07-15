@@ -4,12 +4,17 @@ export default class extends Controller {
   static targets = ["button", "count"];
   static values = {
     clubId: Number,
+    activeClass: { type: String, default: "" },
+    inactiveClass: { type: String, default: "" },
+    activeText: { type: String, default: "Leave Club" },
+    inactiveText: { type: String, default: "Join Club" }
   };
 
   connect() {}
 
   async toggle(event) {
     event.preventDefault();
+    event.stopPropagation();
     this.buttonTarget.disabled = true;
 
     try {
@@ -43,11 +48,21 @@ export default class extends Controller {
         
         // Update the UI
         if (data.status === "joined") {
-          this.buttonTarget.textContent = "Leave Club";
-          this.buttonTarget.classList.replace("btn-primary", "btn-secondary");
+          this.buttonTarget.textContent = this.activeTextValue || "Leave Club";
+          if (this.activeClassValue && this.inactiveClassValue) {
+            this.buttonTarget.classList.remove(...this.inactiveClassValue.split(" "));
+            this.buttonTarget.classList.add(...this.activeClassValue.split(" "));
+          } else {
+            this.buttonTarget.classList.replace("btn-primary", "btn-secondary");
+          }
         } else {
-          this.buttonTarget.textContent = "Join Club";
-          this.buttonTarget.classList.replace("btn-secondary", "btn-primary");
+          this.buttonTarget.textContent = this.inactiveTextValue || "Join Club";
+          if (this.activeClassValue && this.inactiveClassValue) {
+            this.buttonTarget.classList.remove(...this.activeClassValue.split(" "));
+            this.buttonTarget.classList.add(...this.inactiveClassValue.split(" "));
+          } else {
+            this.buttonTarget.classList.replace("btn-secondary", "btn-primary");
+          }
         }
 
         // Update the counter
