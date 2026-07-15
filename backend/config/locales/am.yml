@@ -45,6 +45,14 @@ am:
   scan_to_rsvp: "ለመመዝገብ ስካን ያድርጉ"
   tbd: "ሊወሰን የሚገባው"
   discussion_session: "የውይይት ክፍለ ጊዜ"
+  discover_book_clubs: "የመጽሐፍ ክለቦችን ያግኙ"
+  join_club: "ተቀላቀል"
+  joined_club: "ተቀላቅለዋል"
+  joining_club: "በመቀላቀል ላይ..."
+  leaving_club: "በመልቀቅ ላይ..."
+  member_count:
+    one: "1 አባል"
+    other: "%{count} አባላት"
 
   time:
     formats:

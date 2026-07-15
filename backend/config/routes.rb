@@ -55,6 +55,10 @@ Rails.application.routes.draw do
   end
 
   resources :book_clubs do
+    collection do
+      get :discover
+    end
+
     resource :membership, controller: "book_club_members", only: [ :create, :destroy ]
     resources :members, controller: "book_club_members", only: [ :update, :destroy ]
     resources :book_reads do

@@ -1,0 +1,14 @@
+<%= turbo_stream.append "book_clubs_list" do %>
+  <% @page.records.each do |club| %>
+    <%= link_to book_club_path(club),
+            data: {
+              turbo_frame: "_top"
+            } do %>
+      <%= render "book_clubs/card", club: club, joined_club_ids: @joined_club_ids %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "pagination_placeholder" do %>
+  <%= render partial: "book_clubs/pagination_placeholder" %>
+<% end %>

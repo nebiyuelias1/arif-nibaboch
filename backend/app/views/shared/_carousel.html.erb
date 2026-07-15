@@ -11,19 +11,19 @@
       <%= title %>
     </div>
     <% if local_assigns[:see_all_path] %>
-      <%= link_to "See All", see_all_path, class: "btn btn-link text-accent hover:text-primary transition-colors" %>
+      <%= link_to "See All", see_all_path, class: "btn btn-link text-accent hover:text-primary transition-colors", data: { turbo_frame: "_top" } %>
     <% end %>
   </div>
 
   <div class="relative group" data-controller="carousel">
     <!-- Left Scroll Button -->
-    <button type="button" data-carousel-target="prevBtn" data-action="click->carousel#scrollPrev" class="btn btn-circle btn-sm absolute -left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex opacity-0 transition-opacity bg-surface/95 border border-primary/20 text-primary hover:bg-primary hover:text-white shadow-md">❮</button>
+    <button type="button" data-carousel-target="prevBtn" data-action="click->carousel#scrollPrev" class="btn btn-circle btn-sm absolute left-2 top-1/2 -translate-y-1/2 z-10 hidden md:flex opacity-0 group-hover:opacity-100 transition-opacity bg-surface/95 border border-primary/20 text-primary hover:bg-primary hover:text-white shadow-md">❮</button>
 
     <div class="carousel carousel-center w-full gap-3.5 pt-0.5 pb-2 mb-[30px]" data-carousel-target="container" data-action="scroll->carousel#toggleButtons">
       <%= yield %>
     </div>
 
     <!-- Right Scroll Button -->
-    <button type="button" data-carousel-target="nextBtn" data-action="click->carousel#scrollNext" class="btn btn-circle btn-sm absolute -right-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex opacity-0 transition-opacity bg-surface/95 border border-primary/20 text-primary hover:bg-primary hover:text-white shadow-md">❯</button>
+    <button type="button" data-carousel-target="nextBtn" data-action="click->carousel#scrollNext" class="btn btn-circle btn-sm absolute right-2 top-1/2 -translate-y-1/2 z-10 hidden md:flex opacity-0 group-hover:opacity-100 transition-opacity bg-surface/95 border border-primary/20 text-primary hover:bg-primary hover:text-white shadow-md">❯</button>
   </div>
 </div>

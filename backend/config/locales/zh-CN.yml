@@ -45,6 +45,13 @@ zh-CN:
   scan_to_rsvp: "扫码报名"
   tbd: "待定"
   discussion_session: "讨论会"
+  discover_book_clubs: "发现读书会"
+  join_club: "加入"
+  joined_club: "已加入"
+  joining_club: "正在加入..."
+  leaving_club: "正在退出..."
+  member_count:
+    other: "%{count} 个成员"
 
   time:
     formats:

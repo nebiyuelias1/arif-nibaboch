@@ -1,10 +1,28 @@
 class BookClubsController < ApplicationController
-  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :authenticate_user!, except: [ :index, :show, :discover ]
   before_action :set_book_club, only: [ :show, :edit, :update ]
   before_action -> { authorize_club_owner!(@club) }, only: [ :edit, :update ]
 
   def index
-    @clubs = BookClub.all.includes(:members).order(created_at: :desc)
+    if turbo_frame_request?
+      set_book_clubs
+      is_my_clubs_filter_active = params[:filter] == "my" || params["filter"] != "all" && current_user
+      if is_my_clubs_filter_active
+        @clubs = @clubs.where(id: @joined_club_ids).or(BookClub.where(owner_id: current_user.id))
+      end
+      set_page_and_extract_portion_from @clubs
+
+      @next_page = @page.next_param
+      @has_next_page = !@page.last?
+    else
+      @next_page = 1
+      @has_next_page = true
+    end
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show
@@ -35,7 +53,20 @@ class BookClubsController < ApplicationController
   def edit
   end
 
+  def discover
+    set_book_clubs
+    @clubs = @clubs.limit(50)
+
+    render partial: "home/book_clubs_carousel"
+  end
+
   private
+
+  def set_book_clubs
+    # TODO: Filter by city or have search by city, by name, topic mechanism
+    @joined_club_ids = current_user ? BookClubMember.where(user_id: current_user.id).pluck(:book_club_id) : []
+    @clubs = BookClub.all.order(created_at: :desc)
+  end
 
   def club_params
     params.require(:book_club).permit(:name, :description, :is_private, :cover_photo)

@@ -74,6 +74,14 @@ en:
   scan_to_rsvp: "Scan to RSVP"
   tbd: "TBD"
   discussion_session: "Discussion Session"
+  discover_book_clubs: "Discover Book Clubs"
+  join_club: "Join"
+  joined_club: "Joined"
+  joining_club: "Joining..."
+  leaving_club: "Leaving..."
+  member_count:
+    one: "1 member"
+    other: "%{count} members"
 
   time:
     formats:

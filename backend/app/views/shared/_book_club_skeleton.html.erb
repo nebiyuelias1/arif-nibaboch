@@ -1,0 +1,34 @@
+<% card_class = card_class if local_assigns[:card_class] %>
+
+<div class="card bg-base-100 shadow-sm h-full <%= card_class %>">
+  <figure>
+    <div class="w-full h-32 skeleton rounded-none"></div>
+  </figure>
+
+  <div class="card-body">
+    <!-- Club Name -->
+    <div class="card-title">
+      <div class="skeleton h-6 w-2/3"></div>
+    </div>
+    <!-- Club Description -->
+    <div class="min-h-[38px] flex flex-col gap-2">
+      <div class="skeleton h-4 w-full"></div>
+      <div class="skeleton h-4 w-5/6"></div>
+    </div>
+    <!-- Members list block -->
+    <div class="flex items-center gap-2 mb-1 mt-auto">
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center -space-x-2">
+          <div class="rounded-full skeleton w-6 h-6 ring-2 ring-surface"></div>
+          <div class="rounded-full skeleton w-6 h-6 ring-2 ring-surface"></div>
+          <div class="rounded-full skeleton w-6 h-6 ring-2 ring-surface"></div>
+        </div>
+      </div>
+      <div class="skeleton h-3 w-16"></div>
+    </div>
+    <!-- Action Row -->
+    <div class="card-actions justify-self-end w-full">
+      <div class="skeleton h-12 w-full"></div>
+    </div>
+  </div>
+</div>
