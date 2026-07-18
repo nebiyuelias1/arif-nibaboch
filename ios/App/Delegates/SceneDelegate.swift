@@ -8,11 +8,13 @@
 import HotwireNative
 import UIKit
 
-let baseURL = URL(string: "https://arif-nibaboch.netale.et")!
+let baseURL = URL(string: "https://litloop.club/")!
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-
+    
+    private let tabBarController = HotwireTabBarController()
+    
     private let navigator = Navigator(configuration: .init(
         name: "main",
         startLocation: baseURL.appending(path: "/")
@@ -23,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        window?.rootViewController = navigator.rootViewController
-        navigator.start()
+        window?.rootViewController = tabBarController
+        tabBarController.load(HotwireTab.all)
     }
 }
