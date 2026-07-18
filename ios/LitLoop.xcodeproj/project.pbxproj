@@ -34,22 +34,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		791C029D2FEF8342004964BA /* Exceptions for "LitLoop" folder in "LitLoop" target */ = {
+		791C029D2FEF8342004964BA /* Exceptions for "App" folder in "LitLoop" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 791C02742FEF8341004964BA /* LitLoop */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		791C02772FEF8341004964BA /* LitLoop */ = {
+		791C02772FEF8341004964BA /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				791C029D2FEF8342004964BA /* Exceptions for "LitLoop" folder in "LitLoop" target */,
+				791C029D2FEF8342004964BA /* Exceptions for "App" folder in "LitLoop" target */,
 			);
-			path = LitLoop;
+			path = App;
 			sourceTree = "<group>";
 		};
 		791C028E2FEF8342004964BA /* LitLoopTests */ = {
@@ -93,7 +93,7 @@
 		791C026C2FEF8341004964BA = {
 			isa = PBXGroup;
 			children = (
-				791C02772FEF8341004964BA /* LitLoop */,
+				791C02772FEF8341004964BA /* App */,
 				791C028E2FEF8342004964BA /* LitLoopTests */,
 				791C02982FEF8342004964BA /* LitLoopUITests */,
 				791C02762FEF8341004964BA /* Products */,
@@ -126,7 +126,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				791C02772FEF8341004964BA /* LitLoop */,
+				791C02772FEF8341004964BA /* App */,
 			);
 			name = LitLoop;
 			packageProductDependencies = (
@@ -299,7 +299,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LitLoop/Info.plist;
+				INFOPLIST_FILE = App/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -326,7 +326,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = LitLoop/Info.plist;
+				INFOPLIST_FILE = App/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
