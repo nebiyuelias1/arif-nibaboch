@@ -10,7 +10,11 @@
     sm:hidden pb-safe
   "
 >
-  <div class="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
+  <div
+    class="
+      grid h-full max-w-lg grid-cols-4 mx-auto font-medium hotwire-native:hidden
+    "
+  >
     <% main_navigation_items.each do |item| %>
       <% is_active = is_active_nav_item?(item) %>
       <%= link_to item[:path], class: "inline-flex flex-col items-center justify-center px-5 hover:bg-background group" do %>
