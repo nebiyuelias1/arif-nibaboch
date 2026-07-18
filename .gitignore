@@ -71,6 +71,7 @@ build-ios/
 *.mode2v3
 *.perspectivev3
 xcuserdata/
+*.xcuserstate
 
 # Expo / React Native Specifics (mobileApp)
 .expo/
