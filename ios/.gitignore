@@ -1,0 +1,16 @@
+# CocoaPods
+Pods/
+
+# Xcode build artifacts & state
+DerivedData/
+build-ios/
+.sans-ios-temp/
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+*.xcuserstate
+
+# Ignore user-specific files within workspace and project
+LitLoop.xcodeproj/project.xcworkspace/xcuserdata/
+LitLoop.xcodeproj/xcuserdata/
