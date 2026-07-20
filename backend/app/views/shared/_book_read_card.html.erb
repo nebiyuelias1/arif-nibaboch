@@ -1,23 +1,19 @@
-<div class="card card-side bg-base-100 max-w-md shadow-sm">
-  <%# Image Container %>
-  <div class="w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl shadow-sm bg-neutral-100">
-    <% if book.cover_image.present? %>
-      <img src="<%= book.cover_image %>" alt="<%= book.title %>" class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
-      <% else %>
-      <div class="flex aspect-[3/4] w-full flex-col items-center justify-center p-2 text-center text-gray-400">
-        <svg class="h-8 w-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <svg class="h-12 w-12 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-        </svg>
-        <span class="text-xs font-medium text-content-muted"><%= t("books.common.no_cover") %></span>
-    <% end %>
-  </div>
+<div class="card card-side bg-base-100 shadow-sm">
+  <figure class="w-32 h-55 flex-shrink-0 overflow-hidden">
+  <img 
+    src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp" 
+    alt="Movie" 
+    class="w-full h-full object-cover" />
+</figure>
   <div class="card-body">
+  <h1 class="card-title">
+       The Slow Read
+    </h1>
     <h2 class="card-title">
-     <%= link_to book.title, book, class: "focus:outline-none" %>
+     ፍቅር እስከ መቃብር
     </h2>
     <p>
-     <%= book.author.presence || t("books.common.unknown_author") %>
+     ሐዲስ አለማየሁ
     </p>
     <div data-dc-tpl="88" class="mt-[9px] flex items-center gap-1.5 text-[12.5px] font-medium text-[#2A2520]">
    <svg data-dc-tpl="89" width="14" height="14" viewBox="0 0 24 24" fill="none"><rect data-dc-tpl="90" x="3" y="5" width="18" height="16" rx="3" stroke="#B6603C" stroke-width="1.7"></rect><path data-dc-tpl="91" d="M3 9h18M8 3v4M16 3v4" stroke="#B6603C" stroke-width="1.7" stroke-linecap="round"></path></svg>
@@ -25,7 +21,9 @@
     </div>
     <div class="mt-4 flex items-center gap-2 w-full">
       <%# RSVP Button %>
-      <button class="btn btn-warning">RSVP</button>
+      <button data-disable-with="Joining..." class="w-56 btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed" type="submit">
+          RSVP
+</button>
       <%# Share Button %>
       <button aria-label="Share event" class="flex h-[38px] w-[40px] shrink-0 items-center justify-center rounded-[11px] border border-[rgba(42,37,32,0.14)] bg-transparent text-[#6B6258] hover:bg-gray-50 transition-colors">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
@@ -36,4 +34,3 @@
   </div>
   </div>
 </div>
-
