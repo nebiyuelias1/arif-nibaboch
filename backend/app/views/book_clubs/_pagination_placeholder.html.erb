@@ -1,0 +1,11 @@
+<div id="pagination_placeholder">
+  <% if @has_next_page %>
+    <%= turbo_frame_tag "book_clubs_page_#{@next_page}", src: book_clubs_path(page: @next_page, format: :turbo_stream), loading: :lazy do %>
+      <div class="flex flex-col gap-6 mt-6">
+        <% 3.times do %>
+          <%= render partial: "shared/book_club_skeleton" %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

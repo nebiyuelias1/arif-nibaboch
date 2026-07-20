@@ -9,11 +9,23 @@ class BookClubMembersController < ApplicationController
 
     if @membership.persisted?
       @membership.destroy
-      render json: { status: "left", count: @book_club.book_club_members_count - 1 }
+      @status = "left"
+      @count = @book_club.reload.book_club_members_count
     elsif @membership.save
-      render json: { status: "joined", count: @book_club.book_club_members_count + 1 }
+      @status = "joined"
+      @count = @book_club.reload.book_club_members_count
     else
-      render json: { error: "Could not update membership" }, status: :unprocessable_entity
+      respond_to do |format|
+        format.json { render json: { error: "Could not update membership" }, status: :unprocessable_entity }
+        format.html { redirect_back fallback_location: @book_club, alert: "Could not update membership" }
+      end
+      return
+    end
+
+    respond_to do |format|
+      format.json { render json: { status: @status, count: @count } }
+      format.html { redirect_back fallback_location: @book_club }
+      format.turbo_stream
     end
   end
 

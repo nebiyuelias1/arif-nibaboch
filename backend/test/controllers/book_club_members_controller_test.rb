@@ -44,6 +44,15 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
+  test "should redirect to login page and store return location if guest tries to join via html" do
+    assert_no_difference("BookClubMember.count") do
+      post book_club_membership_url(@book_club)
+    end
+
+    assert_redirected_to new_user_session_url
+    assert_equal book_club_path(@book_club), session["user_return_to"]
+  end
+
   test "admin can update member role" do
     sign_in @owner
     member = @book_club.book_club_members.create!(user: @user, role: :member)

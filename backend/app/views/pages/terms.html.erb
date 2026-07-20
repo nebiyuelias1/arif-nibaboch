@@ -1,0 +1,57 @@
+<% content_for :title, "Terms and Conditions - #{app_name}" %>
+
+<div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+  <div class="bg-surface shadow-md rounded-lg p-6 sm:p-10 text-content">
+    <h1 class="title title-lg font-extrabold text-content border-b border-primary pb-4 mb-6">
+      Terms and Conditions
+    </h1>
+
+    <p class="text-sm text-content-subtle mb-6 leading-relaxed">
+      Last updated: <%= Time.current.strftime("%B %d, %Y") %>
+    </p>
+
+    <p class="text-sm text-content-subtle leading-relaxed mb-6">
+      Welcome to <strong><%= app_name %></strong>. By accessing or using this application, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.
+    </p>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">1. Use of the Platform</h2>
+      <p class="text-sm text-content-subtle leading-relaxed mb-3">
+        You may use our services only for lawful purposes. You agree not to:
+      </p>
+      <ul class="list-disc list-inside text-sm text-content-subtle space-y-2 pl-4">
+        <li>Post or distribute offensive, abusive, or copyright-infringing material.</li>
+        <li>Attempt to compromise the security, infrastructure, or routing of the host server.</li>
+        <li>Impersonate other users or perform automated scraping of book details and reviews without permission.</li>
+      </ul>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">2. User Content</h2>
+      <p class="text-sm text-content-subtle leading-relaxed">
+        You are solely responsible for the reviews, comments, and ratings you post. We reserve the right to moderate or delete any content that violates these Terms or is deemed inappropriate by the platform administrator.
+      </p>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">3. Disclaimer of Warranty</h2>
+      <p class="text-sm text-content-subtle leading-relaxed">
+        <strong><%= app_name %></strong> is self-hosted on a private home server (Mac Mini) and provided on an "as is" and "as available" basis. We make no warranties, expressed or implied, regarding uptime, security guarantees, or the absolute preservation of database backups. Use of the service is at your own risk.
+      </p>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">4. Limitation of Liability</h2>
+      <p class="text-sm text-content-subtle leading-relaxed">
+        In no event shall the platform administrator or developers be liable for any damages (including data loss, service interruption, or account suspension) arising from the use or inability to use this platform.
+      </p>
+    </section>
+
+    <section class="mb-6">
+      <h2 class="text-lg font-semibold text-content mb-3">5. Changes to Terms</h2>
+      <p class="text-sm text-content-subtle leading-relaxed">
+        We reserve the right to modify these Terms at any time. Your continued use of the application following any updates constitutes acceptance of the new Terms.
+      </p>
+    </section>
+  </div>
+</div>

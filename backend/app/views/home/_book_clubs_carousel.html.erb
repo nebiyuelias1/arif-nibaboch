@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "discover_book_clubs" do %>
+  <%= render layout: "shared/carousel", locals: { title: t("discover_book_clubs"), see_all_path: book_clubs_path } do %>
+    <% @clubs.each_with_index do |club, index| %>
+      <%= link_to book_club_path(club),
+        class: "carousel-item flex-none w-80",
+            data: {
+              turbo_frame: "_top"
+            } do %>
+        <%= render "book_clubs/card",
+        club: club,
+        joined_club_ids: @joined_club_ids,
+        card_class: "w-full" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

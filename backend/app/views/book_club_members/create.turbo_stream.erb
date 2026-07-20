@@ -1,0 +1,23 @@
+<%# Replace the card in carousels/lists if present %>
+<%= turbo_stream.replace dom_id(@book_club) do %>
+  <%= render "book_clubs/card", club: @book_club %>
+<% end %>
+
+<%# Replace the join button on the show page if present %>
+<%= turbo_stream.replace "book_club_show_join_button" do %>
+  <%= button_to @book_club.has_member?(current_user) ? "Leave Club" : "Join Club",
+  book_club_membership_path(@book_club),
+  method: :post,
+  id: "book_club_show_join_button",
+  form: {
+    data: {
+      turbo_frame: "_top",
+    },
+  },
+  data: {
+    disable_with:
+      @book_club.has_member?(current_user) ? "Leaving..." : "Joining...",
+  },
+  class:
+    "bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" %>
+<% end %>

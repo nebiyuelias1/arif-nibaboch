@@ -45,6 +45,13 @@ zh-TW:
   scan_to_rsvp: "掃碼報名"
   tbd: "待定"
   discussion_session: "討論會"
+  discover_book_clubs: "發現讀書會"
+  join_club: "加入"
+  joined_club: "已加入"
+  joining_club: "正在加入..."
+  leaving_club: "正在退出..."
+  member_count:
+    other: "%{count} 個成員"
 
   time:
     formats:

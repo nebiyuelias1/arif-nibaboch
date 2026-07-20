@@ -1,6 +1,11 @@
 <div id="pagination_placeholder">
   <%= turbo_frame_tag "books_page_#{@page.next_param}", src: books_path(page: @page.next_param, format: :turbo_stream), loading: :lazy do %>
-    <div class="grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6">
+    <div
+      class="
+        grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+        xl:grid-cols-5 gap-6 mt-6
+      "
+    >
       <% 3.times do %>
         <%= render partial: "books/book_skeleton" %>
       <% end %>
