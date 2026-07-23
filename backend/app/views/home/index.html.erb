@@ -1,9 +1,11 @@
 <div class="max-w-4xl mx-auto space-y-12">
   <%= turbo_frame_tag "discover_book_clubs", src: discover_book_clubs_path, loading: :lazy do %>
-    <%= render "home/discover_book_clubs_skeleton" %>
+    <%= render "home/discover_book_clubs_skeleton" %>  
   <% end %>
 </div>
-
+  <% (1..15).each do |i|%>
+    <%= render "shared/book_read_card" %>
+  <% end %>
 <nav
   class="
     fixed bottom-0 left-0 z-50 w-full h-16 bg-surface border-t border-border

@@ -17,7 +17,7 @@
       xl:grid-cols-5 gap-6
     "
   >
-    <%= render @page.records %>
+     <%= render partial: "books/book", collection: @page.records, as: :book %>
   </div>
 
   <div id="pagination_placeholder">
