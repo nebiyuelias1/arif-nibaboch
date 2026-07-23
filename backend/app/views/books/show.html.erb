@@ -1,4 +1,10 @@
 <% content_for :title, @book.title %>
+<% content_for :og_title, "#{@book.title} by #{@book.author.presence || 'Unknown'}" %>
+<% content_for :og_description, truncate(@book.description.to_s.strip, length: 160) %>
+<% content_for :og_url, book_url(@book) %>
+<% if @book.cover_image.present? %>
+  <% content_for :og_image, cover_book_url(@book) %>
+<% end %>
 
 <%# Back Navigation %>
 <nav class="mb-6 sm:mb-8">

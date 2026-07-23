@@ -8,6 +8,20 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%# Open Graph / Social Link Preview Meta Tags %>
+    <meta property="og:site_name" content="<%= app_name %>">
+    <meta property="og:type" content="<%= content_for(:og_type) || 'website' %>">
+    <meta property="og:title" content="<%= content_for(:og_title) || content_for(:title) || app_name %>">
+    <meta property="og:description" content="<%= content_for(:og_description) || "Join us on #{app_name} for book reads and discussions!" %>">
+    <meta property="og:url" content="<%= content_for(:og_url) || request.original_url %>">
+    <% if content_for?(:og_image) %>
+      <meta property="og:image" content="<%= content_for(:og_image) %>">
+      <meta name="twitter:image" content="<%= content_for(:og_image) %>">
+    <% end %>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= content_for(:og_title) || content_for(:title) || app_name %>">
+    <meta name="twitter:description" content="<%= content_for(:og_description) || "Join us on #{app_name} for book reads and discussions!" %>">
+
     <%= tag.meta name: "current-user-id", content: current_user&.id %>
 
     <%= yield :head %>

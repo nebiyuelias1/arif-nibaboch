@@ -1,3 +1,11 @@
+<% content_for :title, "#{@book_read.book&.title || @book_read.poll&.text || 'Book Read'} - #{@book_club.name}" %>
+<% content_for :og_title, "#{@book_read.book&.title || 'Reading Session'} | #{@book_club.name}" %>
+<% content_for :og_description, "Join #{@book_club.name}'s book reading session! Meetup: #{@book_read.meetup_time ? l(@book_read.meetup_time, format: :flyer) : 'TBD'} at #{@book_read.meetup_location.presence || 'TBD'}." %>
+<% content_for :og_url, book_club_book_read_url(@book_club, @book_read) %>
+<% if @book_read.book.present? && @book_read.book.cover_image.present? %>
+  <% content_for :og_image, cover_book_url(@book_read.book) %>
+<% end %>
+
 <div class="max-w-4xl mx-auto mt-8">
   <nav class="flex mb-6" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
