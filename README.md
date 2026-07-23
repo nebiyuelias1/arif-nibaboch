@@ -1,7 +1,5 @@
 # litloop
 
-<img width="2816" height="1536" alt="Gemini Generated Image" src="https://github.com/user-attachments/assets/48e3dffb-e6b6-4a36-8eed-e3d471efa202" />
-
 People → choose a book → read → discuss → choose another book
 
 ## Features
