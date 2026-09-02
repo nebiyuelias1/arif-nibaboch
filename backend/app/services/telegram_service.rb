@@ -62,10 +62,10 @@ class TelegramService
       Rails.logger.info "✅ Successfully posted Book to Telegram with message ID: #{message_id}"
       message_id
     else
-      Rails.logger.error "❌ Failed to post to Telegram: #{result['description']}"
+      Rails.logger.error "❌ Failed to post to Telegram: #{result["description"]}"
       nil
     end
-  rescue StandardError => e
+  rescue => e
     Rails.logger.error "❌ Telegram API Error: #{e.message}"
     nil
   end
@@ -73,13 +73,11 @@ class TelegramService
   def get_caption
     # Caption with book details and a link back to the site
     # Note: You need to configure default_url_options in production for correct links
-    caption = <<~TEXT
-      📖 *#{@book.title}*#{' '}
-      by #{@book.author}#{' '}
+    <<~TEXT
+      📖 *#{@book.title}*#{" "}
+      by #{@book.author}#{" "}
 
-      #{@book.description&.truncate(150)}#{' '}
+      #{@book.description&.truncate(150)}#{" "}
     TEXT
-
-    caption
   end
 end

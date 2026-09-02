@@ -13,7 +13,7 @@ class RatingsController < ApplicationController
     else
       respond_to do |format|
         format.html { redirect_to @book, alert: "Failed to save rating." }
-        format.json { render json: { errors: @rating.errors }, status: :unprocessable_entity }
+        format.json { render json: { errors: @rating.errors }, status: :unprocessable_content }
       end
     end
   end

@@ -15,7 +15,6 @@ class BookLookupTest < ActiveSupport::TestCase
     assert_equal "Frank Herbert", result[:author]
   end
 
-
   test "handles by in book title" do
     result = BookLookup::Parser.parse("Living by the River By Florence Chuang")
 

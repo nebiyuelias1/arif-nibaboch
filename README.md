@@ -11,6 +11,7 @@ People → choose a book → read → discuss → choose another book
 - ✅ **TypeScript** support in mobile app
 - ✅ **Authentication** ready with Devise
 - ✅ **Docker** support for containerized development
+- ✅ **Code Quality** with RuboCop Omakase, erb-lint & Lefthook Git pre-commit hooks
 - ✅ **Ready for Strada integration** for advanced web-to-native interactions
 
 ## Project Structure

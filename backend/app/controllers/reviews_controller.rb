@@ -9,7 +9,7 @@ class ReviewsController < ApplicationController
     if @review.save
       redirect_to @book, notice: "Review posted successfully."
     else
-      redirect_to @book, alert: "Failed to post review: #{@review.errors.full_messages.join(', ')}"
+      redirect_to @book, alert: "Failed to post review: #{@review.errors.full_messages.join(", ")}"
     end
   end
 

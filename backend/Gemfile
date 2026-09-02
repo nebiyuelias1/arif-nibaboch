@@ -61,10 +61,13 @@ group :development, :test do
   gem "brakeman", require: false
 
   # For linting the html
-  gem 'erb_lint', require: false
+  gem "erb_lint", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Git hooks manager
+  gem "lefthook", require: false
 end
 
 group :development do

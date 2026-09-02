@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: %i[ show cover ]
+  before_action :set_book, only: %i[show cover]
 
   def index
     @tags = Tag.all.limit(10).order(:name)
@@ -20,10 +20,10 @@ class BooksController < ApplicationController
 
   def show
     @reviews = @book.reviews.includes(:user).where(parent_id: nil).order(created_at: :desc)
-    if current_user
-      @liked_review_ids = ReviewLike.where(user_id: current_user.id, review_id: @reviews).pluck(:review_id)
+    @liked_review_ids = if current_user
+      ReviewLike.where(user_id: current_user.id, review_id: @reviews).pluck(:review_id)
     else
-      @liked_review_ids = []
+      []
     end
   end
 
@@ -38,8 +38,8 @@ class BooksController < ApplicationController
         format.html { redirect_to @book }
         format.json { render json: @book, status: :created }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @book.errors, status: :unprocessable_content }
       end
     end
   end
@@ -47,21 +47,21 @@ class BooksController < ApplicationController
   def search
     query = params[:query]
     @books = if query.present?
-               local_results = Book.full_text_search(query).limit(10).to_a
+      local_results = Book.full_text_search(query).limit(10).to_a
 
-               if local_results.size < 5
-                 lookup_results = BookLookup.find_many(title: query, author: query) || []
-                 external_books = lookup_results.map { |res| map_lookup_result_to_book(res) }
+      if local_results.size < 5
+        lookup_results = BookLookup.find_many(title: query, author: query) || []
+        external_books = lookup_results.map { |res| map_lookup_result_to_book(res) }
 
-                 combined = (local_results + external_books).uniq do |book|
-                   [ book.title.to_s.downcase.strip, book.author.to_s.downcase.strip ]
-                 end
-                 combined.first(10)
-               else
-                 local_results
-               end
+        combined = (local_results + external_books).uniq do |book|
+          [ book.title.to_s.downcase.strip, book.author.to_s.downcase.strip ]
+        end
+        combined.first(10)
+      else
+        local_results
+      end
     else
-               []
+      []
     end
 
     respond_to do |format|

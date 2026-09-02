@@ -8,7 +8,7 @@ class DiscussionQuestionTest < ActiveSupport::TestCase
   test "should be valid with valid attributes" do
     question = DiscussionQuestion.new(
       book_read: @book_read,
-      content: "What is the main theme of the book?",
+      content: "What is the main theme of the book?"
     )
 
     assert question.valid?

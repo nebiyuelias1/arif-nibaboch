@@ -18,14 +18,14 @@ class OpenLibraryTest < ActiveSupport::TestCase
       "docs" => [
         {
           "title" => "Dune",
-          "author_name" => ["Frank Herbert"],
+          "author_name" => [ "Frank Herbert" ],
           "first_sentence" => "In the week before their departure to Arrakis...",
           "cover_i" => 12345,
-          "isbn" => ["9780441013593"],
-          "publisher" => ["Ace"],
+          "isbn" => [ "9780441013593" ],
+          "publisher" => [ "Ace" ],
           "first_publish_year" => 1965,
           "number_of_pages_median" => 412,
-          "subject" => ["Science fiction"],
+          "subject" => [ "Science fiction" ],
           "key" => "/works/OL262758W"
         }
       ]
@@ -49,7 +49,7 @@ class OpenLibraryTest < ActiveSupport::TestCase
       assert_equal "Ace", result.publisher
       assert_equal Date.new(1965, 1, 1), result.published_at
       assert_equal 412, result.page_count
-      assert_equal ["Science fiction"], result.categories
+      assert_equal [ "Science fiction" ], result.categories
       assert_equal "open_library", result.source
       assert_equal "https://openlibrary.org/works/OL262758W", result.source_url
     end

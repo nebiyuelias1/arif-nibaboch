@@ -30,8 +30,8 @@ class ReviewTest < ActiveSupport::TestCase
 
     if replies_assoc.options.key?(:dependent)
       assert_equal :destroy,
-                   replies_assoc.options[:dependent],
-                   "Review :replies association should use dependent: :destroy when dependent is configured"
+        replies_assoc.options[:dependent],
+        "Review :replies association should use dependent: :destroy when dependent is configured"
     end
   end
 

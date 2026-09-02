@@ -116,7 +116,7 @@ class UserMailerTest < ActionMailer::TestCase
     assert_equal "Join Request Rejected: #{book_club.name}", email.subject
     assert_match "was not approved", email.html_part.body.to_s
     assert_match "was not approved", email.text_part.body.to_s
-    assert_no_match /Welcome/, email.text_part.body.to_s
+    assert_no_match(/Welcome/, email.text_part.body.to_s)
     assert_equal 0, email.attachments.size
   end
 end

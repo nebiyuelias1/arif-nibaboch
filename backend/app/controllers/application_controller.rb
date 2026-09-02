@@ -12,15 +12,11 @@ class ApplicationController < ActionController::Base
   def set_locale
     locale = params[:locale]
     matched_locale = I18n.available_locales.find { |l| l.to_s.downcase == locale.to_s.downcase }
-    if matched_locale
-      I18n.locale = matched_locale
-    else
-      I18n.locale = I18n.default_locale
-    end
+    I18n.locale = (matched_locale || I18n.default_locale)
   end
 
   def default_url_options
-    I18n.locale == I18n.default_locale ? {} : { locale: I18n.locale }
+    (I18n.locale == I18n.default_locale) ? {} : { locale: I18n.locale }
   end
 
   def set_time_zone(&block)

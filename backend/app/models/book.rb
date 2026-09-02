@@ -9,9 +9,9 @@ class Book < ApplicationRecord
   has_many :book_reads, dependent: :destroy
   has_many :book_clubs, through: :book_reads
 
-  after_create_commit  :create_in_book_fts
+  after_create_commit :create_in_book_fts
   # after_create_commit  :create_telegram_discussion
-  after_update_commit  :update_in_book_fts
+  after_update_commit :update_in_book_fts
   after_destroy_commit :remove_from_book_fts
 
   scope :full_text_search, ->(query) do
@@ -29,12 +29,12 @@ class Book < ApplicationRecord
   end
 
   def self.rebuild_search_index
-      sql_query = <<-SQL
+    sql_query = <<-SQL
         insert into books_fts (
           books_fts
         )
        values ('rebuild')
-      SQL
+    SQL
     connection.execute sql_query
   end
 
@@ -47,8 +47,9 @@ class Book < ApplicationRecord
   end
 
   private
-    def create_in_book_fts
-      sql_query = <<-SQL
+
+  def create_in_book_fts
+    sql_query = <<-SQL
         insert into books_fts (
           rowid,
           title,
@@ -60,22 +61,22 @@ class Book < ApplicationRecord
           author_romanized
         )
        values (?, ?, ?, ?, ?, ?, ?, ?)
-      SQL
+    SQL
 
-      execute_sql_with_binds sql_query,
-          id, title, author, description,
-          publisher, title_en, title_romanized, author_romanized
+    execute_sql_with_binds sql_query,
+      id, title, author, description,
+      publisher, title_en, title_romanized, author_romanized
+  end
+
+  def update_in_book_fts
+    transaction do
+      remove_from_book_fts
+      create_in_book_fts
     end
+  end
 
-    def update_in_book_fts
-      transaction do
-        remove_from_book_fts
-        create_in_book_fts
-      end
-    end
-
-    def remove_from_book_fts
-      sql_query = <<-SQL
+  def remove_from_book_fts
+    sql_query = <<-SQL
         insert into books_fts (
           books_fts,
           rowid,
@@ -88,27 +89,27 @@ class Book < ApplicationRecord
           author_romanized
         )
         values ('delete', ?, ?, ?, ?, ?, ?, ?, ?)
-      SQL
+    SQL
 
-      execute_sql_with_binds sql_query,
-        id_previously_was,
-        title_previously_was,
-        author_previously_was,
-        description_previously_was,
-        publisher_previously_was,
-        title_en_previously_was,
-        title_romanized_previously_was,
-        author_romanized_previously_was
-    end
+    execute_sql_with_binds sql_query,
+      id_previously_was,
+      title_previously_was,
+      author_previously_was,
+      description_previously_was,
+      publisher_previously_was,
+      title_en_previously_was,
+      title_romanized_previously_was,
+      author_romanized_previously_was
+  end
 
-    def execute_sql_with_binds(*statement)
-      self.class.connection.execute self.class.sanitize_sql(statement)
-    end
+  def execute_sql_with_binds(*statement)
+    self.class.connection.execute self.class.sanitize_sql(statement)
+  end
 
-    def create_telegram_discussion
-      return if telegram_post_id.present?
+  def create_telegram_discussion
+    return if telegram_post_id.present?
 
-      message_id = TelegramService.new(self).publish
-      update_column(:telegram_post_id, message_id) if message_id
-    end
+    message_id = TelegramService.new(self).publish
+    update_column(:telegram_post_id, message_id) if message_id
+  end
 end

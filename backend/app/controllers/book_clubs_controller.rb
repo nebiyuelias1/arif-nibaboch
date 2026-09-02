@@ -38,7 +38,7 @@ class BookClubsController < ApplicationController
     if @club.save
       redirect_to book_club_path(@club), notice: "Book Club created successfully."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -46,7 +46,7 @@ class BookClubsController < ApplicationController
     if @club.update(club_params)
       redirect_to book_club_path(@club), notice: "Book Club updated successfully."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

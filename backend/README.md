@@ -144,6 +144,27 @@ rails test test/models/
 - **Solid Cache**: Fast caching layer
 - **Solid Cable**: WebSocket support for real-time features
 
+## Code Quality & Linting
+
+This project uses [RuboCop Rails Omakase](https://github.com/rails/rubocop-rails-omakase) (official Rails 8 styling), [erb-lint](https://github.com/Shopify/erb-lint) (ERB template linter), and [Lefthook](https://github.com/evilmartians/lefthook) for automatic Git pre-commit hooks.
+
+```bash
+# Check Ruby code for style and lint issues
+bundle exec rubocop
+
+# Automatically fix Ruby formatting and linting issues
+bundle exec rubocop -A
+
+# Check and autocorrect ERB templates
+bundle exec erb_lint --autocorrect app/views/**/*.html.erb
+
+# Run Git pre-commit hooks manually (RuboCop + ERB linters in parallel)
+bundle exec lefthook run pre-commit
+
+# Security vulnerability audit
+bundle exec brakeman
+```
+
 ## Development Commands
 
 ```bash
@@ -163,12 +184,6 @@ rails generate controller Posts
 
 # Check routes
 rails routes
-
-# Code linting
-rubocop
-
-# Fix linting issues automatically
-rubocop -A
 ```
 
 ## Deployment

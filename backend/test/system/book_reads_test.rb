@@ -42,7 +42,7 @@ class BookReadsTest < ApplicationSystemTestCase
     assert_selector "[data-book-autocomplete-target='results'] div", text: book.title, wait: 5
     find("[data-book-autocomplete-target='results'] div", text: book.title, match: :first).click
 
-    pick_datetime "Meetup Time", Time.current + 1.week, hour: 15, minute: 30
+    pick_datetime "Meetup Time", 1.week.from_now, hour: 15, minute: 30
     fill_in "Meetup Location", with: "Starbucks"
 
     click_on "Schedule Read"
@@ -54,7 +54,7 @@ class BookReadsTest < ApplicationSystemTestCase
   test "showing errors when creating a book read without a book or poll" do
     visit new_book_club_book_read_path(@book_club)
 
-    pick_datetime "Meetup Time", Time.current + 1.week, hour: 15, minute: 30
+    pick_datetime "Meetup Time", 1.week.from_now, hour: 15, minute: 30
     fill_in "Meetup Location", with: "Starbucks"
 
     click_on "Schedule Read"
@@ -69,7 +69,7 @@ class BookReadsTest < ApplicationSystemTestCase
     find("[data-book-read-form-target='selectionBtn']", text: "Poll").click
 
     fill_in "Poll Question", with: "What should we read next?"
-    pick_datetime "Voting Ends On", Time.current + 3.days, hour: 23, minute: 55
+    pick_datetime "Voting Ends On", 3.days.from_now, hour: 23, minute: 55
 
     # Add Poll Options
     within "#poll_options" do
@@ -91,7 +91,7 @@ class BookReadsTest < ApplicationSystemTestCase
       end
     end
 
-    pick_datetime "Meetup Time", Time.current + 1.week, hour: 15, minute: 30
+    pick_datetime "Meetup Time", 1.week.from_now, hour: 15, minute: 30
     fill_in "Meetup Location", with: "Public Library"
 
     click_on "Schedule Read"
@@ -151,9 +151,9 @@ class BookReadsTest < ApplicationSystemTestCase
     find("[data-book-read-form-target='selectionBtn']", text: "Poll").click
 
     fill_in "Poll Question", with: "Poll with no options"
-    pick_datetime "Voting Ends On", Time.current + 3.days, hour: 23, minute: 55
+    pick_datetime "Voting Ends On", 3.days.from_now, hour: 23, minute: 55
 
-    pick_datetime "Meetup Time", Time.current + 1.week, hour: 15, minute: 30
+    pick_datetime "Meetup Time", 1.week.from_now, hour: 15, minute: 30
     fill_in "Meetup Location", with: "Public Library"
 
     # Ensure options are empty (they shouldn't be by default as we build 2, but let's assume we remove them or they are blank)

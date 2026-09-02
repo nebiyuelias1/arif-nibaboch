@@ -20,7 +20,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to book_club_path(@book_club)
-    assert_match (/submitted/i), flash[:notice]
+    assert_match(/submitted/i, flash[:notice])
   end
 
   test "already pending request shows notice and does not duplicate" do
@@ -33,7 +33,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
       post book_club_membership_requests_path(@book_club)
     end
 
-    assert_match /pending/i, flash[:notice]
+    assert_match(/pending/i, flash[:notice])
   end
 
   test "member cannot create request" do
@@ -44,7 +44,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
       post book_club_membership_requests_path(@book_club)
     end
 
-    assert_match /already a member/i, flash[:notice]
+    assert_match(/already a member/i, flash[:notice])
   end
 
   test "requires authentication" do
@@ -64,7 +64,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to book_club_path(@book_club)
-    assert_match /approved/i, flash[:notice]
+    assert_match(/approved/i, flash[:notice])
     assert request.reload.approved?
     assert @book_club.has_member?(@non_member)
   end
@@ -100,7 +100,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to book_club_path(@book_club)
-    assert_match /already been approved/i, flash[:notice]
+    assert_match(/already been approved/i, flash[:notice])
   end
 
   test "replayed rejection is idempotent" do
@@ -117,7 +117,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to book_club_path(@book_club)
-    assert_match /already been rejected/i, flash[:notice]
+    assert_match(/already been rejected/i, flash[:notice])
   end
 
   test "turbo stream replayed approval renders no duplicate member row" do
@@ -158,14 +158,14 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "text/vnd.turbo-stream.html", @response.media_type
 
     # Approved request row removed, member row appended, member count updated
-    assert_match /turbo-stream action="remove" target="membership_request_#{request.id}"/, @response.body
-    assert_match /turbo-stream action="append" target="members_tbody"/, @response.body
-    assert_match /turbo-stream action="update" targets="\[data-members-count\]"/, @response.body
+    assert_match(/turbo-stream action="remove" target="membership_request_#{request.id}"/, @response.body)
+    assert_match(/turbo-stream action="append" target="members_tbody"/, @response.body)
+    assert_match(/turbo-stream action="update" targets="\[data-members-count\]"/, @response.body)
 
     # Pending indicator badge and dialog header count stay in sync (one left)
-    assert_match /turbo-stream action="update" targets="\[data-pending-requests-badge\]"/, @response.body
-    assert_match /1 pending request/, @response.body
-    assert_match /turbo-stream action="update" targets="\[data-pending-requests-count\]"/, @response.body
+    assert_match(/turbo-stream action="update" targets="\[data-pending-requests-badge\]"/, @response.body)
+    assert_match(/1 pending request/, @response.body)
+    assert_match(/turbo-stream action="update" targets="\[data-pending-requests-count\]"/, @response.body)
   end
 
   test "turbo stream handling the last pending request clears the indicator" do
@@ -179,9 +179,9 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "text/vnd.turbo-stream.html", @response.media_type
 
     # Pending section emptied and the badge swap carries no badge markup
-    assert_match /turbo-stream action="update" target="pending_requests_section"/, @response.body
-    assert_match /turbo-stream action="update" targets="\[data-pending-requests-badge\]"/, @response.body
-    assert_no_match /pending request/, @response.body
+    assert_match(/turbo-stream action="update" target="pending_requests_section"/, @response.body)
+    assert_match(/turbo-stream action="update" targets="\[data-pending-requests-badge\]"/, @response.body)
+    assert_no_match(/pending request/, @response.body)
   end
 
   test "non-owner admin cannot approve" do
@@ -194,7 +194,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     patch approve_book_club_membership_request_path(@book_club, request)
 
     assert_redirected_to book_club_path(@book_club)
-    assert_match /permission/i, flash[:alert]
+    assert_match(/permission/i, flash[:alert])
     assert request.reload.pending?
   end
 
@@ -218,7 +218,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to book_club_path(@book_club)
-    assert_match /cancelled/i, flash[:notice]
+    assert_match(/cancelled/i, flash[:notice])
   end
 
   test "user cannot cancel someone else's request" do
@@ -230,7 +230,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     delete cancel_book_club_membership_request_path(@book_club, request)
 
     assert_redirected_to book_club_path(@book_club)
-    assert_match /permission/i, flash[:alert]
+    assert_match(/permission/i, flash[:alert])
     assert request.reload.pending?
   end
 
@@ -246,16 +246,16 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "text/vnd.turbo-stream.html", @response.media_type
 
     # Card wrapper (card + dialog) replaced atomically with the pending state
-    assert_match /turbo-stream action="replace" target="book_club_#{@book_club.id}"/, @response.body
-    assert_match /Cancel Join Request/, @response.body
-    assert_no_match /id="apply_dialog_#{@book_club.id}"/, @response.body
-    assert_no_match /Apply to Join/, @response.body
+    assert_match(/turbo-stream action="replace" target="book_club_#{@book_club.id}"/, @response.body)
+    assert_match(/Cancel Join Request/, @response.body)
+    assert_no_match(/id="apply_dialog_#{@book_club.id}"/, @response.body)
+    assert_no_match(/Apply to Join/, @response.body)
 
     # Show page join button replaced too
-    assert_match /turbo-stream action="replace" target="book_club_show_join_button"/, @response.body
+    assert_match(/turbo-stream action="replace" target="book_club_show_join_button"/, @response.body)
 
     # Show page apply dialog container emptied (pending state has no use for it)
-    assert_match /turbo-stream action="replace" target="apply_dialog_container"><template>[\s\S]*<div id="apply_dialog_container"><\/div>/, @response.body
+    assert_match(/turbo-stream action="replace" target="apply_dialog_container"><template>[\s\S]*<div id="apply_dialog_container"><\/div>/, @response.body)
   end
 
   test "turbo stream cancel replaces card and show button with apply to join state" do
@@ -271,16 +271,16 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "text/vnd.turbo-stream.html", @response.media_type
 
     # Card wrapper replaced atomically: Apply button back, dialog restored
-    assert_match /turbo-stream action="replace" target="book_club_#{@book_club.id}"/, @response.body
-    assert_match /Apply to Join/, @response.body
-    assert_match /id="apply_dialog_#{@book_club.id}"/, @response.body
-    assert_no_match /Cancel Join Request/, @response.body
+    assert_match(/turbo-stream action="replace" target="book_club_#{@book_club.id}"/, @response.body)
+    assert_match(/Apply to Join/, @response.body)
+    assert_match(/id="apply_dialog_#{@book_club.id}"/, @response.body)
+    assert_no_match(/Cancel Join Request/, @response.body)
 
     # Show page join button replaced too
-    assert_match /turbo-stream action="replace" target="book_club_show_join_button"/, @response.body
+    assert_match(/turbo-stream action="replace" target="book_club_show_join_button"/, @response.body)
 
     # Show page apply dialog container restored
-    assert_match /turbo-stream action="replace" target="apply_dialog_container"><template>[\s\S]*<dialog id="apply_dialog_#{@book_club.id}"/, @response.body
+    assert_match(/turbo-stream action="replace" target="apply_dialog_container"><template>[\s\S]*<dialog id="apply_dialog_#{@book_club.id}"/, @response.body)
   end
 
   test "user can request again after cancelling and the new request is pending" do
@@ -292,7 +292,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
       post book_club_membership_requests_path(@book_club)
     end
     assert_redirected_to book_club_path(@book_club)
-    assert_match /submitted/i, flash[:notice]
+    assert_match(/submitted/i, flash[:notice])
 
     first_request = @book_club.membership_requests.find_by(user: @non_member)
     assert first_request.pending?
@@ -302,7 +302,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
       delete cancel_book_club_membership_request_path(@book_club, first_request)
     end
     assert_redirected_to book_club_path(@book_club)
-    assert_match /cancelled/i, flash[:notice]
+    assert_match(/cancelled/i, flash[:notice])
     assert_nil @book_club.membership_requests.find_by(user: @non_member)
 
     # 3. Request again — a fresh pending request is created and the owner is notified again
@@ -312,7 +312,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
       end
     end
     assert_redirected_to book_club_path(@book_club)
-    assert_match /submitted/i, flash[:notice]
+    assert_match(/submitted/i, flash[:notice])
 
     second_request = @book_club.membership_requests.find_by(user: @non_member)
     assert second_request.pending?
@@ -344,7 +344,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
       end
     end
     assert_redirected_to book_club_path(@book_club)
-    assert_match /submitted/i, flash[:notice]
+    assert_match(/submitted/i, flash[:notice])
 
     assert request.reload.pending?
     assert @book_club.pending_membership_requests.exists?(user: @non_member)

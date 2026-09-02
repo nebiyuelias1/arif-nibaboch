@@ -20,9 +20,8 @@ class PollVotesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal "text/vnd.turbo-stream.html", @response.media_type
-    assert_match /turbo-stream action="replace" target="poll_voting"/, @response.body
+    assert_match(/turbo-stream action="replace" target="poll_voting"/, @response.body)
   end
-
 
   test "should not create votes for with invalid ids" do
     assert_difference("PollVote.count", 0) do

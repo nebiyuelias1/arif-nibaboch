@@ -61,7 +61,7 @@ class DiscussionQuestion < ApplicationRecord
   end
 
   def set_position
-   book_read.with_lock do
+    book_read.with_lock do
       max_position = book_read.discussion_questions.maximum(:position) || 0
       self.position = max_position + 1
     end

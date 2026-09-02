@@ -57,7 +57,7 @@ class PollVotesController < ApplicationController
   def respond_with_error
     respond_to do |format|
       format.html { redirect_to book_club_book_read_path(@book_club, @book_read), alert: @error_message }
-      format.turbo_stream { render :create, status: :unprocessable_entity }
+      format.turbo_stream { render :create, status: :unprocessable_content }
     end
   end
 

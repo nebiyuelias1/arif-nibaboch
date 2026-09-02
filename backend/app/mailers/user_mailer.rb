@@ -6,16 +6,16 @@ class UserMailer < ApplicationMailer
 
   def rsvp_confirmation
     attach_calendar_invite!
-    mail(to: @user.email, subject: "RSVP Confirmation: #{@book_read.book&.title || 'Book Read'}")
+    mail(to: @user.email, subject: "RSVP Confirmation: #{@book_read.book&.title || "Book Read"}")
   end
 
   def book_read_updated_invite
     attach_calendar_invite!(description_suffix: " (Schedule Updated)")
-    mail(to: @user.email, subject: "[Updated Calendar Invite] Book Read: #{@book_read.book&.title || 'Book Read'}")
+    mail(to: @user.email, subject: "[Updated Calendar Invite] Book Read: #{@book_read.book&.title || "Book Read"}")
   end
 
   def book_read_reminder_email
-    mail(to: @user.email, subject: "Reminder: Upcoming Book Read for #{@book_read.book&.title || 'Discussion'}")
+    mail(to: @user.email, subject: "Reminder: Upcoming Book Read for #{@book_read.book&.title || "Discussion"}")
   end
 
   def membership_request_notification
@@ -55,18 +55,18 @@ class UserMailer < ApplicationMailer
     cal = Icalendar::Calendar.new
     cal.ip_method = "REQUEST"
     cal.event do |e|
-      e.uid         = calendar_event_uid
-      e.sequence    = @book_read.calendar_sequence || 0
-      e.organizer   = Icalendar::Values::CalAddress.new("mailto:#{organizer_email}", cn: Rails.configuration.x.app_name)
-      e.attendee    = [ Icalendar::Values::CalAddress.new("mailto:#{@user.email}", cn: @user.name) ]
+      e.uid = calendar_event_uid
+      e.sequence = @book_read.calendar_sequence || 0
+      e.organizer = Icalendar::Values::CalAddress.new("mailto:#{organizer_email}", cn: Rails.configuration.x.app_name)
+      e.attendee = [ Icalendar::Values::CalAddress.new("mailto:#{@user.email}", cn: @user.name) ]
       # Explicitly marking as UTC ensures calendars auto-adjust to user's local time
-      e.dtstart     = Icalendar::Values::DateTime.new(@book_read.meetup_time.utc, tzid: "UTC")
-      e.dtend       = Icalendar::Values::DateTime.new((@book_read.meetup_time + 2.hours).utc, tzid: "UTC")
-      e.summary     = "Book Read: #{@book_read.book&.title || 'Discussion'}"
+      e.dtstart = Icalendar::Values::DateTime.new(@book_read.meetup_time.utc, tzid: "UTC")
+      e.dtend = Icalendar::Values::DateTime.new((@book_read.meetup_time + 2.hours).utc, tzid: "UTC")
+      e.summary = "Book Read: #{@book_read.book&.title || "Discussion"}"
       e.description = "RSVP for #{@book_read.book_club.name}#{description_suffix}"
-      e.location    = @book_read.meetup_location
-      e.ip_class    = "PRIVATE"
-      e.status      = "CONFIRMED"
+      e.location = @book_read.meetup_location
+      e.ip_class = "PRIVATE"
+      e.status = "CONFIRMED"
     end
 
     attachments["invite.ics"] = {

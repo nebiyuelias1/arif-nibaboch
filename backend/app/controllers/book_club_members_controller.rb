@@ -23,15 +23,15 @@ class BookClubMembersController < ApplicationController
       @count = @book_club.reload.book_club_members_count
     else
       respond_to do |format|
-        format.json { render json: { error: "Could not update membership" }, status: :unprocessable_entity }
-        format.html { redirect_back fallback_location: @book_club, alert: "Could not update membership" }
+        format.json { render json: { error: "Could not update membership" }, status: :unprocessable_content }
+        format.html { redirect_back_or_to(@book_club, alert: "Could not update membership") }
       end
       return
     end
 
     respond_to do |format|
       format.json { render json: { status: @status, count: @count } }
-      format.html { redirect_back fallback_location: @book_club }
+      format.html { redirect_back_or_to(@book_club) }
       format.turbo_stream
     end
   end

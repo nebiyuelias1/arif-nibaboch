@@ -47,7 +47,7 @@ class BookReadRsvpsController < ApplicationController
   def ensure_membership!
     if @book_club.is_private && !@book_club.has_member?(current_user)
       redirect_to book_club_book_read_path(@book_club, @book_read),
-                  alert: "This is a private club. Join the club first to RSVP."
+        alert: "This is a private club. Join the club first to RSVP."
     else
       @book_club.book_club_members.find_or_create_by!(user: current_user)
     end

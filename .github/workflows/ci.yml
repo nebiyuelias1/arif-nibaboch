@@ -42,6 +42,9 @@ jobs:
           bundle config set deployment true
           bundle check || bundle install
 
+      - name: Run RuboCop
+        run: bin/rubocop --parallel
+
       - name: Run ERB Lint
         run: bin/erb_lint --lint-all
 

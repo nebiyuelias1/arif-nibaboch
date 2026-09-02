@@ -13,7 +13,7 @@ class RatingDashboard < Administrate::BaseDashboard
     score: Field::Number.with_options(decimals: 2),
     user: Field::BelongsTo,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

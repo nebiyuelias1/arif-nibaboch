@@ -1,22 +1,22 @@
 Rails.application.routes.draw do
   namespace :admin do
-      resources :books
-      resources :book_clubs
-      resources :book_club_members
-      resources :book_reads
-      resources :polls
-      resources :poll_options
-      resources :poll_votes
-      resources :book_tags
-      resources :discussion_questions
-      resources :ratings
-      resources :reviews
-      resources :review_likes
-      resources :tags
-      resources :users
+    resources :books
+    resources :book_clubs
+    resources :book_club_members
+    resources :book_reads
+    resources :polls
+    resources :poll_options
+    resources :poll_votes
+    resources :book_tags
+    resources :discussion_questions
+    resources :ratings
+    resources :reviews
+    resources :review_likes
+    resources :tags
+    resources :users
 
-      root to: "books#index"
-    end
+    root to: "books#index"
+  end
   devise_for :users, controllers: {
     registrations: "users/registrations",
     sessions: "users/sessions"
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  get "up" => "rails/health#show", :as => :rails_health_check
 
   # Social logins
   get "/telegram_mini_app/login", to: "telegram_mini_app_login#create", as: :telegram_mini_app_login

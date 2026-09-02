@@ -6,10 +6,10 @@ class BookReadsController < ApplicationController
 
   def index
     @tab = params[:tab] || "upcoming"
-    if @tab == "past"
-      @reads = @book_club.book_reads.includes(:book).where("meetup_time < ?", Time.current).order(meetup_time: :desc)
+    @reads = if @tab == "past"
+      @book_club.book_reads.includes(:book).where("meetup_time < ?", Time.current).order(meetup_time: :desc)
     else
-      @reads = @book_club.book_reads.includes(:book).where("meetup_time >= ?", Time.current).order(meetup_time: :asc)
+      @book_club.book_reads.includes(:book).where("meetup_time >= ?", Time.current).order(meetup_time: :asc)
     end
   end
 
@@ -68,7 +68,7 @@ class BookReadsController < ApplicationController
       @rsvp = BookReadRsvp.rsvp!(book_read: @book_read, user: current_user, status: :going)
       redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read scheduled successfully."
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -95,7 +95,7 @@ class BookReadsController < ApplicationController
       redirect_to book_club_book_read_path(@book_club, @book_read), notice: "Book read was successfully updated."
     else
       @book_read.reload if @book_read.persisted?
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
@@ -118,7 +118,7 @@ class BookReadsController < ApplicationController
     else
       @winning_options = @poll.winning_options
       @suggested_option = poll_option
-      render :finalize, status: :unprocessable_entity
+      render :finalize, status: :unprocessable_content
     end
   end
 

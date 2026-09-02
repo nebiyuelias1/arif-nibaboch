@@ -47,7 +47,6 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
     @club_params[:book_club][:is_private] = true
 
-
     assert_difference("BookClub.count", 0) do
       post book_clubs_url, params: @club_params
     end
@@ -56,7 +55,6 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     assert_select "form"
     assert_select "div", text: /can't be blank|must be a valid URL/i
   end
-
 
   test "should create private club when application_form_url is provided" do
     sign_in @user
@@ -281,10 +279,10 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     @club.update!(is_private: true, application_form_url: "https://test-form.com")
     book_read = @club.book_reads.new(
       host: @user,
-      meetup_time: Time.current + 1.week,
+      meetup_time: 1.week.from_now,
       meetup_location: "Secret Spot"
     )
-    poll = book_read.build_poll(text: "Which book should we read next?", end_date: Time.current + 3.days)
+    poll = book_read.build_poll(text: "Which book should we read next?", end_date: 3.days.from_now)
     poll.poll_options.build(content: "Beloved")
     poll.poll_options.build(content: "Sula")
     book_read.save!
@@ -294,7 +292,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_select "h2", text: "Which book should we read next?", count: 0
-    assert_no_match (/Voting in Progress/), @response.body
+    assert_no_match(/Voting in Progress/, @response.body)
     assert_select "figure span", text: "Poll", count: 0
     assert_select "span", text: "Members only"
   end
@@ -304,10 +302,10 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     @club.update!(is_private: true, application_form_url: "https://test-form.com")
     book_read = @club.book_reads.new(
       host: @user,
-      meetup_time: Time.current + 1.week,
+      meetup_time: 1.week.from_now,
       meetup_location: "Secret Spot"
     )
-    poll = book_read.build_poll(text: "Which book should we read next?", end_date: Time.current + 3.days)
+    poll = book_read.build_poll(text: "Which book should we read next?", end_date: 3.days.from_now)
     poll.poll_options.build(content: "Beloved")
     poll.poll_options.build(content: "Sula")
     book_read.save!
@@ -317,7 +315,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_select "h2", text: "Which book should we read next?"
-    assert_match (/Voting in Progress/), @response.body
+    assert_match(/Voting in Progress/, @response.body)
   end
 
   test "show renders pending requests indicator for the club owner" do
