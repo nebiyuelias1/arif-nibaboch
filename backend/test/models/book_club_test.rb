@@ -104,7 +104,7 @@ class BookClubTest < ActiveSupport::TestCase
 
   test "owner can see private info even without a membership row" do
     club = book_clubs(:one)
-    club.update!(is_private: true)
+    club.update!(is_private: true, application_form_url: "https://example.com/form")
     club.book_club_members.find_by(user: club.owner)&.destroy!
 
     assert club.private_info_visible_to?(club.owner)
@@ -112,7 +112,7 @@ class BookClubTest < ActiveSupport::TestCase
 
   test "member can see private info and non-member or anonymous user cannot" do
     club = book_clubs(:one)
-    club.update!(is_private: true)
+    club.update!(is_private: true, application_form_url: "https://example.com/form")
     member = users(:two)
     club.book_club_members.create!(user: member)
     outsider = users(:three)

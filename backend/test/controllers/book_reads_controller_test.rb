@@ -227,7 +227,7 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "non-member cannot see meetup details of private club book read" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read = book_reads(:one)
     sign_in users(:two)
 
@@ -242,7 +242,7 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "member can see meetup details of private club book read" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read = book_reads(:one)
     sign_in @user
 
@@ -255,7 +255,7 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "anonymous user cannot see meetup details of private club book read" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read = book_reads(:one)
 
     get book_club_book_read_url(@book_club, @book_read)
@@ -268,7 +268,7 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "non-member cannot see poll text of private club book read" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read = book_reads(:one)
     sign_in users(:two)
 
@@ -281,7 +281,7 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "member can see poll text of private club book read" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read = book_reads(:one)
     sign_in @user
 

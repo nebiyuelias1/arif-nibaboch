@@ -45,7 +45,7 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "non-member cannot directly join private club" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     sign_in @user
 
     assert_no_difference("BookClubMember.count") do
@@ -57,7 +57,7 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "member can leave private club" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     sign_in @user
     @book_club.book_club_members.create!(user: @user)
 
@@ -70,7 +70,7 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "leaving a private club shows Apply to Join on the club show page" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     sign_in @user
     @book_club.book_club_members.create!(user: @user)
 
@@ -91,7 +91,7 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "turbo stream leave private club restores Apply to Join and the apply dialog container" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     sign_in @user
     @book_club.book_club_members.create!(user: @user)
 
@@ -114,7 +114,7 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "turbo stream blocked join attempt keeps Apply to Join and shows alert toast" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     sign_in @user
 
     assert_no_difference("BookClubMember.count") do

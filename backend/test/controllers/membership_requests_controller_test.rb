@@ -10,7 +10,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "creates pending request for private club without form url" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
 
     sign_in @non_member
     assert_difference "MembershipRequest.where(status: :pending).count" do
@@ -24,7 +24,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "already pending request shows notice and does not duplicate" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
 
     sign_in @non_member
     post book_club_membership_requests_path(@book_club)
@@ -37,7 +37,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "member cannot create request" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
 
     sign_in @owner
     assert_no_difference "MembershipRequest.count" do
@@ -53,7 +53,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "owner approves request creates membership" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
 
     sign_in @owner
@@ -70,7 +70,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "owner rejects request does not create membership" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
 
     sign_in @owner
@@ -86,7 +86,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "replayed approval is idempotent" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
 
     sign_in @owner
@@ -104,7 +104,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "replayed rejection is idempotent" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
 
     sign_in @owner
@@ -121,7 +121,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "turbo stream replayed approval renders no duplicate member row" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
     sign_in @owner
 
@@ -133,7 +133,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "owner can still approve a rejected request" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :rejected)
 
     sign_in @owner
@@ -147,7 +147,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "turbo stream approve updates members list and pending indicator" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
     @book_club.membership_requests.create!(user: users(:two), status: :pending)
     sign_in @owner
@@ -169,7 +169,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "turbo stream handling the last pending request clears the indicator" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
     sign_in @owner
 
@@ -185,7 +185,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "non-owner admin cannot approve" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     admin_member = users(:two)
     @book_club.book_club_members.create!(user: admin_member, role: :admin)
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
@@ -199,7 +199,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "rejected user can re-apply" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :rejected)
 
     sign_in @non_member
@@ -209,7 +209,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can cancel their own pending request" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
 
     sign_in @non_member
@@ -222,7 +222,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user cannot cancel someone else's request" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
 
     other_user = users(:two)
@@ -235,7 +235,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "turbo stream create replaces card and show button with cancel request state" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     sign_in @non_member
 
     assert_difference "MembershipRequest.where(status: :pending).count" do
@@ -259,7 +259,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "turbo stream cancel replaces card and show button with apply to join state" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
     sign_in @non_member
 
@@ -284,7 +284,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can request again after cancelling and the new request is pending" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     sign_in @non_member
 
     # 1. Send request
@@ -320,7 +320,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can request again after an approved membership ends by leaving" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     request = @book_club.membership_requests.create!(user: @non_member, status: :pending)
 
     # 1. Owner approves — user becomes a member, request stays as an approved record

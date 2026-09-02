@@ -20,6 +20,7 @@ class BookClub < ApplicationRecord
   ALLOWED_PHOTO_TYPES = %w[image/jpeg image/jpg image/png image/webp image/gif].freeze
 
   validates :name, presence: true
+  validates :application_form_url, presence: true, if: :is_private?
   validate :application_form_url_is_valid
   validate :acceptable_photo
 

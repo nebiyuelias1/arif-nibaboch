@@ -126,7 +126,7 @@ class BookReadRsvpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "blocks rsvp for non-member of private club" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read.update!(meetup_time: 1.week.from_now)
     user = users(:three)
     sign_in user
@@ -140,7 +140,7 @@ class BookReadRsvpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "allows rsvp for member of private club" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read.update!(meetup_time: 1.week.from_now)
     user = users(:one)
     sign_in user
