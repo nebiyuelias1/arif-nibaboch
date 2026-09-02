@@ -52,7 +52,7 @@ class QuestionTranslationTest < ActiveSupport::TestCase
         attrs[column.name] =
           case column.type
           when :string
-            column.name == "language_code" ? "en" : "test"
+            (column.name == "language_code") ? "en" : "test"
           when :text
             "test"
           when :integer
@@ -69,8 +69,6 @@ class QuestionTranslationTest < ActiveSupport::TestCase
             Date.current
           when :datetime, :timestamp
             Time.current
-          else
-            nil
           end
       end
 

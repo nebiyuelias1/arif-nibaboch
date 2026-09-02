@@ -34,8 +34,8 @@ class DiscussionQuestionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal "text/vnd.turbo-stream.html", @response.media_type
-    assert_match /turbo-stream action="append" target="discussion_questions_list"/, @response.body
-    assert_match /turbo-stream action="update" target="no_discussion_questions_wrapper"/, @response.body
+    assert_match(/turbo-stream action="append" target="discussion_questions_list"/, @response.body)
+    assert_match(/turbo-stream action="update" target="no_discussion_questions_wrapper"/, @response.body)
     assert DiscussionQuestion.last.draft?
   end
 
@@ -67,8 +67,8 @@ class DiscussionQuestionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_equal "text/vnd.turbo-stream.html", @response.media_type
-    assert_match /turbo-stream action="replace" target="new_discussion_question_form"/, @response.body
-    assert_match /Content can&#39;t be blank/, @response.body
+    assert_match(/turbo-stream action="replace" target="new_discussion_question_form"/, @response.body)
+    assert_match(/Content can&#39;t be blank/, @response.body)
   end
 
   test "should not create discussion question with empty content" do
@@ -128,9 +128,9 @@ class DiscussionQuestionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_match /turbo-stream action="remove" target="discussion_question_#{question.id}"/, @response.body
-    assert_match /turbo-stream action="update" target="no_discussion_questions_wrapper"/, @response.body
-    assert_match /No discussion so far/, @response.body
+    assert_match(/turbo-stream action="remove" target="discussion_question_#{question.id}"/, @response.body)
+    assert_match(/turbo-stream action="update" target="no_discussion_questions_wrapper"/, @response.body)
+    assert_match(/No discussion so far/, @response.body)
   end
 
   test "should not delete discussion question if not author or admin" do

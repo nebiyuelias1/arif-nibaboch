@@ -54,7 +54,7 @@ class BookClubsTest < ApplicationSystemTestCase
   end
 
   test "member can leave a joined private club and request to join again" do
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     request = @club.membership_requests.create!(user: users(:two), status: :pending)
     request.approve!
     assert @club.has_member?(users(:two))
@@ -86,7 +86,7 @@ class BookClubsTest < ApplicationSystemTestCase
   end
 
   test "member can leave a private club from the discover carousel and apply again" do
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     request = @club.membership_requests.create!(user: users(:two), status: :pending)
     request.approve!
 

@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-  before_action :set_remember_me_for_native_app, only: [:create]
+  before_action :set_remember_me_for_native_app, only: [ :create ]
 
   private
 

@@ -20,7 +20,7 @@ class BookClubDashboard < Administrate::BaseDashboard
     name: Field::String,
     owner: Field::BelongsTo,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

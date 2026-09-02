@@ -62,7 +62,7 @@ class BookReadRsvpsControllerTest < ActionDispatch::IntegrationTest
 
     assert_enqueued_emails 0 do
       post book_club_book_read_rsvp_url(@book_club, @book_read),
-           as: :turbo_stream
+        as: :turbo_stream
     end
 
     rsvp = BookReadRsvp.find_by!(book_read: @book_read, user: user)
@@ -126,7 +126,7 @@ class BookReadRsvpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "blocks rsvp for non-member of private club" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read.update!(meetup_time: 1.week.from_now)
     user = users(:three)
     sign_in user
@@ -136,11 +136,11 @@ class BookReadRsvpsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to book_club_book_read_path(@book_club, @book_read)
-    assert_match (/private club/i), flash[:alert]
+    assert_match(/private club/i, flash[:alert])
   end
 
   test "allows rsvp for member of private club" do
-    @book_club.update!(is_private: true)
+    @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     @book_read.update!(meetup_time: 1.week.from_now)
     user = users(:one)
     sign_in user

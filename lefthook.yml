@@ -1,0 +1,14 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: rubocop
+      root: "backend/"
+      glob: "**/*.{rb,rake}"
+      run: bundle exec rubocop -A --force-exclusion {staged_files}
+      stage_fixed: true
+
+    - name: erblint
+      root: "backend/"
+      glob: "**/*.erb"
+      run: bundle exec erb_lint --autocorrect {staged_files}
+      stage_fixed: true

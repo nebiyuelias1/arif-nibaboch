@@ -14,7 +14,7 @@ class ReviewLikesController < ApplicationController
       unless @review_like.persisted?
         respond_to do |format|
           format.json do
-            render json: { errors: @review_like.errors.full_messages }, status: :unprocessable_entity
+            render json: { errors: @review_like.errors.full_messages }, status: :unprocessable_content
           end
         end
         return

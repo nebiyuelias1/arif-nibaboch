@@ -42,6 +42,36 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     assert membership.admin?
   end
 
+  test "should require form_url when creating private club" do
+    sign_in @user
+
+    @club_params[:book_club][:is_private] = true
+
+    assert_difference("BookClub.count", 0) do
+      post book_clubs_url, params: @club_params
+    end
+
+    assert_response :unprocessable_entity
+    assert_select "form"
+    assert_select "div", text: /can't be blank|must be a valid URL/i
+  end
+
+  test "should create private club when application_form_url is provided" do
+    sign_in @user
+
+    @club_params[:book_club][:is_private] = true
+    @club_params[:book_club][:application_form_url] = "https://example.com/apply"
+
+    assert_difference("BookClub.count", 1) do
+      post book_clubs_url, params: @club_params
+    end
+
+    created_club = BookClub.last
+    assert created_club.is_private?
+    assert_equal "https://example.com/apply", created_club.application_form_url
+    assert_redirected_to book_club_url(created_club)
+  end
+
   test "should not create club if user is not signed in" do
     assert_no_difference("BookClub.count") do
       post book_clubs_url, params: @club_params
@@ -78,7 +108,8 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
       book_club: {
         name: "Updated Club Name",
         description: "New updated description",
-        is_private: true
+        is_private: true,
+        application_form_url: "https://test-form.com"
       }
     }
     assert_redirected_to book_club_url(@club)
@@ -120,7 +151,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "edit shows checked private checkbox and visible application form url field for private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     sign_in @user
     get edit_book_club_url(@club)
     assert_response :success
@@ -146,7 +177,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "show hides member avatars and members dialog for non-member of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     sign_in users(:two)
 
     get book_club_url(@club)
@@ -158,7 +189,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "show shows member avatars and members dialog for member of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     sign_in @user
 
     get book_club_url(@club)
@@ -169,7 +200,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "show renders Apply to Join button and dialog for non-member of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     sign_in users(:two)
 
     get book_club_url(@club)
@@ -188,7 +219,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "show links Apply to Join to sign in for signed-out visitor of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
 
     get book_club_url(@club)
     assert_response :success
@@ -199,7 +230,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "card links Apply to Join to sign in for signed-out visitor of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
 
     get discover_book_clubs_path
     assert_response :success
@@ -210,7 +241,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "show hides member count and members trigger for non-member of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     sign_in users(:two)
 
     get book_club_url(@club)
@@ -222,7 +253,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "discover carousel shows member count on club card for non-member of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     sign_in users(:two)
 
     get discover_book_clubs_path
@@ -234,7 +265,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "discover carousel shows member count on club card for member of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     sign_in @user
 
     get discover_book_clubs_path
@@ -245,13 +276,13 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "show hides poll details on the current reading card for non-member of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     book_read = @club.book_reads.new(
       host: @user,
-      meetup_time: Time.current + 1.week,
+      meetup_time: 1.week.from_now,
       meetup_location: "Secret Spot"
     )
-    poll = book_read.build_poll(text: "Which book should we read next?", end_date: Time.current + 3.days)
+    poll = book_read.build_poll(text: "Which book should we read next?", end_date: 3.days.from_now)
     poll.poll_options.build(content: "Beloved")
     poll.poll_options.build(content: "Sula")
     book_read.save!
@@ -261,20 +292,20 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_select "h2", text: "Which book should we read next?", count: 0
-    assert_no_match /Voting in Progress/, @response.body
+    assert_no_match(/Voting in Progress/, @response.body)
     assert_select "figure span", text: "Poll", count: 0
     assert_select "span", text: "Members only"
   end
 
   test "show shows poll details on the current reading card for member of private club" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     book_read = @club.book_reads.new(
       host: @user,
-      meetup_time: Time.current + 1.week,
+      meetup_time: 1.week.from_now,
       meetup_location: "Secret Spot"
     )
-    poll = book_read.build_poll(text: "Which book should we read next?", end_date: Time.current + 3.days)
+    poll = book_read.build_poll(text: "Which book should we read next?", end_date: 3.days.from_now)
     poll.poll_options.build(content: "Beloved")
     poll.poll_options.build(content: "Sula")
     book_read.save!
@@ -284,12 +315,12 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_select "h2", text: "Which book should we read next?"
-    assert_match /Voting in Progress/, @response.body
+    assert_match(/Voting in Progress/, @response.body)
   end
 
   test "show renders pending requests indicator for the club owner" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     @club.membership_requests.create!(user: users(:two), status: :pending)
     sign_in @user
 
@@ -304,7 +335,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "show renders no pending indicator for the owner without pending requests" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     sign_in @user
 
     get book_club_url(@club)
@@ -315,7 +346,7 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
   test "show renders no pending indicator for non-owners" do
     @club = book_clubs(:one)
-    @club.update!(is_private: true)
+    @club.update!(is_private: true, application_form_url: "https://test-form.com")
     @club.membership_requests.create!(user: users(:two), status: :pending)
     sign_in users(:two)
 

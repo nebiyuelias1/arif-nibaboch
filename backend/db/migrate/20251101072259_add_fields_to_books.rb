@@ -5,6 +5,6 @@ class AddFieldsToBooks < ActiveRecord::Migration[8.0]
     add_column :books, :publisher, :string
     add_column :books, :isbn, :string
     add_column :books, :average_rating, :float, default: 0.0, null: false
-    add_column :books, :reviews_count, :integer,  default: 0,   null: false
+    add_column :books, :reviews_count, :integer, default: 0, null: false
   end
 end

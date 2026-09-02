@@ -72,7 +72,7 @@ class LineLoginController < ApplicationController
 
     result = JSON.parse(response.body)
     result["access_token"]
-  rescue StandardError => e
+  rescue => e
     Rails.logger.error "LINE token exchange error: #{e.message}"
     nil
   end
@@ -87,7 +87,7 @@ class LineLoginController < ApplicationController
     end
 
     JSON.parse(response.body)
-  rescue StandardError => e
+  rescue => e
     Rails.logger.error "LINE profile fetch error: #{e.message}"
     nil
   end

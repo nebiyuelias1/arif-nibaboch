@@ -38,7 +38,7 @@ module BookLookup
         items = data.fetch("items", [])
 
         items.map { |item| build_result(item) }.compact
-      rescue StandardError => e
+      rescue => e
         Rails.logger.error("GoogleBooks lookup error: #{e.message}")
         []
       end
@@ -64,7 +64,7 @@ module BookLookup
 
         # Try to get the largest available image
         image_url = images["extraLarge"] || images["large"] || images["medium"] ||
-                    images["small"] || images["thumbnail"] || images["smallThumbnail"]
+          images["small"] || images["thumbnail"] || images["smallThumbnail"]
 
         BookLookup::Result.new(
           title: volume["title"],
@@ -118,9 +118,7 @@ module BookLookup
         url = url.sub("zoom=1", "zoom=2")
 
         # Remove 'edge=curl' which can add artificial shadow/curling to the image
-        url = url.gsub("&edge=curl", "")
-
-        url
+        url.gsub("&edge=curl", "")
       end
 
       def stoplight

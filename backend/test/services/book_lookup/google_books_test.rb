@@ -22,14 +22,14 @@ class GoogleBooksTest < ActiveSupport::TestCase
         {
           "volumeInfo" => {
             "title" => "Dune",
-            "authors" => ["Frank Herbert"],
+            "authors" => [ "Frank Herbert" ],
             "description" => "Science fiction classic",
             "imageLinks" => { "thumbnail" => "http://example.com/image.jpg&edge=curl&zoom=1" },
-            "industryIdentifiers" => [{ "type" => "ISBN_13", "identifier" => "9780441172719" }],
+            "industryIdentifiers" => [ { "type" => "ISBN_13", "identifier" => "9780441172719" } ],
             "publisher" => "Ace",
             "publishedDate" => "1965",
             "pageCount" => 412,
-            "categories" => ["Science fiction"],
+            "categories" => [ "Science fiction" ],
             "infoLink" => "https://books.google.com/books/about/Dune"
           }
         }
@@ -54,7 +54,7 @@ class GoogleBooksTest < ActiveSupport::TestCase
       assert_equal "Ace", result.publisher
       assert_equal Date.new(1965, 1, 1), result.published_at
       assert_equal 412, result.page_count
-      assert_equal ["Science fiction"], result.categories
+      assert_equal [ "Science fiction" ], result.categories
       assert_equal "google_books", result.source
       assert_equal "https://books.google.com/books/about/Dune", result.source_url
     end

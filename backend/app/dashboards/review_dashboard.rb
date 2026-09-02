@@ -17,7 +17,7 @@ class ReviewDashboard < Administrate::BaseDashboard
     review_likes_count: Field::Number,
     user: Field::BelongsTo,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

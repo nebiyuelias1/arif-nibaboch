@@ -34,6 +34,6 @@ class MembershipRequestTest < ActiveSupport::TestCase
 
     dupe = club.membership_requests.new(user: user, status: :pending)
     assert_not dupe.valid?
-    assert_match /already has a request/, dupe.errors.full_messages.join
+    assert_match(/already has a request/, dupe.errors.full_messages.join)
   end
 end

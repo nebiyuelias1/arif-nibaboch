@@ -37,7 +37,7 @@ module BookLookup
         docs = data.fetch("docs", [])
 
         docs.map { |doc| build_result(doc) }.compact
-      rescue StandardError => e
+      rescue => e
         Rails.logger.error("OpenLibrary lookup error: #{e.message}")
         []
       end

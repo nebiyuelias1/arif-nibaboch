@@ -118,7 +118,7 @@ if !Rails.env.production?
       cover_image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=600&q=80",
       average_rating: 4.6,
       reviews_count: 210,
-      tag_names: ["Fiction", "African Literature"]
+      tag_names: [ "Fiction", "African Literature" ]
     },
     {
       title: "The Alchemist",
@@ -209,7 +209,7 @@ if !Rails.env.production?
       cover_image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
       average_rating: 4.6,
       reviews_count: 140,
-      tag_names: ["Fiction", "African Literature"]
+      tag_names: [ "Fiction", "African Literature" ]
     }
   ]
 
@@ -281,7 +281,7 @@ if !Rails.env.production?
       book_club: created_clubs[0],
       book: created_books[0], # ፍቅር እስከ መቃብር
       host: users[0],
-      meetup_time: Time.current + 2.days + 4.hours,
+      meetup_time: 2.days.from_now + 4.hours,
       meetup_location: meetup_locations[0],
       max_capacity: 25
     },
@@ -289,7 +289,7 @@ if !Rails.env.production?
       book_club: created_clubs[0],
       book: created_books[1], # ኦሮማይ
       host: users[1],
-      meetup_time: Time.current + 5.days + 2.hours,
+      meetup_time: 5.days.from_now + 2.hours,
       meetup_location: meetup_locations[1],
       max_capacity: 20
     },
@@ -297,7 +297,7 @@ if !Rails.env.production?
       book_club: created_clubs[1],
       book: created_books[4], # Things Fall Apart
       host: users[1],
-      meetup_time: Time.current + 7.days + 3.hours,
+      meetup_time: 7.days.from_now + 3.hours,
       meetup_location: meetup_locations[2],
       max_capacity: 15
     },
@@ -305,7 +305,7 @@ if !Rails.env.production?
       book_club: created_clubs[1],
       book: created_books[5], # The Alchemist
       host: users[2],
-      meetup_time: Time.current + 10.days + 1.hour,
+      meetup_time: 10.days.from_now + 1.hour,
       meetup_location: meetup_locations[3],
       max_capacity: 30
     },
@@ -313,7 +313,7 @@ if !Rails.env.production?
       book_club: created_clubs[2],
       book: created_books[11], # The Death of Vivek Oji
       host: users[2],
-      meetup_time: Time.current + 12.days + 5.hours,
+      meetup_time: 12.days.from_now + 5.hours,
       meetup_location: meetup_locations[4],
       max_capacity: 18
     },
@@ -321,7 +321,7 @@ if !Rails.env.production?
       book_club: created_clubs[3],
       book: created_books[6], # Atomic Habits
       host: users[3],
-      meetup_time: Time.current + 14.days + 2.hours,
+      meetup_time: 14.days.from_now + 2.hours,
       meetup_location: meetup_locations[3],
       max_capacity: 40
     },
@@ -329,7 +329,7 @@ if !Rails.env.production?
       book_club: created_clubs[3],
       book: created_books[7], # Sapiens
       host: users[4],
-      meetup_time: Time.current + 18.days + 6.hours,
+      meetup_time: 18.days.from_now + 6.hours,
       meetup_location: meetup_locations[5],
       max_capacity: 25
     },
@@ -337,7 +337,7 @@ if !Rails.env.production?
       book_club: created_clubs[4],
       book: created_books[8], # 1984
       host: users[4],
-      meetup_time: Time.current + 21.days + 3.hours,
+      meetup_time: 21.days.from_now + 3.hours,
       meetup_location: meetup_locations[6],
       max_capacity: 20
     },
@@ -345,7 +345,7 @@ if !Rails.env.production?
       book_club: created_clubs[4],
       book: created_books[10], # Dune
       host: users[5],
-      meetup_time: Time.current + 25.days + 4.hours,
+      meetup_time: 25.days.from_now + 4.hours,
       meetup_location: meetup_locations[3],
       max_capacity: 35
     },
@@ -353,7 +353,7 @@ if !Rails.env.production?
       book_club: created_clubs[0],
       book: created_books[2], # የተቆለፈበት ቁልፍ
       host: users[0],
-      meetup_time: Time.current + 28.days + 2.hours,
+      meetup_time: 28.days.from_now + 2.hours,
       meetup_location: meetup_locations[7],
       max_capacity: 20
     },
@@ -361,7 +361,7 @@ if !Rails.env.production?
       book_club: created_clubs[2],
       book: created_books[3], # አልወለድም
       host: users[2],
-      meetup_time: Time.current + 32.days + 1.hour,
+      meetup_time: 32.days.from_now + 1.hour,
       meetup_location: meetup_locations[0],
       max_capacity: 15
     },
@@ -369,7 +369,7 @@ if !Rails.env.production?
       book_club: created_clubs[1],
       book: created_books[9], # የቀን መሐሪ
       host: users[1],
-      meetup_time: Time.current + 35.days + 3.hours,
+      meetup_time: 35.days.from_now + 3.hours,
       meetup_location: meetup_locations[1],
       max_capacity: 25
     }

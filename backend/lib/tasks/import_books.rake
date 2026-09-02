@@ -23,11 +23,11 @@ namespace :import_books do
 
           if row["published_at"].present?
             t.published_at = begin
-                               row["published_at"].to_date
-                             rescue Date::Error
-                               # Fallback for year-only strings
-                               Date.new(row["published_at"].to_i, 1, 1) if row["published_at"].match?(/^\d{4}$/)
-                             end
+              row["published_at"].to_date
+            rescue Date::Error
+              # Fallback for year-only strings
+              Date.new(row["published_at"].to_i, 1, 1) if row["published_at"].match?(/^\d{4}$/)
+            end
           end
 
           t.language = row["language"]
