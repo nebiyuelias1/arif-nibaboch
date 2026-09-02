@@ -27,19 +27,9 @@ jobs:
             backend
             .github/workflows
 
-      - name: Cache bundle dependencies
-        uses: actions/cache@v4
-        with:
-          path: backend/vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('backend/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-
       - name: Install Ruby dependencies
         run: |
-          bundle config set path 'vendor/bundle'
           bundle config set jobs 4
-          bundle config set deployment true
           bundle check || bundle install
 
       - name: Run RuboCop
