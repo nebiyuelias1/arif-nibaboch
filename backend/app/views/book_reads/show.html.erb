@@ -458,7 +458,7 @@
     </div>
   <% end %>
 
-  <% if @private_info_visible && user_signed_in? && current_user != @book_read.host %>
+  <% unless @private_info_visible && user_signed_in? && current_user == @book_read.host %>
     <%= render "book_reads/rsvp",
     book_club: @book_club,
     book_read: @book_read,
