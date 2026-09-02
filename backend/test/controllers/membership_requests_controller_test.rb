@@ -9,7 +9,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     @non_member = users(:three)
   end
 
-  test "creates pending request for private club without form url" do
+  test "creates pending request for private club" do
     @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
 
     sign_in @non_member
@@ -20,7 +20,7 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to book_club_path(@book_club)
-    assert_match /submitted/i, flash[:notice]
+    assert_match (/submitted/i), flash[:notice]
   end
 
   test "already pending request shows notice and does not duplicate" do
