@@ -83,6 +83,10 @@
         <span class="block text-content-muted mb-1">Language</span>
         <span class="font-medium text-content"><%= @book.language.presence&.upcase || 'N/A' %></span>
       </div>
+      <div>
+      <span class="block text-content-muted mb-1"><%= t("page_count", default: "Pages") %></span>
+      <span class="font-medium text-content"><%= @book.try(:page_count) || @book.try(:pages) || 'N/A' %></span>
+    </div>
     </div>
 
     <%# Description %>
