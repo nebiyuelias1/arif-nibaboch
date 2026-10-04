@@ -28,8 +28,11 @@
     <% end %>
 
     <div class="p-8">
-      <div class="flex justify-between items-start">
-        <div>
+      <% can_see_private = @club.private_info_visible_to?(current_user) %>
+      <% is_member = user_signed_in? && @club.has_member?(current_user) %>
+
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+        <div class="min-w-0">
           <div class="flex items-center gap-3 mb-2">
             <% if @club.photo.attached? %>
               <%= image_tag @club.photo,
@@ -65,7 +68,6 @@
               end %>
             </span>
           </div>
-          <% can_see_private = @club.private_info_visible_to?(current_user) %>
 
           <% if can_see_private %>
             <button
@@ -78,8 +80,10 @@
                 <%= render "shared/avatar_group",
                 users: @club.members,
                 limit: 5,
+                size_classes: "w-6 h-6",
+                text_size: "text-[9px]",
                 container_classes: "cursor-pointer" %>
-                <span class="text-sm text-content-subtle font-medium"><%= pluralize(@club.members.size, "member") %></span>
+                <span class="text-sm text-content-subtle font-medium"><%= t("member_count", count: @club.members.count) %></span>
                 <%# Owner-only pending requests indicator; kept in sync by the approve/reject turbo streams via [data-pending-requests-badge] %>
                 <% if user_signed_in? && @club.owner == current_user %>
                   <span data-pending-requests-badge>
@@ -91,69 +95,63 @@
           <% end %>
         </div>
 
-        <% if user_signed_in? && @club.owner == current_user %>
-          <div class="flex space-x-3">
+        <div class="w-full sm:w-auto shrink-0">
+          <% if user_signed_in? && @club.owner == current_user %>
             <%= button_to "Edit Club",
             edit_book_club_path(@club),
             method: :get,
-            class:
-              "bg-surface border border-border text-content hover:bg-background px-4 py-2 rounded-md text-sm font-medium transition-colors" %>
-          </div>
-        <% elsif @club.is_private && !user_signed_in? %>
-          <%= link_to "Apply to Join",
-          new_user_session_path,
-          id: "book_club_show_join_button",
-          class:
-            "bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer" %>
-        <% elsif @club.is_private && !@club.has_member?(current_user) %>
-          <% if @club.pending_request_from?(current_user) %>
-            <%= render "components/button",
-            label: "Cancel Join Request",
-            type: "link",
-            url:
-              cancel_book_club_membership_request_path(
-                @club,
-                @club.membership_requests.find_by(user: current_user, status: :pending),
-              ),
-            variant: "negative",
-            full_width: false,
-            data: {
-              turbo_submits_with: "Cancelling...",
-              turbo_confirm: "Are you sure you want to cancel your join request?",
-              turbo_method: :delete,
-            },
-            id: "book_club_show_join_button" %>
+            class: "w-full sm:w-auto btn btn-outline" %>
+          <% elsif @club.is_private && !user_signed_in? %>
+            <%= link_to "Apply to Join",
+            new_user_session_path,
+            id: "book_club_show_join_button",
+            class: "w-full sm:w-auto btn btn-primary" %>
+          <% elsif @club.is_private && !is_member %>
+            <% if @club.pending_request_from?(current_user) %>
+              <%= render "components/button",
+              label: "Cancel Join Request",
+              type: "link",
+              url:
+                cancel_book_club_membership_request_path(
+                  @club,
+                  @club.membership_requests.find_by(user: current_user, status: :pending),
+                ),
+              variant: "negative",
+              full_width: false,
+              data: {
+                turbo_submits_with: "Cancelling...",
+                turbo_confirm: "Are you sure you want to cancel your join request?",
+                turbo_method: :delete,
+              },
+              classes: "w-full sm:w-auto",
+              id: "book_club_show_join_button" %>
+            <% else %>
+              <button
+                type="button"
+                id="book_club_show_join_button"
+                onclick="document.getElementById('apply_dialog_<%= @club.id %>').showModal()"
+                class="w-full sm:w-auto btn btn-primary">
+                Apply to Join
+              </button>
+            <% end %>
           <% else %>
-            <button
-              type="button"
-              id="book_club_show_join_button"
-              onclick="document.getElementById('apply_dialog_<%= @club.id %>').showModal()"
-              class="
-                bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm
-                font-medium transition-colors cursor-pointer
-              ">
-              Apply to Join
-            </button>
-          <% end %>
-        <% else %>
-          <%= button_to @club.has_member?(current_user) ? "Leave Club" : "Join Club",
-          book_club_membership_path(@club),
-          method: :post,
-          id: "book_club_show_join_button",
-          form: {
-            data: {
-              turbo_frame: "_top",
+            <%= button_to is_member ? "Leave Club" : "Join Club",
+            book_club_membership_path(@club),
+            method: :post,
+            id: "book_club_show_join_button",
+            form: {
+              data: {
+                turbo_frame: "_top",
+              },
             },
-          },
-          data: {
-            turbo_submits_with:
-              @club.has_member?(current_user) ? "Leaving..." : "Joining...",
-            turbo_confirm:
-              @club.has_member?(current_user) ? t("leave_club_confirm") : nil,
-          },
-          class:
-            "bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" %>
-        <% end %>
+            data: {
+              turbo_submits_with: is_member ? "Leaving..." : "Joining...",
+              turbo_confirm: is_member ? t("leave_club_confirm") : nil,
+            },
+            class:
+              "w-full sm:w-auto btn #{is_member ? "btn-outline" : "btn-primary"} disabled:opacity-50 disabled:cursor-not-allowed" %>
+          <% end %>
+        </div>
       </div>
 
       <div class="prose max-w-none text-content-subtle mt-6">

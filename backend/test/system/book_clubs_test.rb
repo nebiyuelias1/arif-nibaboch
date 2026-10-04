@@ -153,4 +153,11 @@ class BookClubsTest < ApplicationSystemTestCase
     assert request.reload.pending?
     assert @club.pending_membership_requests.exists?(user: users(:two))
   end
+
+  test "club detail action and member avatar group use updated ui components" do
+    visit book_club_path(@club)
+
+    assert_selector "#book_club_show_join_button.btn"
+    assert_selector "button[onclick*='members_dialog'] .-space-x-2 .w-6.h-6", visible: :all
+  end
 end
