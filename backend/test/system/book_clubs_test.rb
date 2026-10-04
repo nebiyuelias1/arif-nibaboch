@@ -153,4 +153,17 @@ class BookClubsTest < ApplicationSystemTestCase
     assert request.reload.pending?
     assert @club.pending_membership_requests.exists?(user: users(:two))
   end
+
+  test "book club description show more toggle can be collapsed again" do
+    @club.update!(description: ("This is a long description sentence. " * 40).strip)
+
+    visit book_club_path(@club)
+
+    assert_button "Show more"
+    click_button "Show more"
+    assert_button "Show less"
+
+    click_button "Show less"
+    assert_button "Show more"
+  end
 end
