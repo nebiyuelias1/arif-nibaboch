@@ -112,7 +112,7 @@
             field_type: :datetime_local,
             name: :end_date,
             label: "Voting Ends On",
-            min: Time.current,
+            min: (poll_form.object.new_record? ? Time.current : nil),
             error: poll_form.object.errors[:end_date] %>
         <% end %>
       </div>
@@ -134,7 +134,7 @@
       field_type: :datetime_local,
       name: :meetup_time,
       label: "Meetup Time",
-      min: Time.current,
+      min: (@book_read.new_record? ? Time.current : nil),
       error: @book_read.errors[:meetup_time] %>
 
     <%= render "components/input",

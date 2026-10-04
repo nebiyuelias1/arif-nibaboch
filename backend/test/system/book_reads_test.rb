@@ -164,6 +164,24 @@ class BookReadsTest < ApplicationSystemTestCase
     assert_text "must have at least two options"
   end
 
+  test "editing an existing book read with past poll end date allows submit" do
+    book_read = book_reads(:one)
+    Poll.create!(
+      book_read: book_read,
+      text: "Pick the next read",
+      end_date: 1.day.ago,
+      poll_options_attributes: [ { content: "Option 1" }, { content: "Option 2" } ]
+    )
+
+    visit edit_book_club_book_read_path(@book_club, book_read)
+    fill_in "Meetup Location", with: "Updated Meetup Spot"
+
+    click_on "Schedule Read"
+
+    assert_text "Book read was successfully updated."
+    assert_text "Updated Meetup Spot"
+  end
+
   private
 
   def pick_datetime(label, target, hour:, minute:)
