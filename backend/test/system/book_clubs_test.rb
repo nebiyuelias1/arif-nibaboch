@@ -32,6 +32,7 @@ class BookClubsTest < ApplicationSystemTestCase
       name: "Secret Readers",
       description: "A private club",
       is_private: true,
+      application_form_url: "https://example.com/form",
       owner: users(:two)
     )
 
@@ -152,5 +153,15 @@ class BookClubsTest < ApplicationSystemTestCase
     assert_selector "#book_club_#{@club.id} button", text: /Cancel Join Request/
     assert request.reload.pending?
     assert @club.pending_membership_requests.exists?(user: users(:two))
+  end
+
+  test "club detail action and member avatar group use updated ui components" do
+    # Non-owner member sees the actual join/leave toggle (owners see Edit Club)
+    @club.book_club_members.create!(user: users(:two))
+    login_as users(:two)
+    visit book_club_path(@club)
+
+    assert_selector "#book_club_show_join_button.btn"
+    assert_selector "button[onclick*='members_dialog'] .-space-x-2 .w-6.h-6", visible: :all
   end
 end
