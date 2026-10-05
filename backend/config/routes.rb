@@ -108,4 +108,9 @@ Rails.application.routes.draw do
 
   get "privacy", to: "pages#privacy", as: :privacy
   get "terms", to: "pages#terms", as: :terms
+
+  # Deep linking & app association endpoints
+  get ".well-known/apple-app-site-association", to: "well_known#apple_app_site_association"
+  get "apple-app-site-association", to: "well_known#apple_app_site_association"
+  get ".well-known/assetlinks.json", to: "well_known#assetlinks", format: false
 end
