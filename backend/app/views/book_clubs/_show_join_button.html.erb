@@ -1,0 +1,63 @@
+<%# Show-page membership action button.
+    Single source of truth for the initial render (book_clubs/show) and all
+    turbo-stream replacements (book_club_members/create,
+    membership_requests/create/cancel) so styling never drifts.
+    Rendered inside #book_club_show_join_button_container - streams replace
+    that wrapper (not the button: the replacement can be a whole <form>, so
+    swapping the <button> would nest forms and break submission/confirmation).
+    The button inside keeps id="book_club_show_join_button" for tests.
+    Locals: club: BookClub %>
+  <% club ||= @club %>
+  <% is_member = user_signed_in? && club.has_member?(current_user) %>
+  <% if user_signed_in? && club.owner == current_user %>
+    <%= button_to "Edit Club",
+    edit_book_club_path(club),
+    method: :get,
+    class: "w-full sm:w-auto btn btn-outline" %>
+  <% elsif club.is_private && !user_signed_in? %>
+    <%= link_to "Apply to Join",
+    new_user_session_path,
+    id: "book_club_show_join_button",
+    class: "w-full sm:w-auto btn btn-primary" %>
+  <% elsif club.is_private && !is_member %>
+    <% if club.pending_request_from?(current_user) %>
+      <%= render "components/button",
+      label: "Cancel Join Request",
+      type: "link",
+      url:
+        cancel_book_club_membership_request_path(
+          club,
+          club.membership_requests.find_by(user: current_user, status: :pending),
+        ),
+      variant: "negative",
+      full_width: false,
+      data: {
+        turbo_submits_with: "Cancelling...",
+        turbo_confirm: "Are you sure you want to cancel your join request?",
+        turbo_method: :delete,
+      },
+      classes: "w-full sm:w-auto",
+      id: "book_club_show_join_button" %>
+    <% else %>
+      <button
+        type="button"
+        id="book_club_show_join_button"
+        onclick="document.getElementById('apply_dialog_<%= club.id %>').showModal()"
+        class="w-full sm:w-auto btn btn-primary">
+        Apply to Join
+      </button>
+    <% end %>
+  <% else %>
+    <%= render "book_clubs/membership_toggle_button",
+    club: club,
+    is_member: is_member,
+    join_label: "Join Club",
+    leave_label: "Leave Club",
+    joining_label: "Joining...",
+    leaving_label: "Leaving...",
+    join_button_class:
+      "w-full sm:w-auto btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed",
+    leave_button_class:
+      "w-full sm:w-auto btn btn-outline disabled:opacity-50 disabled:cursor-not-allowed",
+    button_id: "book_club_show_join_button" %>
+  <% end %>

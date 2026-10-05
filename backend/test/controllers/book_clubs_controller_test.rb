@@ -354,4 +354,49 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "[data-pending-requests-badge]", count: 0
   end
+
+  test "show renders Leave Club with confirmation for non-owner members" do
+    @club = book_clubs(:one)
+    @club.book_club_members.create!(user: users(:two))
+    sign_in users(:two)
+
+    get book_club_url(@club)
+    assert_response :success
+
+    # Action sits in the turbo-swappable wrapper; Leave always confirms
+    assert_select "#book_club_show_join_button_container button#book_club_show_join_button[data-turbo-confirm]", /Leave Club/
+  end
+
+  test "show renders Join Club without confirmation for non-members of public clubs" do
+    @club = book_clubs(:one)
+    sign_in users(:two)
+
+    get book_club_url(@club)
+    assert_response :success
+
+    assert_select "button#book_club_show_join_button", /Join Club/
+    assert_select "button#book_club_show_join_button[data-turbo-confirm]", count: 0
+  end
+
+  test "show renders privacy badge and creator avatar" do
+    @club = book_clubs(:one)
+    sign_in users(:two)
+
+    get book_club_url(@club)
+    assert_response :success
+
+    assert_select ".badge", /Public Club/
+    assert_select "span", text: /Created by/
+    # shared/avatar renders the owner's avatar with their name as title
+    assert_select "div[title='Test User One']"
+  end
+
+  test "card renders Joined with confirmation for members" do
+    sign_in users(:one) # member of book_clubs(:one) via fixtures
+
+    get discover_book_clubs_path
+    assert_response :success
+
+    assert_select "#book_club_#{book_clubs(:one).id} button[data-turbo-confirm]", /Joined/
+  end
 end
