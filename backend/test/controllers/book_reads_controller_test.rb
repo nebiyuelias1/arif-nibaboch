@@ -196,6 +196,83 @@ class BookReadsControllerTest < ActionDispatch::IntegrationTest
     assert Poll.exists?(poll.id)
   end
 
+  test "should preserve book when editing location for finalized poll book read" do
+    book_read = BookRead.create!(
+      book: @book,
+      book_club: @book_club,
+      host: @user,
+      meetup_time: 2.weeks.from_now,
+      meetup_location: "Original Spot"
+    )
+    poll = Poll.create!(
+      book_read: book_read,
+      text: "Which book?",
+      end_date: 1.day.from_now,
+      poll_options_attributes: [ { content: "Option 1" }, { content: "Option 2" } ]
+    )
+    poll.update!(finalized_at: Time.current)
+    book_read.reload
+    original_book_id = book_read.book_id
+    assert_not_nil original_book_id
+
+    sign_in @user
+    patch book_club_book_read_url(@book_club, book_read), params: {
+      selection_type: "poll",
+      book_read: {
+        book_id: original_book_id,
+        meetup_location: "New Location",
+        meetup_time: book_read.meetup_time,
+        poll_attributes: {
+          id: poll.id,
+          text: poll.text,
+          end_date: poll.end_date
+        }
+      }
+    }
+
+    assert_redirected_to book_club_book_read_url(@book_club, book_read)
+    book_read.reload
+    assert_equal original_book_id, book_read.book_id
+    assert_equal "New Location", book_read.meetup_location
+    assert Poll.exists?(poll.id)
+  end
+
+  test "should preserve finalized poll when editing with selection_type book" do
+    book_read = BookRead.create!(
+      book: @book,
+      book_club: @book_club,
+      host: @user,
+      meetup_time: 2.weeks.from_now,
+      meetup_location: "Original Spot"
+    )
+    poll = Poll.create!(
+      book_read: book_read,
+      text: "Which book?",
+      end_date: 1.day.from_now,
+      poll_options_attributes: [ { content: "Option 1" }, { content: "Option 2" } ]
+    )
+    poll.update!(finalized_at: Time.current)
+    book_read.reload
+
+    sign_in @user
+    assert_no_difference("Poll.count") do
+      patch book_club_book_read_url(@book_club, book_read), params: {
+        selection_type: "book",
+        book_read: {
+          book_id: book_read.book_id,
+          meetup_location: "Updated Spot",
+          meetup_time: book_read.meetup_time
+        }
+      }
+    end
+
+    assert_redirected_to book_club_book_read_url(@book_club, book_read)
+    book_read.reload
+    assert_equal @book.id, book_read.book_id
+    assert_equal "Updated Spot", book_read.meetup_location
+    assert Poll.exists?(poll.id)
+  end
+
   test "should get finalize for owner" do
     @book_read = book_reads(:one)
     sign_in @user

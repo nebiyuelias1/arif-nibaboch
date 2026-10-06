@@ -1,0 +1,35 @@
+<%# Join/Leave membership toggle button.
+    Single implementation shared by the club card and the club show page, so
+    styling, progress text and the leave confirmation can never drift between
+    the initial render and turbo-stream updates.
+    Rails' button_to puts id/class/data on the inner <button> (only +form+
+    opts land on the <form>), so the leave confirmation is set on BOTH the
+    button (submitter, which Turbo checks first) and the form (fallback) — it
+    must not silently disappear after a turbo-stream swap.
+    Locals:
+    - club: BookClub (required)
+    - is_member: Boolean (required)
+    - join_label / leave_label: String (required)
+    - joining_label / leaving_label: String - progress text (required)
+    - join_button_class / leave_button_class: String - full button classes (required)
+    - button_id: String (optional - show page sets it for turbo targeting/tests)
+    - form_class: String (optional extra class for the generated form) %>
+  <% button_id ||= nil %>
+  <% form_class ||= nil %>
+  <% confirm_message = is_member ? t("leave_club_confirm") : nil %>
+  <%= button_to is_member ? leave_label : join_label,
+  book_club_membership_path(club),
+  method: :post,
+  id: button_id,
+  form: {
+    class: form_class,
+    data: {
+      turbo_frame: "_top",
+      turbo_confirm: confirm_message,
+    },
+  },
+  data: {
+    turbo_submits_with: is_member ? leaving_label : joining_label,
+    turbo_confirm: confirm_message,
+  },
+  class: is_member ? leave_button_class : join_button_class %>

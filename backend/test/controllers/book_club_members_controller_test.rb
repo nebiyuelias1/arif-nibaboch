@@ -102,9 +102,9 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal "text/vnd.turbo-stream.html", @response.media_type
 
-    # Card and show button both swap to the apply state, never a direct Join
+    # Card and show action both swap to the apply state, never a direct Join
     assert_match(/turbo-stream action="replace" target="book_club_#{@book_club.id}"/, @response.body)
-    assert_match(/turbo-stream action="replace" target="book_club_show_join_button"/, @response.body)
+    assert_match(/turbo-stream action="replace" target="book_club_show_join_button_container"/, @response.body)
     assert_match(/Apply to Join/, @response.body)
     assert_no_match(/Join Club/, @response.body)
 
@@ -133,6 +133,23 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
     assert_no_match(/target="apply_dialog_container"/, @response.body)
     assert_match(/data-flash-toast-type-value="error"/, @response.body)
     assert_match(/private club/i, @response.body)
+  end
+
+  test "turbo stream join swaps show action wrapper to Leave with confirmation" do
+    sign_in @user
+
+    assert_difference("BookClubMember.count", 1) do
+      post book_club_membership_url(@book_club), as: :turbo_stream
+    end
+
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", @response.media_type
+
+    # Wrapper (not the button) is replaced, carrying the full form — never a
+    # nested form — and Leave keeps its confirmation after the swap
+    assert_match(/turbo-stream action="replace" target="book_club_show_join_button_container"><template>[\s\S]*<div[^>]*id="book_club_show_join_button_container"/, @response.body)
+    assert_match(/Leave Club/, @response.body)
+    assert_match(/data-turbo-confirm/, @response.body)
   end
 
   test "should redirect to login page and store return location if guest tries to join via html" do

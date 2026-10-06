@@ -102,16 +102,18 @@
               </button>
             <% end %>
           <% else %>
-            <%= button_to book_club_membership_path(club),
-                      method: :post,
-                      form: { class: "grow", data: {turbo_frame: "_top"} },
-                      data: {
-                        disable_with: is_member ? t("leaving_club") : t("joining_club"),
-                        turbo_confirm: is_member ? t("leave_club_confirm") : nil
-                      },
-                      class: is_member ? "w-full btn btn-outline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" : "w-full btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed" do %>
-              <%= is_member ? t("joined_club") : t("join_club") %>
-            <% end %>
+            <%= render "book_clubs/membership_toggle_button",
+            club: club,
+            is_member: is_member,
+            join_label: t("join_club"),
+            leave_label: t("joined_club"),
+            joining_label: t("joining_club"),
+            leaving_label: t("leaving_club"),
+            join_button_class:
+              "w-full btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed",
+            leave_button_class:
+              "w-full btn btn-outline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed",
+            form_class: "grow" %>
           <% end %>
         </div>
       </div>

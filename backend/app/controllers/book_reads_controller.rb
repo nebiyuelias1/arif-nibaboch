@@ -74,16 +74,25 @@ class BookReadsController < ApplicationController
 
   def update
     clean_params = book_read_params.dup
+    poll_finalized = @book_read.poll&.finalized_at.present?
 
     success = BookRead.transaction do
       if params[:selection_type] == "book"
-        @book_read.poll&.destroy
-        @book_read.poll = nil
+        unless poll_finalized
+          @book_read.poll&.destroy
+          @book_read.poll = nil
+        end
         clean_params.delete(:poll_attributes)
       elsif params[:selection_type] == "poll"
-        @book_read.book_id = nil
-        clean_params.delete(:book_id)
-        clean_params[:book_id] = nil
+        unless poll_finalized
+          @book_read.book_id = nil
+          clean_params.delete(:book_id)
+          clean_params[:book_id] = nil
+        else
+          # Poll already finalized with a selected book: preserve the book
+          # and ignore poll edits to keep voting history immutable.
+          clean_params.delete(:poll_attributes)
+        end
       end
 
       updated = @book_read.update(clean_params)
