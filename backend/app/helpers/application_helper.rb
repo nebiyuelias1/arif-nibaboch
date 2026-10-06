@@ -60,4 +60,8 @@ module ApplicationHelper
     # e.g., if we are at /books/123, the controller is 'books'
     item[:match_controllers].include?(controller_name)
   end
+
+  def show_bottom_nav?
+    controller_name == "home" && action_name == "index"
+  end
 end
