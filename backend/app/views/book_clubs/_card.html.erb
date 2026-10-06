@@ -63,7 +63,15 @@
         </div>
         <!-- Action Row -->
         <div class="card-actions justify-self-end relative z-20">
-          <% if club.is_private && !is_member %>
+          <% if user_signed_in? && club.owner == current_user %>
+            <%= link_to "Edit Club",
+            edit_book_club_path(club),
+            data: {
+              turbo_frame: "_top",
+            },
+            class:
+              "grow w-full btn btn-outline disabled:opacity-50 disabled:cursor-not-allowed" %>
+          <% elsif club.is_private && !is_member %>
             <% if club.pending_request_from?(current_user) %>
               <%= button_to "Cancel Join Request",
               cancel_book_club_membership_request_path(
