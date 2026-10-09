@@ -7,7 +7,14 @@ class BookClubMembersController < ApplicationController
   def create
     @membership = @book_club.book_club_members.find_or_initialize_by(user: current_user)
 
-    if @membership.persisted?
+    if @membership.persisted? && @book_club.owner == current_user
+      respond_to do |format|
+        format.json { render json: { error: "Club owners cannot leave their own club." }, status: :forbidden }
+        format.html { redirect_to @book_club, alert: "Club owners cannot leave their own club." }
+        format.turbo_stream { flash.now[:alert] = "Club owners cannot leave their own club." }
+      end
+      return
+    elsif @membership.persisted?
       @membership.destroy
       @status = "left"
       @count = @book_club.reload.book_club_members_count
