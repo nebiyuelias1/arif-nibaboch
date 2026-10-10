@@ -3,14 +3,13 @@
   <%= render "book_clubs/card", club: @book_club %>
 <% end %>
 
-<%# Replace the join button on the show page if present %>
-<%= turbo_stream.replace "book_club_show_join_button" do %>
-  <button type="button"
-  id="book_club_show_join_button"
-  onclick="document.getElementById('apply_dialog_<%= @book_club.id %>').showModal()"
-  class="bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer">
-    Apply to Join
-  </button>
+<%# Replace the show-page action wrapper (not the button itself: the
+    replacement can be a whole <form>, so swapping the <button> would nest
+    forms). Same partial as the initial show render so styling stays in sync. %>
+<%= turbo_stream.replace "book_club_show_join_button_container" do %>
+  <div id="book_club_show_join_button_container" class="w-full sm:w-auto shrink-0">
+    <%= render "book_clubs/show_join_button", club: @book_club %>
+  </div>
 <% end %>
 
 <%# Restore the apply dialog inside its show-page container %>

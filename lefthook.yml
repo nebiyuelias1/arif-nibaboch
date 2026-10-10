@@ -6,12 +6,12 @@ pre-commit:
       run: "bundle exec rubocop -A --force-exclusion {staged_files}"
       stage_fixed: true
 
-    erb-formatter:
-      root: "backend/"
-      glob: "**/*.html.erb"
-      run: "bundle exec erb-formatter --write {staged_files}"
-      stage_fixed: true
-
+    # NOTE: erb-formatter was removed on purpose. Its style (closing `>` on
+    # its own line) directly contradicts erb_lint's SpaceInHtmlTag rule, so
+    # the two rewrote each other's output on every commit — and erb-formatter
+    # 0.7.3 crashes on valid files when an ERB comment contains tag-like
+    # text (e.g. `<form>`). erb_lint is the single ERB authority (CI runs
+    # `bin/erb_lint --lint-all`), and the whole codebase already follows it.
     erblint:
       root: "backend/"
       glob: "**/*.erb"

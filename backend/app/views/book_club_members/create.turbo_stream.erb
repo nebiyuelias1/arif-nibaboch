@@ -3,50 +3,35 @@
   <%= render "book_clubs/card", club: @book_club %>
 <% end %>
 
-<%# Replace the join button on the show page if present %>
-<%= turbo_stream.replace "book_club_show_join_button" do %>
-  <% if @book_club.is_private && !@book_club.has_member?(current_user) %>
-    <%# Non-member of a private club: offer Apply to Join, never direct Join %>
-    <button type="button"
-    id="book_club_show_join_button"
-    onclick="document.getElementById('apply_dialog_<%= @book_club.id %>').showModal()"
-    class="bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer">
-      Apply to Join
-    </button>
-  <% else %>
-    <%= button_to @book_club.has_member?(current_user) ? "Leave Club" : "Join Club",
-    book_club_membership_path(@book_club),
-    method: :post,
-    id: "book_club_show_join_button",
-    form: {
-      data: {
-        turbo_frame: "_top",
-      },
-    },
-    data: {
-      disable_with:
-        @book_club.has_member?(current_user) ? "Leaving..." : "Joining...",
-      turbo_confirm: @book_club.has_member?(current_user) ? t("leave_club_confirm") : nil,
-    },
-    class:
-      "bg-primary text-primary-contrast hover:bg-primary px-6 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" %>
-  <% end %>
-<% end %>
-
-<%# Leaving a private club: restore the apply dialog inside its show-page
-    container. The container exists only on the show page, so this is a no-op
-    on carousels where the replaced card already carries its own dialog. %>
-<% if @status == "left" && @book_club.is_private %>
-  <%= turbo_stream.replace "apply_dialog_container" do %>
-    <div id="apply_dialog_container">
-      <%= render "book_clubs/apply_dialog", club: @book_club %>
+<%# Replace the show-page action wrapper (not the button itself: the
+    replacement is a whole <form>, so swapping the <button> would nest forms).
+    Renders the same partial as the initial show render so styling and the
+    leave confirmation stay in sync. %>
+  <%= turbo_stream.replace "book_club_show_join_button_container" do %>
+    <div
+      id="book_club_show_join_button_container"
+      class="w-full sm:w-auto shrink-0">
+      <%= render "book_clubs/show_join_button", club: @book_club %>
     </div>
   <% end %>
-<% end %>
 
-<%# Blocked join attempt on a private club: surface the alert as a toast %>
-<% if flash.now[:alert] %>
-  <%= turbo_stream.append "toast_triggers" do %>
-    <div data-controller="flash-toast" data-flash-toast-message-value="<%= flash.now[:alert] %>" data-flash-toast-type-value="error"></div>
-  <% end %>
-<% end %>
+  <%# Leaving a private club: restore the apply dialog inside its show-page
+    container. The container exists only on the show page, so this is a no-op
+    on carousels where the replaced card already carries its own dialog. %>
+    <% if @status == "left" && @book_club.is_private %>
+      <%= turbo_stream.replace "apply_dialog_container" do %>
+        <div id="apply_dialog_container">
+          <%= render "book_clubs/apply_dialog", club: @book_club %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <%# Blocked join attempt on a private club: surface the alert as a toast %>
+    <% if flash.now[:alert] %>
+      <%= turbo_stream.append "toast_triggers" do %>
+        <div
+          data-controller="flash-toast"
+          data-flash-toast-message-value="<%= flash.now[:alert] %>"
+          data-flash-toast-type-value="error"></div>
+      <% end %>
+    <% end %>

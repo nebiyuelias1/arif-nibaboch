@@ -1,0 +1,111 @@
+name: iOS Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ios/**'
+      - '.github/workflows/ios-build.yml'
+  pull_request:
+    paths:
+      - 'ios/**'
+      - '.github/workflows/ios-build.yml'
+  workflow_dispatch:
+
+jobs:
+  debug-build:
+    name: Debug Build
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: |
+          xcode-select -p
+          xcodebuild -version
+
+      - name: Resolve Swift packages
+        run: xcodebuild -resolvePackageDependencies -project ios/LitLoop.xcodeproj -scheme LitLoop
+
+      - name: Build for simulator (no signing)
+        run: |
+          xcodebuild build \
+            -project ios/LitLoop.xcodeproj \
+            -scheme LitLoop \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO
+
+  release-ipa:
+    name: Release IPA
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: self-hosted
+    environment: staging
+    env:
+      LITLOOP_BUILD_NUMBER: ${{ github.run_number }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: |
+          xcode-select -p
+          xcodebuild -version
+
+      - name: Resolve Swift packages
+        run: xcodebuild -resolvePackageDependencies -project ios/LitLoop.xcodeproj -scheme LitLoop
+
+      # Prerequisites on the Mac mini (one-time setup, mirrors the Android
+      # keystore setup):
+      # 1. Xcode > Settings > Accounts: sign in with your Apple Developer Apple ID.
+      # 2. App Store Connect: app record exists with bundle ID et.netale.LitLoop.
+      # 3. Xcode: download/install the App Store distribution provisioning profile
+      #    for et.netale.LitLoop (Xcode > Settings > Accounts > Download Manual
+      #    Profiles, or let Xcode manage profiles automatically).
+      # 4. Optional: set the APPLE_TEAM_ID repository secret (your 10-char Team ID
+      #    from developer.apple.com/account) so ExportOptions.plist includes it.
+      #    Without it, export relies on automatic signing with a single team.
+      - name: Archive release
+        run: |
+          xcodebuild archive \
+            -project ios/LitLoop.xcodeproj \
+            -scheme LitLoop \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/LitLoop.xcarchive" \
+            CURRENT_PROJECT_VERSION="$LITLOOP_BUILD_NUMBER"
+
+      - name: Generate ExportOptions.plist
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          python3 - "$RUNNER_TEMP/ExportOptions.plist" <<'EOF'
+          import os, plistlib, sys
+          path = sys.argv[1]
+          team_id = os.environ.get("APPLE_TEAM_ID", "").strip()
+          options = {
+              "method": "app-store",
+              "signingStyle": "automatic",
+              "uploadSymbols": True,
+          }
+          if team_id:
+              options["teamID"] = team_id
+          with open(path, "wb") as f:
+              plistlib.dump(options, f)
+          print(f"Wrote {path} (teamID={'set' if team_id else 'omitted'})")
+          EOF
+
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/LitLoop.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export"
+          ls -lh "$RUNNER_TEMP/export"
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: litloop-release-ipa-v${{ github.run_number }}
+          path: ${{ runner.temp }}/export/*.ipa

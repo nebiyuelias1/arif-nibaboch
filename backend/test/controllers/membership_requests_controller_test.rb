@@ -251,8 +251,8 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_no_match(/id="apply_dialog_#{@book_club.id}"/, @response.body)
     assert_no_match(/Apply to Join/, @response.body)
 
-    # Show page join button replaced too
-    assert_match(/turbo-stream action="replace" target="book_club_show_join_button"/, @response.body)
+    # Show page action wrapper replaced too
+    assert_match(/turbo-stream action="replace" target="book_club_show_join_button_container"/, @response.body)
 
     # Show page apply dialog container emptied (pending state has no use for it)
     assert_match(/turbo-stream action="replace" target="apply_dialog_container"><template>[\s\S]*<div id="apply_dialog_container"><\/div>/, @response.body)
@@ -276,8 +276,8 @@ class MembershipRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_match(/id="apply_dialog_#{@book_club.id}"/, @response.body)
     assert_no_match(/Cancel Join Request/, @response.body)
 
-    # Show page join button replaced too
-    assert_match(/turbo-stream action="replace" target="book_club_show_join_button"/, @response.body)
+    # Show page action wrapper replaced too
+    assert_match(/turbo-stream action="replace" target="book_club_show_join_button_container"/, @response.body)
 
     # Show page apply dialog container restored
     assert_match(/turbo-stream action="replace" target="apply_dialog_container"><template>[\s\S]*<dialog id="apply_dialog_#{@book_club.id}"/, @response.body)
