@@ -54,6 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
             components.percentEncodedPath = "/" + fullPath
             components.percentEncodedQuery = incomingComponents.percentEncodedQuery
+            components.percentEncodedFragment = incomingComponents.percentEncodedFragment
             webURL = components.url ?? baseURL
         } else if url.scheme?.lowercased() == "https" || url.scheme?.lowercased() == "http" {
             webURL = url

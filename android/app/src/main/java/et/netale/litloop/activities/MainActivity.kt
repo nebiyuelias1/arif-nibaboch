@@ -62,7 +62,8 @@ class MainActivity : HotwireActivity() {
             "litloop" -> {
                 val path = (uri.host ?: "") + (uri.encodedPath ?: "")
                 val query = uri.encodedQuery?.let { "?$it" } ?: ""
-                "${baseURL.trimEnd('/')}/${path.trimStart('/')}$query"
+                val fragment = uri.encodedFragment?.let { "#$it" } ?: ""
+                "${baseURL.trimEnd('/')}/${path.trimStart('/')}$query$fragment"
             }
             "http", "https" -> uri.toString()
             else -> null
