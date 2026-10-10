@@ -47,12 +47,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func handleIncomingURL(_ url: URL) {
         let webURL: URL
         if url.scheme?.lowercased() == "litloop" {
-            let host = url.host ?? ""
-            let path = url.path
+            let incomingComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+            let host = incomingComponents.percentEncodedHost ?? ""
+            let path = incomingComponents.percentEncodedPath
             let fullPath = (host + path).trimmingCharacters(in: CharacterSet(charactersIn: "/"))
             var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
-            components.path = "/" + fullPath
-            components.query = url.query
+            components.percentEncodedPath = "/" + fullPath
+            components.percentEncodedQuery = incomingComponents.percentEncodedQuery
             webURL = components.url ?? baseURL
         } else if url.scheme?.lowercased() == "https" || url.scheme?.lowercased() == "http" {
             webURL = url

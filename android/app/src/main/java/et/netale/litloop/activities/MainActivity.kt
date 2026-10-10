@@ -60,8 +60,8 @@ class MainActivity : HotwireActivity() {
     private fun resolveTargetUrl(uri: Uri): String? {
         return when (uri.scheme?.lowercase()) {
             "litloop" -> {
-                val path = (uri.host ?: "") + (uri.path ?: "")
-                val query = uri.query?.let { "?$it" } ?: ""
+                val path = (uri.host ?: "") + (uri.encodedPath ?: "")
+                val query = uri.encodedQuery?.let { "?$it" } ?: ""
                 "${baseURL.trimEnd('/')}/${path.trimStart('/')}$query"
             }
             "http", "https" -> uri.toString()
