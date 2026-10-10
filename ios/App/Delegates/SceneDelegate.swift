@@ -74,7 +74,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         tabBarController.selectedIndex = targetIndex
-        tabBarController.activeNavigator?.route(webURL)
+        tabBarController.activeNavigator.route(webURL)
     }
 
     private func configureTabBarAppearance() {
