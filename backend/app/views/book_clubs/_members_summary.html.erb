@@ -1,0 +1,28 @@
+<%#
+  Member summary shown in the club identity row.
+  Locals:
+    - club: BookClub
+    - can_see_private: Boolean
+%>
+<% if can_see_private %>
+  <button
+    type="button"
+    onclick="document.getElementById('members_dialog').showModal()"
+    class="flex min-w-0 items-center gap-3 rounded-lg text-left transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+    <%= render "shared/avatar_group",
+    users: club.members,
+    limit: 5,
+    size_classes: "h-6 w-6",
+    text_size: "text-[9px]",
+    container_classes: "cursor-pointer" %>
+    <span class="truncate text-sm font-medium text-content-subtle"><%= t("member_count", count: club.members.count) %></span>
+    <%# Owner-only pending requests indicator; kept in sync by approve/reject turbo streams via [data-pending-requests-badge] %>
+    <% if user_signed_in? && club.owner == current_user %>
+      <span data-pending-requests-badge>
+        <%= render "book_clubs/pending_requests_badge", club: club %>
+      </span>
+    <% end %>
+  </button>
+<% else %>
+  <span class="text-sm text-content-muted"><%= t("members_only", default: "Members only") %></span>
+<% end %>

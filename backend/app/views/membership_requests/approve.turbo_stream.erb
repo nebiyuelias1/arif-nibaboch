@@ -18,6 +18,9 @@
   <%= @book_club.members.size %>
 <% end %>
 
+<%# Keep the show-page avatar stack and member count in sync %>
+<%= render "book_clubs/membership_summary_streams", club: @book_club %>
+
 <%# Keep the owner's pending indicator badge and the dialog header count in sync %>
 <%= turbo_stream.update_all "[data-pending-requests-badge]" do %>
   <%= render "book_clubs/pending_requests_badge", club: @book_club %>

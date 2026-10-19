@@ -7,9 +7,7 @@
     replacement can be a whole <form>, so swapping the <button> would nest
     forms). Same partial as the initial show render so styling stays in sync. %>
 <%= turbo_stream.replace "book_club_show_join_button_container" do %>
-  <div id="book_club_show_join_button_container" class="w-full sm:w-auto shrink-0">
-    <%= render "book_clubs/show_join_button", club: @book_club %>
-  </div>
+  <%= render "book_clubs/show_join_button_container", club: @book_club %>
 <% end %>
 
 <%# Restore the apply dialog inside its show-page container %>

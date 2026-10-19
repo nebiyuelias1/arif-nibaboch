@@ -1,0 +1,20 @@
+<%#
+  Turbo streams that keep the show-page member summary and viewer role badge
+  fresh after a membership change. Targets only exist on the club show page,
+  so these are no-ops on carousels/cards elsewhere.
+  Locals:
+    - club: BookClub
+%>
+<%= turbo_stream.replace "club_members_summary" do %>
+  <div id="club_members_summary" class="min-w-0 flex-1">
+    <%= render "book_clubs/members_summary",
+    club: club,
+    can_see_private: club.private_info_visible_to?(current_user) %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "club_member_status_badge" do %>
+  <div id="club_member_status_badge" class="shrink-0">
+    <%= render "book_clubs/member_status_badge", club: club %>
+  </div>
+<% end %>

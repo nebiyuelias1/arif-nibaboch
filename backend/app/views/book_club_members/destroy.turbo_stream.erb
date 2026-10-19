@@ -1,5 +1,8 @@
 <%= turbo_stream.remove dom_id(@membership) %>
 
+<%# Keep the show-page avatar stack, member count and role badge in sync %>
+<%= render "book_clubs/membership_summary_streams", club: @book_club %>
+
 <%= turbo_stream.append "toast_triggers" do %>
   <div data-controller="flash-toast" data-flash-toast-message-value="<%= flash.now[:notice] || flash.now[:alert] %>" data-flash-toast-type-value="<%= flash.now[:alert] ? 'error' : 'success' %>"></div>
 <% end %>
