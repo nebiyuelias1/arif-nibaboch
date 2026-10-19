@@ -1,0 +1,10 @@
+<%#
+  Turbo-swappable wrapper for the show-page membership action.
+  Shared by the initial render and every turbo-stream replacement so the
+  wrapper classes (spacing/width) never drift between states.
+  Locals:
+    - club: BookClub
+%>
+<div id="book_club_show_join_button_container" class="mt-4 w-full">
+  <%= render "book_clubs/show_join_button", club: club %>
+</div>

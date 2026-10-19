@@ -1,0 +1,95 @@
+<%#
+  Club identity block: emblem, name, privacy/creator meta, members stack,
+  membership action and collapsible description.
+  Locals:
+    - club: BookClub
+    - can_see_private: Boolean
+%>
+  <section class="pt-5">
+    <div class="flex items-start gap-3.5">
+      <div
+        class="
+          h-14 w-14 shrink-0 overflow-hidden rounded-2xl border-2 border-surface
+          bg-primary shadow-sm ring-1 ring-border
+        ">
+        <% if club.photo.attached? %>
+          <%= image_tag club.photo, alt: "", class: "h-full w-full object-cover" %>
+        <% else %>
+          <div
+            class="
+              flex h-full w-full items-center justify-center text-xl font-bold
+              text-primary-contrast
+            ">
+            <%= club.name_initial %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="min-w-0 flex-1 space-y-1.5">
+        <h1 class="text-2xl font-bold leading-tight tracking-tight text-content">
+          <%= club.name %>
+        </h1>
+
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <% if club.is_private %>
+            <span
+              class="
+                badge badge-sm gap-1.5 border-accent/40 bg-accent/15 font-medium text-content
+              ">Private Club</span>
+          <% else %>
+            <span
+              class="
+                badge badge-sm gap-1.5 border-accent/40 bg-accent/15 font-medium text-content
+              ">Public Club</span>
+          <% end %>
+
+          <% if club.owner %>
+            <span class="inline-flex items-center gap-1.5 text-sm text-content-subtle">
+              <%= render "shared/avatar",
+              user: club.owner,
+              classes:
+                "h-6 w-6 bg-primary text-primary-contrast text-[10px] font-semibold ring-1 ring-border" %>
+              <span>Created by
+                <span class="font-medium text-content"><%= club.owner.name.presence || club.owner.username.presence || "Unknown User" %></span></span>
+            </span>
+          <% else %>
+            <span class="inline-flex items-center gap-1.5 text-sm text-content-subtle">
+              <span
+                aria-hidden="true"
+                class="
+                  flex h-6 w-6 items-center justify-center rounded-full bg-background text-[10px]
+                  font-semibold text-content-muted ring-1 ring-border
+                ">?</span>
+              <span>Created by
+                <span class="font-medium">Deleted User</span></span>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="
+        mt-4 flex items-center justify-between gap-3 border-t border-border pt-3
+      ">
+      <div id="club_members_summary" class="min-w-0 flex-1">
+        <%= render "book_clubs/members_summary",
+        club: club,
+        can_see_private: can_see_private %>
+      </div>
+      <div id="club_member_status_badge" class="shrink-0">
+        <%= render "book_clubs/member_status_badge", club: club %>
+      </div>
+    </div>
+
+    <%= render "book_clubs/show_join_button_container", club: club %>
+
+    <% if club.description.present? %>
+      <div class="mt-4 rounded-2xl border border-border bg-background/60 p-4">
+        <h2 class="text-base font-bold text-content"><%= club.name %></h2>
+        <div class="mt-2 text-sm text-content-subtle">
+          <%= render "shared/collapsible_text", text: club.description, max_lines: 3 %>
+        </div>
+      </div>
+    <% end %>
+  </section>

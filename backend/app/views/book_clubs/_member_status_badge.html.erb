@@ -1,0 +1,13 @@
+<%#
+  Viewer's role badge for the club (Owner/Admin/Member).
+  Renders nothing for signed-out users and non-members.
+  Locals:
+    - club: BookClub
+%>
+<% role_label = club_member_role_label(club, current_user) %>
+<% if role_label %>
+  <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+    <%= role_label %>
+  </span>
+<% end %>

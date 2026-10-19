@@ -1,0 +1,31 @@
+<%#
+  Section tabs for the club detail page.
+  Locals:
+    - club: BookClub
+    - past_count: Integer
+%>
+<div class="mt-6 border-b border-border">
+  <div role="tablist" aria-label="<%= t("club_sections", default: "Club sections") %>" class="-mb-px flex gap-6 overflow-x-auto">
+    <button
+      type="button"
+      role="tab"
+      data-club-tabs-target="tab"
+      data-tab="overview"
+      data-action="click->club-tabs#select"
+      aria-selected="true"
+      class="shrink-0 whitespace-nowrap border-b-2 border-transparent pb-3 pt-1 text-sm font-medium text-content-subtle transition-colors hover:text-content focus:outline-none aria-selected:border-content aria-selected:font-semibold aria-selected:text-content">
+      <%= t("current_reading", default: "Current Reading") %>
+    </button>
+    <button
+      type="button"
+      role="tab"
+      data-club-tabs-target="tab"
+      data-tab="past"
+      data-action="click->club-tabs#select"
+      aria-selected="false"
+      class="inline-flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 border-transparent pb-3 pt-1 text-sm font-medium text-content-subtle transition-colors hover:text-content focus:outline-none aria-selected:border-content aria-selected:font-semibold aria-selected:text-content">
+      <%= t("past_reads_deck", default: "Past Reads Deck") %>
+      <span class="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-bold text-accent"><%= past_count %></span>
+    </button>
+  </div>
+</div>
