@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T12:00:00Z",
+  "title": "Design System: LitLoop",
+  "extensions": {
+    "colorMeta": {
+      "ink-navy": {
+        "role": "primary",
+        "displayName": "Ink Navy",
+        "canonical": "#22324a",
+        "tonalRamp": [
+          "#010a1f",
+          "#132239",
+          "#2b3b54",
+          "#52647f",
+          "#7d90ad",
+          "#a5b9d7",
+          "#c4d9f8",
+          "#dbf0ff"
+        ]
+      },
+      "primary-contrast": {
+        "role": "primary",
+        "displayName": "Primary Contrast",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#222222",
+          "#3a3a3a",
+          "#636363",
+          "#8f8f8f",
+          "#b7b7b7",
+          "#d7d7d7",
+          "#eeeeee"
+        ]
+      },
+      "bookplate-gold": {
+        "role": "accent",
+        "displayName": "Bookplate Gold",
+        "canonical": "#d39a3e",
+        "tonalRamp": [
+          "#250000",
+          "#410f00",
+          "#5e2c00",
+          "#8b5600",
+          "#bb8320",
+          "#e5ac51",
+          "#ffcc72",
+          "#ffe38a"
+        ]
+      },
+      "accent-contrast": {
+        "role": "accent",
+        "displayName": "Accent Contrast",
+        "canonical": "#1a202c",
+        "tonalRamp": [
+          "#060b16",
+          "#1c222e",
+          "#343b48",
+          "#5c6372",
+          "#888f9f",
+          "#afb8c8",
+          "#cfd8e8",
+          "#e6efff"
+        ]
+      },
+      "parchment": {
+        "role": "neutral",
+        "displayName": "Parchment",
+        "canonical": "#f7f3ee",
+        "tonalRamp": [
+          "#0d0b08",
+          "#24211e",
+          "#3d3a36",
+          "#66635e",
+          "#928e8a",
+          "#bab7b2",
+          "#dbd7d2",
+          "#f2eee9"
+        ]
+      },
+      "paper-white": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#222222",
+          "#3a3a3a",
+          "#636363",
+          "#8f8f8f",
+          "#b7b7b7",
+          "#d7d7d7",
+          "#eeeeee"
+        ]
+      },
+      "iron-gall": {
+        "role": "neutral",
+        "displayName": "Iron Gall",
+        "canonical": "#1f2430",
+        "tonalRamp": [
+          "#070b15",
+          "#1c212d",
+          "#353a47",
+          "#5d6371",
+          "#898f9e",
+          "#b0b7c7",
+          "#d0d7e8",
+          "#e7eeff"
+        ]
+      },
+      "soft-graphite": {
+        "role": "neutral",
+        "displayName": "Soft Graphite",
+        "canonical": "#4b5563",
+        "tonalRamp": [
+          "#050b16",
+          "#19222e",
+          "#323b48",
+          "#5a6472",
+          "#8590a0",
+          "#adb8c9",
+          "#cdd9e9",
+          "#e4f0ff"
+        ]
+      },
+      "faded-marginalia": {
+        "role": "neutral",
+        "displayName": "Faded Marginalia",
+        "canonical": "#6b7280",
+        "tonalRamp": [
+          "#070b15",
+          "#1c222d",
+          "#343b47",
+          "#5d6371",
+          "#888f9e",
+          "#b0b8c7",
+          "#d0d8e7",
+          "#e7efff"
+        ]
+      },
+      "deckle-edge": {
+        "role": "neutral",
+        "displayName": "Deckle Edge",
+        "canonical": "#e4ded6",
+        "tonalRamp": [
+          "#0e0a06",
+          "#25211b",
+          "#3e3a33",
+          "#68625b",
+          "#948e87",
+          "#bcb6af",
+          "#dcd6cf",
+          "#f4ede5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Editorial title pages and future display moments only; not yet applied in the product."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles, club names, read titles, and dialog headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card titles, section headings, and reading-session names."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, questions, and long-form reading."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Short uppercase micro-headings, status labels, and metadata labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "overlay-lift",
+        "value": "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+        "purpose": "Dropdowns, dialogs, popovers, and toasts only. Signals detachment from the page."
+      },
+      {
+        "name": "residual-card-softness",
+        "value": "0 1px 2px rgb(0 0 0 / 0.05)",
+        "purpose": "Residual softness on existing cards and buttons. Do not extend to new surfaces."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "purpose": "Card lift and larger compositional transitions (280ms)."
+      },
+      {
+        "name": "quick",
+        "value": "200ms ease",
+        "purpose": "Button, color, border, and opacity state changes."
+      },
+      {
+        "name": "cover-zoom",
+        "value": "500ms ease",
+        "purpose": "Book-cover scale on card hover."
+      },
+      {
+        "name": "toast",
+        "value": "400ms ease",
+        "purpose": "Toast enter, exit, and stack movement."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "xs",
+        "value": "450px"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action on a surface: RSVP, join, save, or submit.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">RSVP to this read</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; border: 1px solid transparent; border-radius: 8px; background: var(--color-primary); color: var(--color-primary-contrast); font-family: var(--font-sans); font-size: 14px; font-weight: 500; line-height: 1; box-shadow: 0 1px 2px rgb(0 0 0 / 0.05); cursor: pointer; transition: background-color 200ms ease, transform 200ms ease; } .ds-btn-primary:hover { background: color-mix(in srgb, var(--color-primary) 85%, black 15%); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; } .ds-btn-primary:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The quiet alternative to a primary action; cancels or steps back.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">Cancel</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border: 1px solid color-mix(in srgb, var(--color-primary) 12%, black 5%); border-radius: 8px; background: transparent; color: var(--color-primary); font-family: var(--font-sans); font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; transition: color 200ms ease, border-color 200ms ease; } .ds-btn-secondary:hover { color: var(--color-accent); border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; } .ds-btn-secondary:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "A labelled field with an optional hint and a clear focus ring.",
+      "html": "<label class=\"ds-field\"> <span class=\"ds-field-label\">Email address</span> <span class=\"ds-input\"><input type=\"email\" placeholder=\"name@example.com\"></span> <span class=\"ds-field-hint\">We will never share your email.</span> </label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; width: 100%; font-family: var(--font-sans); } .ds-field-label { color: var(--color-content); font-size: 14px; font-weight: 500; } .ds-input { display: flex; align-items: center; height: 40px; padding: 0 12px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-surface); transition: border-color 200ms ease, box-shadow 200ms ease; } .ds-input:focus-within { border-color: var(--color-primary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent); } .ds-input input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--color-content); font-family: var(--font-sans); font-size: 14px; line-height: 1.4; } .ds-input input::placeholder { color: var(--color-content-muted); } .ds-field-hint { color: var(--color-content-muted); font-size: 12px; }"
+    },
+    {
+      "name": "Select Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "The native select in the system field shell, used for language and form choices.",
+      "html": "<label class=\"ds-field\"> <span class=\"ds-field-label\">Language</span> <select class=\"ds-select\"><option>English</option><option>አማርኛ</option><option>简体中文</option><option>繁體中文</option></select> </label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; width: 100%; font-family: var(--font-sans); } .ds-field-label { color: var(--color-content); font-size: 14px; font-weight: 500; } .ds-select { width: 100%; height: 40px; padding: 0 12px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-surface); color: var(--color-content); font-family: var(--font-sans); font-size: 14px; cursor: pointer; transition: border-color 200ms ease, box-shadow 200ms ease; } .ds-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent); }"
+    },
+    {
+      "name": "Reading Card",
+      "kind": "card",
+      "refersTo": "card-reading",
+      "description": "The signature catalogue card for a live read: cover, club, title, meetup, and RSVP.",
+      "html": "<article class=\"ds-reading-card\"> <div class=\"ds-reading-cover\">COVER</div> <div class=\"ds-reading-body\"> <span class=\"ds-club\">The Ethiopian Readers</span> <h3 class=\"ds-reading-title\">The Shadow of the Wind</h3> <p class=\"ds-reading-author\">by Carlos Ruiz Zafón</p> <div class=\"ds-meta\"><span>Feb 14, 2026 at 6:30 PM</span><span>Addis Ababa</span></div> <button class=\"ds-reading-rsvp\" type=\"button\">RSVP</button> </div> </article>",
+      "css": ".ds-reading-card { display: flex; gap: 16px; padding: 16px; border: 1px solid var(--color-border); border-radius: 24px; background: var(--color-surface); font-family: var(--font-sans); transition: border-color 200ms ease; } .ds-reading-card:hover { border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); } .ds-reading-cover { display: flex; align-items: center; justify-content: center; width: 96px; flex: none; border-radius: 12px; background: var(--color-background); color: var(--color-content-muted); font-size: 12px; letter-spacing: 0.08em; } .ds-reading-body { display: flex; flex-direction: column; min-width: 0; flex: 1; } .ds-club { color: var(--color-accent); font-size: 12px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; } .ds-reading-title { margin: 4px 0 0; color: var(--color-content); font-size: 16px; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; } .ds-reading-author { margin: 2px 0 0; color: var(--color-content-subtle); font-size: 14px; } .ds-meta { display: flex; flex-direction: column; gap: 4px; margin-top: 10px; color: var(--color-content-subtle); font-size: 12px; font-weight: 500; } .ds-reading-rsvp { align-self: flex-start; margin-top: 14px; padding: 8px 16px; border: 0; border-radius: 8px; background: var(--color-primary); color: var(--color-primary-contrast); font-family: var(--font-sans); font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; transition: background-color 200ms ease, transform 200ms ease; } .ds-reading-rsvp:hover { background: color-mix(in srgb, var(--color-primary) 85%, black 15%); } .ds-reading-rsvp:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; } .ds-reading-rsvp:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Book Card",
+      "kind": "card",
+      "refersTo": "card-book",
+      "description": "A catalogue card for the book grid: cover, year, title, author, and rating.",
+      "html": "<article class=\"ds-book-card\"> <div class=\"ds-book-cover\"><span class=\"ds-year\">2024</span></div> <div class=\"ds-book-body\"> <h3 class=\"ds-book-title\">The Shadow of the Wind</h3> <p class=\"ds-book-author\">Carlos Ruiz Zafón</p> <div class=\"ds-book-foot\"><span class=\"ds-rating\">★ 4.6</span><span class=\"ds-reviews\">128 reviews</span></div> </div> </article>",
+      "css": ".ds-book-card { overflow: hidden; border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent); border-radius: 16px; background: var(--color-surface); font-family: var(--font-sans); transition: border-color 300ms ease; } .ds-book-card:hover { border-color: color-mix(in srgb, var(--color-primary) 30%, transparent); } .ds-book-cover { position: relative; height: 176px; background: var(--color-background); border-bottom: 1px solid color-mix(in srgb, var(--color-border) 40%, transparent); } .ds-year { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent); border-radius: 8px; background: color-mix(in srgb, var(--color-surface) 90%, transparent); color: var(--color-content); font-size: 12px; font-weight: 600; } .ds-book-body { padding: 16px; } .ds-book-title { margin: 0; color: var(--color-content); font-size: 16px; font-weight: 700; line-height: 1.3; } .ds-book-card:hover .ds-book-title { color: var(--color-primary); } .ds-book-author { margin: 4px 0 0; color: var(--color-content-subtle); font-size: 12px; font-weight: 500; } .ds-book-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent); font-size: 12px; } .ds-rating { color: var(--color-content); font-weight: 700; } .ds-reviews { color: var(--color-content-muted); }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "badge-status",
+      "description": "A compact label for club privacy, read status, or membership state.",
+      "html": "<span class=\"ds-badge\">Draft</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-background); color: var(--color-content-subtle); font-family: var(--font-sans); font-size: 12px; font-weight: 500; line-height: 1; }"
+    },
+    {
+      "name": "Bottom Navigation",
+      "kind": "nav",
+      "refersTo": "nav-bottom",
+      "description": "The mobile thumb nav: four equal destinations, solid icons when active, gold hover.",
+      "html": "<nav class=\"ds-bottom-nav\"> <a class=\"active\" href=\"#\"> <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M3 10.5 12 3l9 7.5V21H3z\"/><path d=\"M9 21v-6h6v6\"/></svg> <span>Home</span> </a> <a href=\"#\"> <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M4 4h7v16H4zM13 4h7v16h-7z\"/></svg> <span>Library</span> </a> <a href=\"#\"> <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"9\" cy=\"8\" r=\"3\"/><circle cx=\"17\" cy=\"9\" r=\"2.5\"/><path d=\"M3 20c0-3 2.5-5 6-5s6 2 6 5M14 20c0-2 1.5-3.5 4-3.5s4 1.5 4 3.5\"/></svg> <span>Clubs</span> </a> <a href=\"#\"> <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5\"/></svg> <span>Profile</span> </a> </nav>",
+      "css": ".ds-bottom-nav { display: flex; align-items: stretch; justify-content: space-around; height: 64px; border-top: 1px solid var(--color-border); background: var(--color-surface); font-family: var(--font-sans); } .ds-bottom-nav a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 64px; color: var(--color-content-subtle); font-size: 11px; font-weight: 500; text-decoration: none; transition: color 200ms ease; } .ds-bottom-nav a:hover { color: var(--color-accent); } .ds-bottom-nav a.active { color: var(--color-primary); font-weight: 600; } .ds-bottom-nav svg { width: 24px; height: 24px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Circulating Library",
+    "overview": "LitLoop reads as a small circulating library that happens to run itself: a parchment ground, white catalogue cards, ink-navy structure, and a single gold stamp. The library metaphor is functional rather than decorative. Books are catalogued, clubs are registered, and every read is stamped with a date and a place. The mood is warm, literary, and quietly social; the interface never performs bookishness with props.\n\nDensity is moderate and task-led. An organizer should see the live read, its meetup, and its RSVP state without hunting, while a reader should feel invited into the next gathering rather than dropped into a feed. Warmth comes from the palette, the Ethiopic-first type, the humane rounding, and real covers. Navy carries structure. Gold marks the read that is currently alive.\n\nThis system is explicitly not a generic SaaS dashboard, not corporate library software, not sepia cosplay, and not a social feed. The scheduled read outranks the metric tile, the engagement badge, and the infinite scroll.",
+    "keyCharacteristics": [
+      "Parchment page ground, Paper White sheet surfaces, Ink Navy structure.",
+      "One Bookplate Gold accent, used sparingly as a stamp and a live-read signal.",
+      "Ethiopic-first humanist sans; Playfair Display held in reserve for editorial display.",
+      "Soft radius ladder (8/12/16/24px) with hairline Deckle Edge borders.",
+      "Tonal depth, not shadow-based hierarchy; shadows belong to floating layers.",
+      "Reading-first columns and a mobile bottom navigation built for thumbs.",
+      "Real book covers and club identity carry the imagery."
+    ],
+    "rules": [
+      {
+        "name": "The One Gold Accent Rule",
+        "body": "Bookplate Gold is a stamp, not a surface. Keep it under roughly 10% of any screen. Use it for the live read, small emphasis, metadata icons, and hover; never as a large background fill.",
+        "section": "colors"
+      },
+      {
+        "name": "The Parchment Ground Rule",
+        "body": "Pages sit on Parchment. Sheets, cards, and inputs sit on Paper White. That contrast is the primary depth cue; do not flatten it by making the page white.",
+        "section": "colors"
+      },
+      {
+        "name": "The Navy Is Structure Rule",
+        "body": "Ink Navy carries navigation, primary actions, and links. Body copy stays Iron Gall so the page reads as text first and chrome second.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ethiopic-First Rule",
+        "body": "Every sans stack leads with Noto Sans Ethiopic, then Inter. Never reorder the stack or substitute a Latin-first fallback; the multilingual product depends on this order.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two-Register Rule",
+        "body": "Interface text uses the humanist sans. Playfair Display is reserved for display and editorial moments. Never set body copy, controls, or metadata in the serif.",
+        "section": "typography"
+      },
+      {
+        "name": "The Reading Column Rule",
+        "body": "Club and read surfaces stay between 42rem and 56rem wide. Do not stretch a reading page to the full viewport; line length and focus matter more than filling the screen.",
+        "section": "layout"
+      },
+      {
+        "name": "The Thumb Zone Rule",
+        "body": "Below 640px, primary navigation lives in the fixed bottom bar. Do not duplicate the full desktop menu into a cramped top row.",
+        "section": "layout"
+      },
+      {
+        "name": "The Tonal Depth Rule",
+        "body": "Separate surfaces with parchment/surface contrast and hairline borders. Do not introduce shadow-based hierarchy.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Overlay Exception Rule",
+        "body": "Shadows belong only to floating layers, where they signal detachment from the page. A card is not a floating layer.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Soft Corner Rule",
+        "body": "Use the 8/12/16/24px radius ladder. Reserve full pills for search, avatars, dots, and compact tabs; do not pill every control.",
+        "section": "shapes"
+      },
+      {
+        "name": "The No Hard Outline Rule",
+        "body": "Borders are 1px Deckle Edge. Dividers use the same hairline. Never introduce black rules or heavy structural strokes.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Whole-Card Link Rule",
+        "body": "Make entire cards clickable with a stretched link at z-10; interactive controls sit above it at z-20. Never nest a button inside an anchor.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do start pages on Parchment and place Paper White sheets on top.",
+      "Do keep Ink Navy for structure and actions, and Bookplate Gold for the live read and small emphasis.",
+      "Do set all interface text in the Ethiopic-first sans stack.",
+      "Do use the radius ladder: 8px controls, 12px small cards, 16px cards, 24px panels and dialogs, full pills for search and avatars.",
+      "Do use 1px Deckle Edge borders and tonal contrast for depth.",
+      "Do preserve the 42-56rem reading column for club and read pages.",
+      "Do give every interactive element a visible Ink Navy focus ring.",
+      "Do use real book covers and club images; keep placeholders quiet and icon-led.",
+      "Do keep uppercase for short labels and micro-headings only."
+    ],
+    "donts": [
+      "Don't use pure white page backgrounds or pure black text.",
+      "Don't add shadow-based elevation to cards, panels, or sections.",
+      "Don't use gradients beyond the hero fallback and the profile banner.",
+      "Don't introduce new brand hues; success, error, and warning colors are semantic only.",
+      "Don't use sepia paper textures, script fonts, leather-and-candle imagery, or faux-vintage props.",
+      "Don't turn the product into a dashboard of metric tiles or an infinite social feed.",
+      "Don't set body copy, controls, or metadata in Playfair Display.",
+      "Don't pill every button; pills are for search, avatars, dots, and status chips.",
+      "Don't nest a button inside a card anchor; use a stretched link with controls above it."
+    ]
+  }
+}
