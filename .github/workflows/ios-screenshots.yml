@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
       routes:
-        description: 'Screens to capture, e.g. "home:|clubs:book_clubs|book:books/123"'
+        description: 'Screens to capture, e.g. "home:|club:book_clubs/1|book:books/2453"'
         type: string
         required: false
 

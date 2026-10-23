@@ -9,13 +9,15 @@ set -euo pipefail
 #
 # Usage:
 #   bin/ios_screenshots.sh
-#   ROUTES="home:|clubs:book_clubs|book:books/123" bin/ios_screenshots.sh
+#   ROUTES="home:|club:book_clubs/1|book:books/2453" bin/ios_screenshots.sh
 #   VIDEO=1 bin/ios_screenshots.sh
 #
 # Environment:
 #   IPHONE_DEVICE  Simulator name for the iPhone set (default: iPhone 16 Pro Max)
 #   IPAD_DEVICE    Simulator name for the iPad set   (default: iPad Pro 13-inch (M4))
 #   ROUTES         "name:path|name:path"; an empty path launches the home tab.
+#                  A path may be a full https:// URL; prefer bare paths (litloop://
+#                  is more reliable than universal links in the simulator).
 #   OUTPUT_DIR     Destination directory (default: build/app-store-screenshots)
 #   WAIT_SECONDS   Delay after opening each route (default: 6)
 #   VIDEO          1 to record an app preview per device (needs ffmpeg to trim)
@@ -30,7 +32,7 @@ DERIVED_DATA="${DERIVED_DATA:-build/ios-screenshots-derived}"
 APP_PATH="$DERIVED_DATA/Build/Products/Debug-iphonesimulator/LitLoop.app"
 IPHONE_DEVICE="${IPHONE_DEVICE:-iPhone 16 Pro Max}"
 IPAD_DEVICE="${IPAD_DEVICE:-iPad Pro 13-inch (M4)}"
-ROUTES="${ROUTES:-home:|clubs:book_clubs|discover:book_clubs/discover|library:library}"
+ROUTES="${ROUTES:-club:book_clubs/1|home:|book_read:book_clubs/1/book_reads/6|clubs:book_clubs|book:books/2453}"
 WAIT_SECONDS="${WAIT_SECONDS:-6}"
 VIDEO="${VIDEO:-0}"
 SKIP_IPAD="${SKIP_IPAD:-0}"
@@ -41,6 +43,13 @@ for tool in xcodebuild xcrun python3 sips; do
     exit 1
   }
 done
+
+route_url() {
+  case "$1" in
+    http://* | https://*) printf '%s' "$1" ;;
+    *) printf 'litloop://%s' "$1" ;;
+  esac
+}
 
 find_device() {
   python3 - "$1" <<'PY'
@@ -123,8 +132,8 @@ capture_device() {
 
     xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
     if [[ -n "$path" ]]; then
-      echo "   $name -> litloop://$path"
-      xcrun simctl openurl "$udid" "litloop://$path"
+      echo "   $name -> $(route_url "$path")"
+      xcrun simctl openurl "$udid" "$(route_url "$path")"
     else
       echo "   $name -> launch"
       xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
@@ -163,7 +172,7 @@ record_preview() {
     shots=$((shots + 1))
     xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
     if [[ -n "$path" ]]; then
-      xcrun simctl openurl "$udid" "litloop://$path"
+      xcrun simctl openurl "$udid" "$(route_url "$path")"
     else
       xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
     fi
