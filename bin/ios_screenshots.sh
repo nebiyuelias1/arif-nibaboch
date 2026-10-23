@@ -77,6 +77,16 @@ route_url() {
   esac
 }
 
+device_is_booted() {
+  xcrun simctl list devices -j | python3 -c '
+import json, sys
+udid = sys.argv[1]
+data = json.load(sys.stdin)
+sys.exit(0 if any(device["udid"] == udid and device["state"] == "Booted"
+                  for devices in data["devices"].values() for device in devices) else 1)
+' "$1"
+}
+
 find_device() {
   python3 - "$1" <<'PY'
 import json
@@ -137,7 +147,7 @@ capture_device() {
   local waited=0
   local boot_timeout="${BOOT_TIMEOUT:-240}"
   while (( waited < boot_timeout )); do
-    if xcrun simctl list devices | grep -q "$udid (Booted)"; then
+    if device_is_booted "$udid"; then
       log "   simulator booted after ${waited}s"
       break
     fi
@@ -148,7 +158,7 @@ capture_device() {
     sleep 3
     waited=$((waited + 3))
   done
-  if ! xcrun simctl list devices | grep -q "$udid (Booted)"; then
+  if ! device_is_booted "$udid"; then
     echo "error: simulator $udid did not reach Booted within ${boot_timeout}s" >&2
     xcrun simctl list devices | grep -F "$udid" >&2 || true
     return 1
