@@ -44,6 +44,32 @@ for tool in xcodebuild xcrun python3 sips; do
   }
 done
 
+log() {
+  echo "[$(date '+%H:%M:%S')] $*"
+}
+
+run_with_timeout() {
+  local seconds="$1"
+  shift
+  local status pid watchdog
+  "$@" &
+  pid=$!
+  (
+    sleep "$seconds"
+    if kill -0 "$pid" 2>/dev/null; then
+      echo "error: timed out after ${seconds}s: $*" >&2
+      kill -TERM "$pid" 2>/dev/null || true
+      sleep 5
+      kill -KILL "$pid" 2>/dev/null || true
+    fi
+  ) &
+  watchdog=$!
+  wait "$pid" && status=0 || status=$?
+  kill "$watchdog" 2>/dev/null || true
+  wait "$watchdog" 2>/dev/null || true
+  return "$status"
+}
+
 route_url() {
   case "$1" in
     http://* | https://*) printf '%s' "$1" ;;
@@ -78,8 +104,8 @@ print(candidates[-1][1])
 PY
 }
 
-echo "Building LitLoop for the simulator..."
-xcodebuild \
+log "Building LitLoop for the simulator..."
+run_with_timeout "${BUILD_TIMEOUT:-1500}" xcodebuild \
   -project ios/LitLoop.xcodeproj \
   -scheme LitLoop \
   -configuration Debug \
@@ -87,7 +113,7 @@ xcodebuild \
   -destination "generic/platform=iOS Simulator" \
   -derivedDataPath "$DERIVED_DATA" \
   CODE_SIGNING_ALLOWED=NO \
-  -quiet \
+  -showBuildTimingSummary \
   build
 
 [[ -d "$APP_PATH" ]] || {
@@ -106,10 +132,29 @@ capture_device() {
   rm -rf "$dir"
   mkdir -p "$dir"
 
-  echo "== $device_name ($udid)"
-  xcrun simctl boot "$udid" 2>/dev/null || true
-  xcrun simctl bootstatus "$udid" -b >/dev/null
-  xcrun simctl install "$udid" "$APP_PATH"
+  log "== $device_name ($udid)"
+  run_with_timeout 120 xcrun simctl boot "$udid" || true
+  local waited=0
+  local boot_timeout="${BOOT_TIMEOUT:-240}"
+  while (( waited < boot_timeout )); do
+    if xcrun simctl list devices | grep -q "$udid (Booted)"; then
+      log "   simulator booted after ${waited}s"
+      break
+    fi
+    if (( waited == 30 )); then
+      log "   boot is slow; bringing up Simulator.app"
+      open -a Simulator --args -CurrentDeviceUDID "$udid" >/dev/null 2>&1 || true
+    fi
+    sleep 3
+    waited=$((waited + 3))
+  done
+  if ! xcrun simctl list devices | grep -q "$udid (Booted)"; then
+    echo "error: simulator $udid did not reach Booted within ${boot_timeout}s" >&2
+    xcrun simctl list devices | grep -F "$udid" >&2 || true
+    return 1
+  fi
+  log "   installing app..."
+  run_with_timeout 120 xcrun simctl install "$udid" "$APP_PATH"
 
   xcrun simctl status_bar "$udid" override \
     --time "9:41" \
@@ -132,15 +177,15 @@ capture_device() {
 
     xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
     if [[ -n "$path" ]]; then
-      echo "   $name -> $(route_url "$path")"
-      xcrun simctl openurl "$udid" "$(route_url "$path")"
+      log "   $name -> $(route_url "$path")"
+      run_with_timeout 60 xcrun simctl openurl "$udid" "$(route_url "$path")"
     else
-      echo "   $name -> launch"
-      xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
+      log "   $name -> launch"
+      run_with_timeout 60 xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
     fi
     sleep "$WAIT_SECONDS"
 
-    xcrun simctl io "$udid" screenshot --type=png "$out"
+    run_with_timeout 60 xcrun simctl io "$udid" screenshot --type=png "$out"
     dims="$(sips -g pixelWidth -g pixelHeight "$out" | awk '/pixel/ {printf "%s ", $2}')"
     echo "   wrote $out (${dims% }px)"
   done
