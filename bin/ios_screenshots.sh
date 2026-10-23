@@ -21,9 +21,12 @@ set -euo pipefail
 #                  A path may be a full https:// URL; prefer bare paths (litloop://
 #                  is more reliable than universal links in the simulator).
 #   OUTPUT_DIR     Destination directory (default: build/app-store-screenshots)
+#   IPHONE_MEDIUM_DEVICE  Simulator for the required medium iPhone slot
+#                         (default: iPhone 16 Pro, 1206x2622)
 #   WAIT_SECONDS   Delay after opening each route (default: 6)
 #   VIDEO          1 to record an app preview per device (needs ffmpeg to trim)
-#   SKIP_IPAD      1 to capture only iPhone
+#   SKIP_IPAD      1 to skip the iPad set
+#   SKIP_IPHONE_MEDIUM  1 to skip the 6.3" medium set
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
@@ -33,11 +36,13 @@ OUTPUT_DIR="${OUTPUT_DIR:-build/app-store-screenshots}"
 DERIVED_DATA="${DERIVED_DATA:-build/ios-screenshots-derived}"
 APP_PATH="$DERIVED_DATA/Build/Products/Debug-iphonesimulator/LitLoop.app"
 IPHONE_DEVICE="${IPHONE_DEVICE:-iPhone 16 Pro Max}"
+IPHONE_MEDIUM_DEVICE="${IPHONE_MEDIUM_DEVICE:-iPhone 16 Pro}"
 IPAD_DEVICE="${IPAD_DEVICE:-iPad Pro 13-inch (M4)}"
 ROUTES="${ROUTES:-club:book_clubs/1|home:|book_read:book_clubs/1/book_reads/6|clubs:book_clubs|book:books/2453}"
 WAIT_SECONDS="${WAIT_SECONDS:-6}"
 VIDEO="${VIDEO:-0}"
 SKIP_IPAD="${SKIP_IPAD:-0}"
+SKIP_IPHONE_MEDIUM="${SKIP_IPHONE_MEDIUM:-0}"
 
 for tool in xcodebuild xcrun python3 sips; do
   command -v "$tool" >/dev/null 2>&1 || {
@@ -70,6 +75,14 @@ run_with_timeout() {
   kill "$watchdog" 2>/dev/null || true
   wait "$watchdog" 2>/dev/null || true
   return "$status"
+}
+
+expected_dims() {
+  case "$1" in
+    iphone-6.9) printf '1320 2868' ;;
+    iphone-6.3) printf '1206 2622' ;;
+    ipad-13) printf '2064 2752' ;;
+  esac
 }
 
 device_is_booted() {
@@ -129,8 +142,9 @@ run_with_timeout "${BUILD_TIMEOUT:-1500}" xcodebuild \
 capture_device() {
   local device_name="$1"
   local slug="$2"
-  local udid dir entry name path out dims index
+  local udid dir entry name path out dims index expected
   local -a route_list
+  expected="$(expected_dims "$slug")"
 
   udid="$(find_device "$device_name")"
   dir="$OUTPUT_DIR/$slug"
@@ -205,7 +219,11 @@ capture_device() {
     run_with_timeout 60 xcrun simctl io "$udid" screenshot --type=png "$out"
     python3 "$ROOT_DIR/bin/png_rgb.py" "$out"
     dims="$(sips -g pixelWidth -g pixelHeight "$out" | awk '/pixel/ {printf "%s ", $2}')"
-    log "   wrote $out (${dims% }px, RGB)"
+    dims="${dims% }"
+    if [[ -n "$expected" && "$dims" != "$expected" ]]; then
+      echo "   warning: $slug expects ${expected// /x}, got ${dims// /x}" >&2
+    fi
+    log "   wrote $out (${dims// /x}, RGB)"
   done
 
   if [[ "$VIDEO" == "1" ]]; then
@@ -259,6 +277,9 @@ record_preview() {
 
 mkdir -p "$OUTPUT_DIR"
 capture_device "$IPHONE_DEVICE" "iphone-6.9"
+if [[ "$SKIP_IPHONE_MEDIUM" != "1" ]]; then
+  capture_device "$IPHONE_MEDIUM_DEVICE" "iphone-6.3"
+fi
 if [[ "$SKIP_IPAD" != "1" ]]; then
   capture_device "$IPAD_DEVICE" "ipad-13"
 fi
