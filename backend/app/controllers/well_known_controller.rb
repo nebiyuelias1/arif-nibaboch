@@ -3,7 +3,7 @@ class WellKnownController < ApplicationController
 
   def apple_app_site_association
     team_id = ENV.fetch("APPLE_TEAM_ID", "YOUR_TEAM_ID")
-    bundle_id = "et.netale.LitLoop"
+    bundle_id = "et.netale.litloop"
 
     render json: {
       applinks: {

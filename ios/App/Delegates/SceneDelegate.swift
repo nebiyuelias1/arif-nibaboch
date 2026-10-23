@@ -30,7 +30,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             handleIncomingURL(url)
         } else if let urlContext = connectionOptions.urlContexts.first {
             handleIncomingURL(urlContext.url)
+        } else if let path = initialPathFromLaunchArguments() {
+            let url = (path.hasPrefix("http://") || path.hasPrefix("https://"))
+                ? (URL(string: path) ?? baseURL)
+                : (URL(string: "litloop://" + path) ?? baseURL)
+            handleIncomingURL(url)
         }
+    }
+
+    // Allows automated screenshots to open a route without the system's
+    // "Open in LitLoop?" confirmation, e.g.:
+    //   xcrun simctl launch <udid> et.netale.litloop -initialPath /book_clubs/1
+    private func initialPathFromLaunchArguments() -> String? {
+        let arguments = ProcessInfo.processInfo.arguments
+        guard let index = arguments.firstIndex(of: "-initialPath"),
+              arguments.indices.contains(index + 1) else {
+            return nil
+        }
+        return arguments[index + 1]
     }
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {

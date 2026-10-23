@@ -2,7 +2,8 @@
 set -euo pipefail
 
 # Capture App Store screenshots (and optionally app preview videos) from the
-# iOS Simulator using the app's litloop:// deep links.
+# iOS Simulator. Routes are passed to the app as an -initialPath launch argument,
+# which avoids the "Open in LitLoop?" system prompt that simctl openurl triggers.
 #
 # Requirements: macOS with Xcode command line tools (xcodebuild, simctl, sips).
 # Run from anywhere; paths are resolved from the repository root.
@@ -68,13 +69,6 @@ run_with_timeout() {
   kill "$watchdog" 2>/dev/null || true
   wait "$watchdog" 2>/dev/null || true
   return "$status"
-}
-
-route_url() {
-  case "$1" in
-    http://* | https://*) printf '%s' "$1" ;;
-    *) printf 'litloop://%s' "$1" ;;
-  esac
 }
 
 device_is_booted() {
@@ -190,13 +184,13 @@ capture_device() {
     out="$(printf '%s/%02d-%s.png' "$dir" "$index" "$name")"
 
     xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
-    log "   $name -> launching app"
-    run_with_timeout 60 xcrun simctl launch "$udid" "$BUNDLE_ID" |
-      sed 's/^/     /' || true
-    sleep 2
+    log "   $name -> ${path:-home}"
     if [[ -n "$path" ]]; then
-      log "   $name -> $(route_url "$path")"
-      run_with_timeout 60 xcrun simctl openurl "$udid" "$(route_url "$path")" || true
+      run_with_timeout 60 xcrun simctl launch "$udid" "$BUNDLE_ID" -initialPath "$path" |
+        sed 's/^/     /' || true
+    else
+      run_with_timeout 60 xcrun simctl launch "$udid" "$BUNDLE_ID" |
+        sed 's/^/     /' || true
     fi
     sleep "$WAIT_SECONDS"
 
@@ -238,12 +232,12 @@ record_preview() {
     path="${entry#*:}"
     shots=$((shots + 1))
     xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
-    xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
-    sleep 2
     if [[ -n "$path" ]]; then
-      xcrun simctl openurl "$udid" "$(route_url "$path")" || true
+      xcrun simctl launch "$udid" "$BUNDLE_ID" -initialPath "$path" >/dev/null
+    else
+      xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
     fi
-    sleep 3
+    sleep 5
   done
   if (( shots * 5 < 15 )); then
     echo "   warning: preview will be shorter than the 15s minimum; add routes or lengthen the loop" >&2
