@@ -1,0 +1,50 @@
+name: App Store Screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      video:
+        description: 'Also record app preview videos'
+        type: boolean
+        default: false
+      routes:
+        description: 'Screens to capture, e.g. "home:|clubs:book_clubs|book:books/123"'
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-screenshots-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    name: Capture screenshots
+    runs-on: self-hosted
+    timeout-minutes: 45
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Capture screenshots
+        env:
+          VIDEO: ${{ inputs.video && '1' || '0' }}
+          ROUTES: ${{ inputs.routes }}
+        run: bin/ios_screenshots.sh
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-store-screenshots-${{ github.run_number }}
+          path: build/app-store-screenshots
+          if-no-files-found: error
+
+      - name: Show dimensions
+        run: |
+          find build/app-store-screenshots -name '*.png' -print0 |
+            while IFS= read -r -d '' file; do
+              dims=$(sips -g pixelWidth -g pixelHeight "$file" | awk '/pixel/ {printf "%s ", $2}')
+              echo "${file} (${dims% }px)"
+            done
