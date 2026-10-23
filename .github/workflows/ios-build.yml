@@ -74,6 +74,7 @@ jobs:
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/LitLoop.xcarchive" \
+            -allowProvisioningUpdates \
             CURRENT_PROJECT_VERSION="$LITLOOP_BUILD_NUMBER"
 
       - name: Generate ExportOptions.plist
@@ -101,7 +102,8 @@ jobs:
           xcodebuild -exportArchive \
             -archivePath "$RUNNER_TEMP/LitLoop.xcarchive" \
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
-            -exportPath "$RUNNER_TEMP/export"
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates
           ls -lh "$RUNNER_TEMP/export"
 
       - name: Upload IPA
