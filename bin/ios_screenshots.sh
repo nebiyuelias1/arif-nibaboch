@@ -153,8 +153,12 @@ capture_device() {
     xcrun simctl list devices | grep -F "$udid" >&2 || true
     return 1
   fi
+  log "   built bundle id: $(plutil -extract CFBundleIdentifier raw "$APP_PATH/Info.plist" 2>/dev/null || echo '?')"
+  log "   built url schemes: $(plutil -extract CFBundleURLTypes json -o - "$APP_PATH/Info.plist" 2>/dev/null | tr -d '\n' || echo '?')"
   log "   installing app..."
   run_with_timeout 120 xcrun simctl install "$udid" "$APP_PATH"
+  run_with_timeout 30 xcrun simctl get_app_container "$udid" "$BUNDLE_ID" app >/dev/null ||
+    { echo "error: $BUNDLE_ID is not installed on $udid" >&2; return 1; }
 
   xcrun simctl status_bar "$udid" override \
     --time "9:41" \
@@ -176,14 +180,22 @@ capture_device() {
     out="$(printf '%s/%02d-%s.png' "$dir" "$index" "$name")"
 
     xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
+    log "   $name -> launching app"
+    run_with_timeout 60 xcrun simctl launch "$udid" "$BUNDLE_ID" |
+      sed 's/^/     /' || true
+    sleep 2
     if [[ -n "$path" ]]; then
       log "   $name -> $(route_url "$path")"
-      run_with_timeout 60 xcrun simctl openurl "$udid" "$(route_url "$path")"
-    else
-      log "   $name -> launch"
-      run_with_timeout 60 xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
+      run_with_timeout 60 xcrun simctl openurl "$udid" "$(route_url "$path")" || true
     fi
     sleep "$WAIT_SECONDS"
+
+    if ! xcrun simctl spawn "$udid" launchctl list 2>/dev/null | grep -q "$BUNDLE_ID"; then
+      echo "warning: $BUNDLE_ID does not appear to be running; recent simulator log:" >&2
+      xcrun simctl spawn "$udid" log show --last 1m --style compact \
+        --predicate 'process == "LitLoop" OR eventMessage CONTAINS "LitLoop"' 2>/dev/null |
+        tail -30 >&2 || true
+    fi
 
     run_with_timeout 60 xcrun simctl io "$udid" screenshot --type=png "$out"
     dims="$(sips -g pixelWidth -g pixelHeight "$out" | awk '/pixel/ {printf "%s ", $2}')"
@@ -216,12 +228,12 @@ record_preview() {
     path="${entry#*:}"
     shots=$((shots + 1))
     xcrun simctl terminate "$udid" "$BUNDLE_ID" 2>/dev/null || true
+    xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
+    sleep 2
     if [[ -n "$path" ]]; then
-      xcrun simctl openurl "$udid" "$(route_url "$path")"
-    else
-      xcrun simctl launch "$udid" "$BUNDLE_ID" >/dev/null
+      xcrun simctl openurl "$udid" "$(route_url "$path")" || true
     fi
-    sleep 5
+    sleep 3
   done
   if (( shots * 5 < 15 )); then
     echo "   warning: preview will be shorter than the 15s minimum; add routes or lengthen the loop" >&2
