@@ -8,7 +8,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>et.netale.LitLoop</string>
+			<string>et.netale.litloop</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>litloop</string>
