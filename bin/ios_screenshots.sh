@@ -4,6 +4,7 @@ set -euo pipefail
 # Capture App Store screenshots (and optionally app preview videos) from the
 # iOS Simulator. Routes are passed to the app as an -initialPath launch argument,
 # which avoids the "Open in LitLoop?" system prompt that simctl openurl triggers.
+# Captures are rewritten as clean RGB PNGs (no alpha, no metadata).
 #
 # Requirements: macOS with Xcode command line tools (xcodebuild, simctl, sips).
 # Run from anywhere; paths are resolved from the repository root.
@@ -202,8 +203,9 @@ capture_device() {
     fi
 
     run_with_timeout 60 xcrun simctl io "$udid" screenshot --type=png "$out"
+    python3 "$ROOT_DIR/bin/png_rgb.py" "$out"
     dims="$(sips -g pixelWidth -g pixelHeight "$out" | awk '/pixel/ {printf "%s ", $2}')"
-    echo "   wrote $out (${dims% }px)"
+    log "   wrote $out (${dims% }px, RGB)"
   done
 
   if [[ "$VIDEO" == "1" ]]; then
