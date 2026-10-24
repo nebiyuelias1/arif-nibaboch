@@ -22,8 +22,12 @@ export default class extends Controller {
   }
 
   checkOverflow() {
-    if (this.contentTarget.scrollHeight > this.contentTarget.clientHeight) {
+    if (!this.contentTarget.classList.contains(this.clampClassValue)) {
       this.toggleTarget.classList.remove("hidden");
+      this.toggleTarget.textContent = this.showLessTextValue;
+    } else if (this.contentTarget.scrollHeight > this.contentTarget.clientHeight) {
+      this.toggleTarget.classList.remove("hidden");
+      this.toggleTarget.textContent = this.showMoreTextValue;
     } else {
       this.toggleTarget.classList.add("hidden");
     }

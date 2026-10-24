@@ -391,12 +391,24 @@ class BookClubsControllerTest < ActionDispatch::IntegrationTest
     assert_select "div[title='Test User One']"
   end
 
-  test "card renders Joined with confirmation for members" do
-    sign_in users(:one) # member of book_clubs(:one) via fixtures
+  test "card renders Joined with confirmation for non-owner members" do
+    book_clubs(:one).book_club_members.create!(user: users(:two))
+    sign_in users(:two)
 
     get discover_book_clubs_path
     assert_response :success
 
     assert_select "#book_club_#{book_clubs(:one).id} button[data-turbo-confirm]", /Joined/
+  end
+
+  test "card renders Edit Club instead of join toggle for the owner" do
+    sign_in users(:one) # owner of book_clubs(:one)
+
+    get discover_book_clubs_path
+    assert_response :success
+
+    assert_select "#book_club_#{book_clubs(:one).id} a[href='#{edit_book_club_path(book_clubs(:one))}']", /Edit Club/
+    assert_select "#book_club_#{book_clubs(:one).id} button", text: /Joined/, count: 0
+    assert_select "#book_club_#{book_clubs(:one).id} button", text: /Join/, count: 0
   end
 end

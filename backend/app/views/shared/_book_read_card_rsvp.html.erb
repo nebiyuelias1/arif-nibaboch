@@ -8,6 +8,7 @@
     end
   ) %>
 <% is_going = rsvp&.going? || rsvp&.waitlisted? %>
+<% can_manage = can_manage_book_read?(club, book_read, current_user) %>
 <% share_url = "#{request.base_url}#{book_club_book_read_path(club, book_read)}" %>
 
 <%= turbo_frame_tag dom_id(book_read, :card_rsvp), class: "w-full" do %>
@@ -16,7 +17,13 @@
       card-actions justify-self-end w-full mt-4 flex items-center gap-2 relative z-20
     ">
     <div class="flex-1 min-w-0">
-      <% if user_signed_in? %>
+      <% if can_manage %>
+        <%= link_to edit_book_club_book_read_path(club, book_read),
+            class: "w-full btn btn-primary cursor-pointer text-center",
+            data: { turbo_frame: "_top" } do %>
+          <%= t("edit_read", default: "Edit Read") %>
+        <% end %>
+      <% elsif user_signed_in? %>
         <% if is_going %>
           <%= button_to book_club_book_read_rsvp_path(club, book_read),
               method: :patch,

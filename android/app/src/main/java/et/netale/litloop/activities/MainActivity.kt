@@ -1,5 +1,7 @@
 package et.netale.litloop.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -31,9 +33,51 @@ class MainActivity : HotwireActivity() {
         Hotwire.loadPathConfiguration(
             context = this,
             location = PathConfiguration.Location(
-	                remoteFileUrl = "$baseURL/configurations/android_v1.json"
-	            )
-	        )
+                remoteFileUrl = "$baseURL/configurations/android_v1.json"
+            )
+        )
+
+        if (savedInstanceState == null) {
+            handleDeepLink(intent)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleDeepLink(intent)
+    }
+
+    private fun handleDeepLink(intent: Intent?) {
+        val uri = intent?.data ?: return
+        val targetUrl = resolveTargetUrl(uri) ?: return
+        val targetTabIndex = findTargetTabIndex(targetUrl)
+
+        bottomNavigationController.selectTab(targetTabIndex)
+        bottomNavigationController.route(targetUrl)
+    }
+
+    private fun resolveTargetUrl(uri: Uri): String? {
+        return when (uri.scheme?.lowercase()) {
+            "litloop" -> {
+                val path = (uri.host ?: "") + (uri.encodedPath ?: "")
+                val query = uri.encodedQuery?.let { "?$it" } ?: ""
+                val fragment = uri.encodedFragment?.let { "#$it" } ?: ""
+                "${baseURL.trimEnd('/')}/${path.trimStart('/')}$query$fragment"
+            }
+            "http", "https" -> uri.toString()
+            else -> null
+        }
+    }
+
+    private fun findTargetTabIndex(url: String): Int {
+        val path = Uri.parse(url).path ?: return 0
+        return when {
+            path.startsWith("/library") || path.startsWith("/books") -> 1
+            path.startsWith("/book_clubs") -> 2
+            path.startsWith("/profile") || path.startsWith("/users") -> 3
+            else -> 0
+        }
     }
 
     private fun initializeBottomTabs() {

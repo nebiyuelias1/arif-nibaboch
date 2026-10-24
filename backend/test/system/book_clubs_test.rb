@@ -155,6 +155,19 @@ class BookClubsTest < ApplicationSystemTestCase
     assert @club.pending_membership_requests.exists?(user: users(:two))
   end
 
+  test "book club description show more toggle can be collapsed again" do
+    @club.update!(description: ("This is a long description sentence. " * 40).strip)
+
+    visit book_club_path(@club)
+
+    assert_button "Show more"
+    click_button "Show more"
+    assert_button "Show less"
+
+    click_button "Show less"
+    assert_button "Show more"
+  end
+
   test "club detail action and member avatar group use updated ui components" do
     # Non-owner member sees the actual join/leave toggle (owners see Edit Club)
     @club.book_club_members.create!(user: users(:two))

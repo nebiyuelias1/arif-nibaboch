@@ -69,6 +69,44 @@ class BookClubMembersControllerTest < ActionDispatch::IntegrationTest
     assert_equal "left", JSON.parse(response.body)["status"]
   end
 
+  test "owner cannot leave their own club" do
+    sign_in @owner
+
+    assert_no_difference("BookClubMember.count") do
+      post book_club_membership_url(@book_club), as: :json
+    end
+
+    assert_response :forbidden
+    assert_match(/owner/i, JSON.parse(response.body)["error"])
+    assert @book_club.has_member?(@owner)
+  end
+
+  test "owner cannot leave their own club via html" do
+    sign_in @owner
+
+    assert_no_difference("BookClubMember.count") do
+      post book_club_membership_url(@book_club)
+    end
+
+    assert_redirected_to @book_club
+    assert_equal "Club owners cannot leave their own club.", flash[:alert]
+    assert @book_club.has_member?(@owner)
+  end
+
+  test "turbo stream owner leave attempt keeps membership and shows error toast" do
+    sign_in @owner
+
+    assert_no_difference("BookClubMember.count") do
+      post book_club_membership_url(@book_club), as: :turbo_stream
+    end
+
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", @response.media_type
+    assert_match(/data-flash-toast-type-value="error"/, @response.body)
+    assert_match(/owners cannot leave/i, @response.body)
+    assert @book_club.has_member?(@owner)
+  end
+
   test "leaving a private club shows Apply to Join on the club show page" do
     @book_club.update!(is_private: true, application_form_url: "https://example.com/form")
     sign_in @user

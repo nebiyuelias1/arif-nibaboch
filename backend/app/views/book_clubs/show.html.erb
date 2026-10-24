@@ -1,179 +1,42 @@
 <% content_for :title, @club.name %>
-<div
-  data-controller="book-club"
-  class="max-w-4xl mx-auto"
-  data-book-club-club-id-value="<%= @club.id %>">
-  <div class="bg-surface rounded-lg shadow-sm overflow-hidden mb-8">
-    <% if @club.cover_photo.attached? %>
-      <div class="h-64 w-full bg-background relative">
-        <%= image_tag @club.cover_photo, class: "w-full h-full object-cover" %>
-      </div>
+<% can_see_private = @club.private_info_visible_to?(current_user) %>
+
+<div class="mx-auto max-w-2xl" data-controller="club-tabs">
+  <%= render "book_clubs/hero_banner", club: @club %>
+  <%= render "book_clubs/identity", club: @club, can_see_private: can_see_private %>
+  <%= render "book_clubs/tabs", club: @club, past_count: @past_reads.size %>
+
+  <%# Current Reading %>
+  <section data-club-tabs-target="panel" data-tab="overview" class="pt-5">
+    <% if @current_read %>
+      <%= render "book_clubs/current_reading_card", club: @club, book_read: @current_read %>
     <% else %>
-      <div
-        class="
-          h-48 w-full bg-primary flex items-center justify-center text-primary-contrast
-        ">
-        <svg
-          class="w-16 h-16 opacity-50"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+      <div class="mt-4 rounded-3xl border border-dashed border-border bg-surface p-8 text-center">
+        <svg class="mx-auto mb-4 h-12 w-12 text-content-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
+        <h3 class="mb-1 text-lg font-medium text-content"><%= t("no_active_session", default: "No active reading session") %></h3>
+        <p class="mb-4 text-content-subtle"><%= t("no_active_session_hint", default: "The club admin hasn't selected a book to read yet.") %></p>
+        <% if user_signed_in? && @club.owner == current_user %>
+          <%= link_to t("start_new_read", default: "Start a New Read"),
+          new_book_club_book_read_path(@club),
+          class: "inline-flex items-center justify-center rounded-md bg-primary px-6 py-2.5 text-sm font-medium text-primary-contrast transition-colors hover:opacity-90" %>
+        <% end %>
       </div>
     <% end %>
 
-    <div class="p-8">
-      <% can_see_private = @club.private_info_visible_to?(current_user) %>
-
-      <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-        <div class="min-w-0">
-          <div class="flex items-center gap-3 mb-2">
-            <% if @club.photo.attached? %>
-              <%= image_tag @club.photo,
-              alt: "",
-              class:
-                "w-10 h-10 aspect-square rounded-full object-cover ring-2 ring-accent/20 shrink-0" %>
-            <% else %>
-              <div
-                aria-hidden="true"
-                class="
-                  w-10 h-10 rounded-full bg-accent/15 text-accent font-bold text-base flex
-                  items-center justify-center shrink-0
-                ">
-                <%= @club.name_initial %>
-              </div>
-            <% end %>
-            <h1 class="title title-lg text-content font-bold"><%= @club.name %></h1>
-          </div>
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-6">
-            <% if @club.is_private %>
-              <span
-                class="
-                  badge badge-sm gap-1.5 font-medium bg-primary text-primary-contrast
-                  border-primary
-                ">
-                Private Club
-              </span>
-            <% else %>
-              <span
-                class="
-                  badge badge-sm gap-1.5 font-medium bg-accent/15 text-content border-accent/40
-                ">
-                Public Club
-              </span>
-            <% end %>
-            <% if @club.owner %>
-              <span class="inline-flex items-center gap-1.5 text-sm text-content-subtle">
-                <%= render "shared/avatar",
-                user: @club.owner,
-                classes:
-                  "w-6 h-6 ring-1 ring-border bg-primary text-primary-contrast text-[10px] font-semibold" %>
-                <span>
-                  Created by
-                  <span class="font-medium text-content"><%= @club.owner.name.presence || @club.owner.username.presence || "Unknown User" %></span>
-                </span>
-              </span>
-            <% else %>
-              <span class="inline-flex items-center gap-1.5 text-sm text-content-subtle">
-                <span
-                  aria-hidden="true"
-                  class="
-                    w-6 h-6 rounded-full bg-background text-content-muted text-[10px] font-semibold
-                    flex items-center justify-center ring-1 ring-border
-                  ">?</span>
-                <span>Created by
-                  <span class="font-medium">Deleted User</span></span>
-              </span>
-            <% end %>
-          </div>
-
-          <% if can_see_private %>
-            <button
-              onclick="document.getElementById('members_dialog').showModal()"
-              class="
-                text-left mt-4 hover:opacity-80 transition-opacity focus:outline-none
-                focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-md block
-              ">
-              <div class="flex items-center gap-2">
-                <%= render "shared/avatar_group",
-                users: @club.members,
-                limit: 5,
-                size_classes: "w-6 h-6",
-                text_size: "text-[9px]",
-                container_classes: "cursor-pointer" %>
-                <span class="text-sm text-content-subtle font-medium"><%= t("member_count", count: @club.members.count) %></span>
-                <%# Owner-only pending requests indicator; kept in sync by the approve/reject turbo streams via [data-pending-requests-badge] %>
-                <% if user_signed_in? && @club.owner == current_user %>
-                  <span data-pending-requests-badge>
-                    <%= render "book_clubs/pending_requests_badge", club: @club %>
-                  </span>
-                <% end %>
-              </div>
-            </button>
-          <% end %>
-        </div>
-
-        <div
-          id="book_club_show_join_button_container"
-          class="w-full sm:w-auto shrink-0">
-          <%= render "book_clubs/show_join_button", club: @club %>
-        </div>
-      </div>
-
-      <div class="prose max-w-none text-content-subtle mt-6">
-        <% if @club.description.present? %>
-          <%= render "shared/collapsible_text", text: @club.description %>
-        <% else %>
-          <p class="italic text-content-muted">No description provided for this club yet.</p>
+    <% other_reads = @upcoming_reads.drop(1) %>
+    <% if other_reads.any? %>
+      <h3 class="mb-3 mt-8 text-base font-bold text-content"><%= t("upcoming_meets", default: "Upcoming Meets") %></h3>
+      <div class="space-y-4">
+        <% other_reads.each do |read| %>
+          <%= render "shared/book_read_card_link", book_read: read, club: @club, show_club_name: false %>
         <% end %>
       </div>
-    </div>
-  </div>
+    <% end %>
+  </section>
 
-  <div class="flex justify-between items-center mb-6 mt-12">
-    <h2 class="title title-sm text-content font-bold">Current Reading</h2>
-    <%= link_to "See all",
-    book_club_book_reads_path(@club),
-    class: "text-primary hover:text-accent text-sm font-medium" %>
-  </div>
-
-  <% if @current_read %>
-    <%= render "shared/book_read_card_link",
-    book_read: @current_read,
-    club: @club,
-    show_club_name: false %>
-  <% else %>
-    <div
-      class="
-        bg-surface rounded-lg shadow-sm p-8 text-center border border-dashed
-        border-border
-      ">
-      <svg
-        class="mx-auto h-12 w-12 text-content-muted mb-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-      </svg>
-      <h3 class="text-lg font-medium text-content mb-1">No active reading session</h3>
-      <p class="text-content-subtle mb-4">The club admin hasn't selected a book to read yet.</p>
-      <% if user_signed_in? && @club.owner == current_user %>
-        <%= link_to "Start a New Read",
-        new_book_club_book_read_path(@club),
-        class:
-          "inline-flex items-center justify-center bg-background text-primary hover:bg-background px-6 py-2.5 rounded-md text-sm font-medium transition-colors" %>
-      <% end %>
-    </div>
-  <% end %>
+  <%= render "book_clubs/past_reads_panel", club: @club, past_reads: @past_reads %>
 </div>
 
 <%# Swapped by the join/leave/request turbo streams. The container exists only on this page, so stream updates are no-ops on carousels where the replaced card already carries its own dialog - no duplicate IDs. %>

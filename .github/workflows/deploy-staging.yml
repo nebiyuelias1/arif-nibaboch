@@ -57,6 +57,8 @@ jobs:
       APP_PROTOCOL: ${{ vars.APP_PROTOCOL }}
       APP_NAME: ${{ vars.APP_NAME }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      ANDROID_SHA256_FINGERPRINTS: ${{ secrets.ANDROID_SHA256_FINGERPRINTS }}
 
     permissions:
       contents: read
