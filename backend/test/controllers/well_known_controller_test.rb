@@ -8,7 +8,7 @@ class WellKnownControllerTest < ActionDispatch::IntegrationTest
 
     json = response.parsed_body
     assert json["applinks"].present?
-    assert json["applinks"]["details"].first["appID"].end_with?("et.netale.LitLoop")
+    assert json["applinks"]["details"].first["appID"].end_with?("et.netale.litloop")
   end
 
   test "should get apple_app_site_association from root" do
