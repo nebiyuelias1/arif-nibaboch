@@ -91,6 +91,7 @@ class MainActivity : HotwireActivity() {
         hostView.post {
             if (pendingDeepLink != pending || isFinishing || isDestroyed) return@post
 
+            selectTabIfNeeded(pending.tabIndex)
             pendingDeepLink = null
             navigator.route(pending.url)
         }
