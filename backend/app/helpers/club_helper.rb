@@ -47,4 +47,25 @@ module ClubHelper
 
     "#{phrase} • #{time.strftime('%A')} #{period}"
   end
+
+  # URL for adding the book read meetup to Google Calendar.
+  def google_calendar_url(book_read, book_club)
+    return nil unless book_read&.meetup_time
+
+    title = book_read.book&.title || book_read.poll&.text || "Book Club Meetup"
+    details = "Book Club Meetup with #{book_club.name}. #{book_club_book_read_url(book_club, book_read)}"
+    location = book_read.meetup_location.presence || ""
+    start_time = book_read.meetup_time.utc.strftime("%Y%m%dT%H%M%SZ")
+    end_time = (book_read.meetup_time + 2.hours).utc.strftime("%Y%m%dT%H%M%SZ")
+
+    query = {
+      action: "TEMPLATE",
+      text: "#{book_club.name}: #{title}",
+      dates: "#{start_time}/#{end_time}",
+      details: details,
+      location: location
+    }.to_query
+
+    "https://calendar.google.com/calendar/render?#{query}"
+  end
 end

@@ -1,0 +1,98 @@
+<%
+  private_info_visible = local_assigns.fetch(:private_info_visible) { book_club.private_info_visible_to?(current_user) }
+  rsvp_users ||= book_read.book_read_rsvps.going.includes(:user).map(&:user)
+  waitlisted_count ||= book_read.book_read_rsvps.waitlisted.count
+%>
+
+<%# Meetup Details Inset Panel (The Circulating Library Stamped Well) %>
+<div id="book_read_meetup_details" class="bg-background/70 rounded-2xl p-5 sm:p-6 mb-8 border border-border">
+  <% if private_info_visible %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <%# When %>
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 text-accent">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.7"></rect>
+            <path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <span class="text-xs font-medium text-content-muted block mb-0.5"><%= t("time_label", default: "When") %></span>
+          <p class="font-bold text-content text-sm sm:text-base leading-snug">
+            <%= book_read.meetup_time&.strftime("%B %d, %Y at %H:%M") || t("not_set", default: "Not set") %>
+          </p>
+          <% if book_read.meetup_time.present? %>
+            <p class="text-xs text-content-subtle mt-1 font-medium">
+              <%= relative_meetup_hint(book_read.meetup_time) %>
+            </p>
+            <% if gcal_url = google_calendar_url(book_read, book_club) %>
+              <%= link_to gcal_url,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              class: "inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-accent transition-colors mt-2" do %>
+                <svg class="w-3.5 h-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Add to Calendar</span>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <%# Where %>
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 text-accent">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <span class="text-xs font-medium text-content-muted block mb-0.5"><%= t("location_label", default: "Where") %></span>
+          <p class="font-bold text-content text-sm sm:text-base leading-snug break-words">
+            <%= book_read.meetup_location.presence || t("not_set", default: "Not set") %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <%# Signature Gold Capacity Progress Bar %>
+    <% if book_read.max_capacity.present? %>
+      <% going_count = rsvp_users.size %>
+      <% remaining_spots = [book_read.max_capacity - going_count, 0].max %>
+      <% percent = [((going_count.to_f / book_read.max_capacity) * 100).round, 100].min %>
+      <div class="mt-5 pt-4 border-t border-border/80">
+        <div class="flex items-center justify-between text-xs mb-2">
+          <p class="text-content-subtle font-medium">
+            <span class="font-bold text-content"><%= going_count %> of <%= book_read.max_capacity %></span> spots reserved
+          </p>
+          <span class="text-content-muted font-medium"><%= t("spots_remaining", count: remaining_spots) %></span>
+        </div>
+        <div class="h-2 w-full overflow-hidden rounded-full bg-border/40">
+          <div class="h-full rounded-full bg-accent transition-all duration-500" style="width: <%= percent %>%"></div>
+        </div>
+        <% if waitlisted_count&.positive? %>
+          <p class="text-xs text-content-muted mt-1.5">
+            <%= t("waitlisted_count", count: waitlisted_count) %>
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="flex items-start gap-3">
+      <div class="w-9 h-9 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 text-accent">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M16.5 10.5V6.75a4.5 4.5 0 00-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+        </svg>
+      </div>
+      <div>
+        <p class="font-bold text-content text-sm mb-1"><%= t("private_reading_session", default: "Private Reading Session") %></p>
+        <p class="text-content-subtle text-sm">This is a private club. Join to see meetup details.</p>
+        <%= link_to t("view_club", default: "View Book Club"),
+        book_club_path(book_club),
+        class: "inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-accent transition-colors mt-2" %>
+      </div>
+    </div>
+  <% end %>
+</div>
