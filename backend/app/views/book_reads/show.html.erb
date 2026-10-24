@@ -3,15 +3,19 @@
 <% content_for :og_title,
 "#{@book_read.book&.title || @book_read.poll&.text || "Reading Session"} | #{@book_club.name}" %>
 <% content_for :og_description,
-  @private_info_visible ?
-    "Join #{@book_club.name}'s book reading session! Meetup: #{@book_read.meetup_time ? l(@book_read.meetup_time, format: :flyer) : "TBD"} at #{@book_read.meetup_location.presence || "TBD"}." :
-    "Join #{@book_club.name}'s private book club to see meetup details." %>
+(
+  if @private_info_visible
+    "Join #{@book_club.name}'s book reading session! Meetup: #{@book_read.meetup_time ? l(@book_read.meetup_time, format: :flyer) : "TBD"} at #{@book_read.meetup_location.presence || "TBD"}."
+  else
+    "Join #{@book_club.name}'s private book club to see meetup details."
+  end
+) %>
 <% content_for :og_url, book_club_book_read_url(@book_club, @book_read) %>
 <% if @book_read.book.present? && @book_read.book.cover_image.present? %>
   <% content_for :og_image, cover_book_url(@book_read.book) %>
 <% end %>
 
-<div class="max-w-4xl mx-auto mt-8">
+<div class="max-w-4xl mx-auto">
   <nav class="flex mb-6" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
       <li class="inline-flex items-center">
@@ -122,8 +126,8 @@
           <button
             onclick="document.getElementById('rsvp_dialog').showModal()"
             class="
-              w-full text-left hover:opacity-80 transition-opacity focus:outline-none cursor-pointer
-              focus-visible:ring-2 focus-visible:ring-primary rounded-md mb-6
+              w-full text-left hover:opacity-80 transition-opacity focus:outline-none
+              cursor-pointer focus-visible:ring-2 focus-visible:ring-primary rounded-md mb-6
             ">
             <div
               class="
@@ -137,7 +141,9 @@
                 <span>Hosted by:
                   <span class="font-semibold"><%= @book_read.host.to_s %></span></span>
               </div>
-              <%= render "book_read_rsvps/rsvp_users", rsvp_users: @rsvp_users, waitlisted_count: @waitlisted_count %>
+              <%= render "book_read_rsvps/rsvp_users",
+              rsvp_users: @rsvp_users,
+              waitlisted_count: @waitlisted_count %>
             </div>
           </button>
         <% else %>
@@ -444,7 +450,8 @@
   <% else %>
     <div class="bg-surface p-8 rounded-lg shadow-sm border border-border">
       <h2 class="title title-lg text-content font-bold">Discussion Questions</h2>
-      <p class="text-content-subtle text-sm mt-4">This is a private club. Join to see and participate in discussion questions.</p>
+      <p class="text-content-subtle text-sm mt-4">This is a private club. Join to see and participate in discussion
+        questions.</p>
     </div>
   <% end %>
 
