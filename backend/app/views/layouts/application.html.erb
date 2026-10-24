@@ -111,6 +111,6 @@
     </main>
 
     <%= render "shared/footer" %>
-    <%= render "shared/bottom_nav" %>
+    <%= render("shared/bottom_nav") if show_bottom_nav? %>
   </body>
 </html>
