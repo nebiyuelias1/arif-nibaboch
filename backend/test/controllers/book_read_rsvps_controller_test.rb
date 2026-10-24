@@ -68,6 +68,20 @@ class BookReadRsvpsControllerTest < ActionDispatch::IntegrationTest
     rsvp = BookReadRsvp.find_by!(book_read: @book_read, user: user)
     assert_equal "waitlisted", rsvp.status
     assert_match "waitlisted", response.body.downcase
+    assert_match "book_read_meetup_details", response.body
+  end
+
+  test "updates meetup_details in turbo stream after cancel" do
+    user = users(:three)
+    sign_in user
+    BookReadRsvp.create!(book_read: @book_read, user: user, status: :going)
+
+    patch book_club_book_read_rsvp_url(@book_club, @book_read),
+      params: { book_read_rsvp: { status: "cancelled" } },
+      as: :turbo_stream
+
+    assert_response :success
+    assert_match "book_read_meetup_details", response.body
   end
 
   test "blocks rsvp when event has passed" do
